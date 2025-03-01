@@ -1,0 +1,161 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+
+.appear-0 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .2s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-1 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .25s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-2 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .3s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-3 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .35s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-4 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .4s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-5 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .45s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-6 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .5s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-7 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .55s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-8 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .6s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-9 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .65s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-10 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .7s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-11 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .75s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-12 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .8s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-13 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .85s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-14 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .9s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-15 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: .95s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .appear-16 {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-delay: 1s;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }

@@ -1,0 +1,259 @@
+@font-face {
+  font-family: 'Plantin Light';
+  src: url('PlantinStd-Light.woff2') format('woff2'),
+      url('PlantinStd-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'Plantin';
+    src: url('../assets/fonts/Plantin.woff2') format('woff2'),
+         url('../assets/fonts/PLantin.woff') format('woff');
+    font-weight: 100 200 300 400 500 600 700 800 900;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Plantin Bold';
+  src: url('../assets/fonts/PlantinStd-Bold.woff2') format('woff2'),
+       url('../assets/fonts/PlantinStd-Bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Plantin Italic';
+  src: url('../assets/fonts/PlantinStd-Italic.woff2') format('woff2'),
+       url('../assets/fonts/PlantinStd-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Alright Sans */
+@font-face {
+  font-family: 'Alright Sans';
+  src: url('../assets/fonts/AlrightSans.woff2') format('woff2'),
+         url('../assets/fonts/AlrightSans.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+/* Headline */
+h1 {
+  display: inline-block;
+  font-family:'Plantin', serif;
+  font-weight:300;
+  letter-spacing:0.12rem;
+  font-size: 4rem;
+  /*line-height: normal;*/
+  color:var(--color-black);
+  margin: auto 0;
+}
+
+/* Entry Title */
+h2 {
+  font-family:'Plantin', serif;
+  font-weight:300;
+  letter-spacing:0.06rem;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  color:var(--color-black);
+  margin: auto 0;
+}
+
+/* Chapter Heading */
+h3 {
+  font-family:'Plantin Bold';
+  font-weight: 700;
+  letter-spacing:0.012rem;
+  font-size: 1.25rem;
+  color:var(--color-black);
+  margin: auto 0;
+  margin-top: 3rem;
+}
+
+/* Subtitle */
+h4 {
+  font-family:'Alright Sans';
+  font-weight:300;
+  font-size: 1rem;
+  color:var(--color-darkgrey);
+  text-decoration: none;
+}
+
+/* Stats */
+h5 {
+  font-family:'Plantin Bold';
+  font-size: 1.1rem;
+  color:var(--color-black);
+  text-decoration: none;
+}
+
+/* Footer */
+h6 {
+  display: inline-block;
+  font-family:'Plantin Thin', serif;
+  letter-spacing:.15rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  color:var(--color-halftone);
+}
+
+
+/* Body */
+blockquote p {
+  font-family:'Plantin Italic', serif;
+  font-size: 1.35rem;
+  line-height: 1.75rem;
+  color:var(--color-darkgrey);
+}
+
+p {
+  font-family:'Plantin', serif;
+  font-size: 1.3rem;
+  line-height: 2rem; /*previously 1.65*/
+  text-align: justify; /* newspaper justification*/
+  color:var(--color-black);
+}
+
+em {
+  font-style: normal /*previously 1.65*/
+}
+
+strong {
+  font-family:'Plantin Bold';
+}
+
+li > p {
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  color:var(--color-darkgrey);
+}
+
+a {
+  color:var(--color-darkgrey);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a > h2 {
+  color:var(--color-darkgrey);
+}
+
+a > h2.active {
+  color:var(--color-black);
+}
+
+/*
+a > h1:hover {
+  color:var(--color-powder);
+}
+
+a > h2:hover {
+  color:var(--color-powder);
+}
+
+a > h6:hover {
+  color:var(--color-powder);
+}
+*/
+
+/*
+q {
+  font-family:'EB Garamond', serif;
+  font-size: 1.38rem;
+  font-style: italic;
+  color:var(--color-grey);
+}
+*/
+
+/*
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
+  font-size: smaller;
+}
+*/
+
+/*
+h2.bold{
+  font-weight: 600;
+}
+
+h3.bold{
+  font-weight: 600;
+}
+
+h6:hover{
+  color:var(--color-powder);
+}
+
+h6.bold{
+  font-weight: 600;
+}
+*/
+
+/*
+p.tab{
+  margin-block-start:0;
+  margin-block-end:0;
+  font-family:'EB Garamond', serif;
+  font-weight: 300;
+  letter-spacing:0.05rem;
+  font-size: 1.41rem;
+  font-style: italic;
+  line-height: 2.4rem;
+  margin-left:60px;
+}
+*/
+
+/*
+a:visited {
+  color:var(--color-black);
+}
+*/
+
+/*
+hyphens: auto;
+-webkit-hyphens: auto;
+-ms-hyphens: auto;
+*/
+
+/*
+h2:not(.italic):hover{
+  font-weight: 600;
+}
+h2.italic:hover{
+  font-weight: 500;
+}
+h2.bold{
+  font-weight: 600;
+}
+h2.click:hover {
+  font-weight:500;
+}
+*/
+
+/*
+h3.link:hover {
+  color:var(--color-powder);
+}
+*/
+
+/*
+h4.click:hover {
+  font-weight:400;
+}
+*/
+
+/*
+h5.link{
+  cursor:pointer;
+}
+*/

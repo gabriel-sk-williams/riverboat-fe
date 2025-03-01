@@ -1,0 +1,149 @@
+/*
+// MAIN LAYOUT//
+*/
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 0 1rem; /* Add some padding for spacing */
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+
+/* mobile (below 600px width) */
+.container {
+  width:100%;
+  height:100%;
+  padding-left:1rem;
+  padding-right:1rem;
+  margin-top:4rem;
+}
+
+@media (min-width:700px) {
+  .container {
+    width:700px;
+    height:100%;
+    margin-top:4rem;
+    margin: 0 auto;
+  }
+}
+
+img {
+  width: 100%;
+}
+
+/* markdown */
+ol {
+  padding: 20px; 
+  list-style-type: decimal;
+
+}
+ol li {
+  float: left;
+  margin: 0 10px;
+  padding: 0 10px;
+}
+
+blockquote {
+  margin: 0 auto;
+  width: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+footer {
+  min-height: 50px;
+  text-align: center;
+}
+
+/* footnotes */
+.footnotes {
+  display: inline-block;
+  margin: 2rem auto;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+/* Style the back reference arrow */
+.data-footnote-backref {
+  margin-left: 0.5rem;
+  color: var(--color-darkgrey);
+  text-decoration: none;
+}
+
+/*
+// POSITIONAL DUDES
+*/
+
+.gap {
+  height:0.9rem;
+}
+
+.header-gap {
+  margin-top:3rem;
+}
+
+.top{
+  vertical-align:top!important;
+}
+.left{
+  text-align:left!important;
+}
+.right{
+  text-align:right!important;
+}
+.center{
+  text-align:center!important;
+}
+.middle{
+  vertical-align:middle!important;
+}
+.bottom{
+  vertical-align:bottom!important;
+}
+.block{
+  display:block!important
+}
+
+.col-1-12{
+    width:8.33333%
+}
+.col-2-12{
+    width:16.66667%
+}
+.col-3-12{
+    width:25%
+}
+.col-4-12{
+    width:33.33333%
+}
+.col-5-12{
+    width:41.66667%
+}
+.col-6-12{
+    width:50%
+}
+.col-7-12{
+    width:58.33333%
+}
+.col-8-12{
+    width:66.66667%
+}
+.col-9-12{
+    width:75%
+}
+.col-10-12{
+    width:83.33333%
+}
+.col-11-12{
+    width:91.66667%
+}
+.col-12-12{
+    width:100%
+}

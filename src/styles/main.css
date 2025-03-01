@@ -1,0 +1,61 @@
+/* // MAIN COLORS // */
+:root {
+    --color-white: #ffffff;
+    --color-feather: #77c9d4;
+    --color-pink: #F6EBFC;
+    --color-powder: #e0e6f3;
+    --color-black: #404040;
+    --color-darkgrey: #6b6b6b;
+    --color-halftone: #7f7f7f;
+    --color-grey: #bfbfbf;
+    --color-electric: #c7dfc5;
+    --color-electric-hover: #d8e9d7;
+    --blog-width: 420px;
+  }
+  
+  .black { color:var(--color-black); }
+  .darkgrey { color:var(--color-darkgrey) }
+  .halftone { color:var(--color-halftone) }
+  .grey { color:var(--color-grey) }
+  .italic { font-style: italic; }
+  
+  html{
+    position:static!important;
+    top:0!important;
+    box-sizing:border-box;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  
+  body,div,ul,li{
+    margin:0;
+    border:0;
+    padding:0;
+    list-style:none;
+    color: var(--color-black);
+    -webkit-font-smoothing: antialiased!important;
+  }
+  
+  *{ box-sizing: inherit; }
+
+  ::selection {
+    background: var(--color-powder); /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: var(--color-powder); /* Gecko Browsers */
+  }
+  .select {
+    -webkit-touch-callout: auto; /* iOS Safari */
+      -webkit-user-select: auto; /* Safari */
+       -khtml-user-select: auto; /* Konqueror HTML */
+         -moz-user-select: auto; /* Firefox */
+          -ms-user-select: auto; /* Internet Explorer/Edge */
+              user-select: auto; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
+  
+  .click {
+    cursor:pointer;
+  }
+  
+  

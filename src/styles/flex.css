@@ -1,0 +1,53 @@
+/*
+// FLEX //
+*/
+
+.flex{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+  
+    -ms-flex-wrap:row wrap;
+    flex-wrap:row wrap;
+    justify-content:flex-start;
+    overflow:hidden;
+  }
+  
+  .flex-right{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+  
+    -ms-flex-wrap:row wrap;
+    flex-wrap:row wrap;
+    justify-content:flex-end;
+    overflow:hidden;
+  }
+  
+  .flex-grid{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+  
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+    overflow:auto;
+  }
+  
+  .flex-column{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+  
+    -ms-flex-wrap:nowrap;
+    flex-wrap:nowrap;
+  
+    flex-direction:column;
+  }
+  
+  .flex-center{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    justify-content:center
+  }
