@@ -10,6 +10,26 @@ import './styles/layout.css'
 
 function Index() {
   return (
+    <Router>
+      <div className="container">
+        <Navbar />
+        <main className="">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            {/*<Route path="/:id" element={<Duel />} />*/}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  )
+}
+
+export default Index
+
+/*()
+function Index() {
+  return (
     <ClusterProvider>
       <SolanaProvider>
         <Router>
@@ -18,7 +38,6 @@ function Index() {
             <main className="">
               <Routes>
                 <Route path="/" element={<Home />} />
-                {/*<Route path="/:id" element={<BlogPost />} />*/}
               </Routes>
             </main>
             <Footer />
@@ -30,3 +49,4 @@ function Index() {
 }
 
 export default Index
+*/

@@ -1,6 +1,6 @@
 
-import { clusterApiUrl, Connection } from '@solana/web3.js'
 import { createContext, ReactNode, useContext } from 'react'
+import { clusterApiUrl, Connection } from '@solana/web3.js'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import toast from 'react-hot-toast'
