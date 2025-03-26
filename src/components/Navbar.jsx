@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { WalletButton } from './solana/solana-provider';
+// import { WalletButton } from './solana/solana-provider';
 
-import { getAccessToken, usePrivy, useLogin } from "@privy-io/react-auth";
+import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
+
+
 
 async function verifyToken() {
   const url = "/api/verify";
@@ -20,7 +22,7 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { login } = useLogin({
-    onComplete: () => console.log("login")
+    onComplete: () => console.log("user logged in")
   });
 
   const {
@@ -32,19 +34,45 @@ function Navbar() {
     unlinkWallet,
   } = usePrivy();
 
+  const { connectWallet } = useConnectWallet();
+  const { wallet } = useSolanaWallets();
+  
+  /*
   useEffect(() => {
     console.log(ready, authenticated)
     if (ready && !authenticated) {
       navigate("/");
     }
   }, [ready, authenticated, navigate]);
+  */
   // }, [ready, authenticated, router]);
   
-  const wallet = user?.wallet;
+  const userWallet = user?.wallet;
 
   const numAccounts = user?.linkedAccounts?.length || 0;
   //const canRemoveAccount = numAccounts > 1;
   const canRemoveAccount = true;
+
+  const handleLogin = useCallback(() => {
+    return login({
+      loginMethods: ['wallet'],
+      walletChainType: 'ethereum-and-solana', // solana-only
+      disableSignup: false
+    });
+  }, [login]);
+
+  const handleConnect = () => {
+    return connectWallet({
+      //suggestedAddress?: string,
+      //walletList?: WalletListEntry[],
+      //walletChainType?: 'ethereum' | 'solana'
+      walletChainType: 'solana'
+    })
+  }
+
+  const handleLink = () => {
+    return linkWallet()
+  }
   
 
   return (
@@ -52,7 +80,12 @@ function Navbar() {
       <Link to="/">
         <h1>riverboat</h1>
       </Link>
-      {authenticated ? <div/> : <button onClick={() => {login()}}>auth</button>}
+      <button onClick={handleConnect}>
+          connect...
+      </button>
+      <button onClick={handleLink}>
+          link...
+      </button>
       {ready && authenticated ? (
         <button
           style={{
@@ -71,9 +104,7 @@ function Navbar() {
             e.currentTarget.style.border = '#7C3AED';
             e.currentTarget.style.color = '#7C3AED';
           }}
-          onClick={() => {
-            logout()
-          }}
+          onClick={logout}
           /*
           onClick={() => {
             unlinkWallet(wallet.address);
@@ -100,7 +131,7 @@ function Navbar() {
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = '#7C3AED';
           }}
-          onClick={linkWallet}
+          onClick={handleLogin}
           
         >
           Connect wallet
