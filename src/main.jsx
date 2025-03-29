@@ -17,14 +17,6 @@ createRoot(document.getElementById('root')).render(
       connectors={solanaConnectors}
       onSuccess={(user) => console.log(`User ${user.id} logged in!`)}
       config={{
-        // appearance: {walletChainType: 'ethereum-and-solana'}, // 'solana-only'},
-        /*
-        solanaClusters: [
-          {name: 'mainnet-beta', rpcUrl: 'https://api.mainnet-beta.solana.com'},
-          {name: 'devnet', rpcUrl: 'https://api.devnet.solana.com'},
-          {name: 'testnet', rpcUrl: 'https://api.testnet.solana.com'}
-        ],
-        */
         externalWallets: {
           solana: {connectors: solanaConnectors}
         }

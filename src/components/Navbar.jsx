@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
 
 
-
+/*
 async function verifyToken() {
   const url = "/api/verify";
   const accessToken = await getAccessToken();
@@ -17,10 +17,12 @@ async function verifyToken() {
 
   return await result.json();
 }
+  */
 
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const { login } = useLogin({
     onComplete: () => console.log("user logged in")
   });
@@ -37,16 +39,14 @@ function Navbar() {
   const { connectWallet } = useConnectWallet();
   const { wallet } = useSolanaWallets();
   
-  /*
   useEffect(() => {
     console.log(ready, authenticated)
     if (ready && !authenticated) {
       navigate("/");
     }
   }, [ready, authenticated, navigate]);
-  */
-  // }, [ready, authenticated, router]);
   
+
   const userWallet = user?.wallet;
 
   const numAccounts = user?.linkedAccounts?.length || 0;
@@ -59,6 +59,7 @@ function Navbar() {
       walletChainType: 'ethereum-and-solana', // solana-only
       disableSignup: false
     });
+   console.log("loggin in")
   }, [login]);
 
   const handleConnect = () => {
@@ -72,6 +73,10 @@ function Navbar() {
 
   const handleLink = () => {
     return linkWallet()
+  }
+
+  const handleLogout = () =>  {
+    return logout()
   }
   
 
@@ -104,13 +109,7 @@ function Navbar() {
             e.currentTarget.style.border = '#7C3AED';
             e.currentTarget.style.color = '#7C3AED';
           }}
-          onClick={logout}
-          /*
-          onClick={() => {
-            unlinkWallet(wallet.address);
-          }}
-          */
-          // disabled={!canRemoveAccount}
+          onClick={handleLogout}
         >
           Unlink wallet
         </button>

@@ -28,7 +28,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 
 
 function Home() { 
-
+  
   const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
 
@@ -36,8 +36,9 @@ function Home() {
     const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
     console.log("desired", desiredWallet);
   }
-
+  
   const makePayment = async () => {
+
     try {
       const connection = new Connection(clusterApiUrl('devnet'));
       console.log("connection", connection)
