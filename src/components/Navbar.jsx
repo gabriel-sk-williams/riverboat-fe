@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
 
+import { PrivyWalletButton } from './PrivyWalletButton';
+
 
 /*
 async function verifyToken() {
@@ -39,13 +41,14 @@ function Navbar() {
   const { connectWallet } = useConnectWallet();
   const { wallet } = useSolanaWallets();
   
+  /*
   useEffect(() => {
     console.log(ready, authenticated)
     if (ready && !authenticated) {
       navigate("/");
     }
   }, [ready, authenticated, navigate]);
-  
+  */
 
   const userWallet = user?.wallet;
 
@@ -85,12 +88,7 @@ function Navbar() {
       <Link to="/">
         <h1>riverboat</h1>
       </Link>
-      <button onClick={handleConnect}>
-          connect...
-      </button>
-      <button onClick={handleLink}>
-          link...
-      </button>
+      <PrivyWalletButton />
       {ready && authenticated ? (
         <button
           style={{

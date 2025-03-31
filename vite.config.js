@@ -6,12 +6,12 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 export default defineConfig({
   plugins: [
     nodePolyfills({
-      include: ['buffer', 'crypto'],
+      include: [''],
       globals: {
         Buffer: true,
-        global: true,
-        process: true,
-      },
+        global: false,
+        process: false
+      }
     }),
     react()
   ],
