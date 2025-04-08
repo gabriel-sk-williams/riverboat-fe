@@ -1,6 +1,7 @@
 import CreateForm from '../components/CreateForm';
 import '../styles/main.css'
 import '../styles/type.css'
+import '../styles/flex.css'
 
 import {
   useSolanaWallets,
@@ -112,7 +113,9 @@ function Home() {
             make pay
         </button>
       </article>
+      <div className="flex-center">
       <CreateForm variant={InstructionVariant.CREATE}/>
+      </div>
     </div>
   );
 }

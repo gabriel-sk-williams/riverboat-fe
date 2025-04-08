@@ -35,20 +35,11 @@
 }
 
 .form {
-  margin: auto;
   width: 24rem;
   padding: 2rem;
   border: 1px solid;
   border-radius: 1rem;
-}
-
-.item {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.margin-auto {
-  margin: auto;
+  gap: 2rem;
 }
 
 img {
@@ -97,14 +88,6 @@ footer {
 /*
 // POSITIONAL DUDES
 */
-
-.gap {
-  height:0.9rem;
-}
-
-.header-gap {
-  margin-top:3rem;
-}
 
 .top{
   vertical-align:top!important;

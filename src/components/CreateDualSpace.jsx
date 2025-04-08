@@ -72,7 +72,7 @@ function CreateDualSpace({ variant, terms }) {
   }
 
   return (
-    <div className="item center">
+    <div>
       <button onClick={createSpace}>
         Create Space
       </button>
