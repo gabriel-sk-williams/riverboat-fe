@@ -6,21 +6,6 @@ import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets 
 
 import { PrivyWalletButton } from './PrivyWalletButton';
 
-
-/*
-async function verifyToken() {
-  const url = "/api/verify";
-  const accessToken = await getAccessToken();
-  const result = await fetch(url, {
-    headers: {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined),
-    },
-  });
-
-  return await result.json();
-}
-  */
-
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();

@@ -1,3 +1,4 @@
+import CreateForm from '../components/CreateForm';
 import '../styles/main.css'
 import '../styles/type.css'
 
@@ -26,6 +27,15 @@ import {
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 
+class InstructionVariant {
+  // Private Fields
+  static #_CREATE = 0;
+  static #_GET = 1;
+
+  // Accessors for "get" functions only (no "set" functions)
+  static get CREATE() { return this.#_CREATE; }
+  static get GET() { return this.#_GET; }
+}
 
 function Home() { 
   
@@ -35,6 +45,9 @@ function Home() {
   const logDetails = () => {
     const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
     console.log("desired", desiredWallet);
+
+    console.log(InstructionVariant.CREATE)
+    console.log(InstructionVariant.GET)
   }
   
   const makePayment = async () => {
@@ -86,18 +99,21 @@ function Home() {
   }
 
   return (
-    <article>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <button onClick={logDetails}>
-          details
-      </button>
-      <button onClick={makePayment}>
-          make pay
-      </button>
-    </article>
+    <div>
+      <article>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <button onClick={logDetails}>
+            details
+        </button>
+        <button onClick={makePayment}>
+            make pay
+        </button>
+      </article>
+      <CreateForm variant={InstructionVariant.CREATE}/>
+    </div>
   );
 }
 
