@@ -13,17 +13,6 @@ import {
     Image
   } from 'theme-ui'
 
-/*
-function unshiftVariant(array, ...elements) {
-  const newArray = new Uint8Array(elements.length + 1);
-  newArray.set(elements);
-  newArray.set(array, elements.length);
-  return newArray;
-}
-
-let newArray = unshiftVariant(originalArray, 1, 2);
-*/
-
 const DualSpaceSchema = {
     struct: {
         terms: 'string',
@@ -57,9 +46,6 @@ function CreateForm({ variant }) {
 
         mergedArray.set(variantArray)
         mergedArray.set(serializedArray, 1); // byteOffset
-
-        console.log("ser", variantArray);
-        console.log("dat", serializedArray);
         console.log("mrg", mergedArray);
     }
 
