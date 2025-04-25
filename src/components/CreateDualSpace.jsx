@@ -1,32 +1,35 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-// import { WalletButton } from './solana/solana-provider';
 
-import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
-import { PrivyWalletButton } from './PrivyWalletButton';
+// import { useState, useEffect, useCallback } from 'react';
+// import { Link, useLocation, useNavigate } from 'react-router-dom';
+// import { WalletButton } from './solana/solana-provider';
+// import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
+// import { PrivyWalletButton } from './PrivyWalletButton';
+
 
 import {
-    Connection,
-    PublicKey,
-    Keypair,
-    Transaction,
-    SystemProgram,
-    TransactionInstruction,
-    clusterApiUrl,
-    sendAndConfirmTransaction,
-  } from '@solana/web3.js';
+  useSolanaWallets,
+  // useActiveWallet,
+  // getAccessToken, 
+  // usePrivy, 
+  // useLogin,
+  // useSendTransaction,
+} from "@privy-io/react-auth";
+
+import {
+  Connection,
+  PublicKey,
+  Keypair,
+  Transaction,
+  SystemProgram,
+  TransactionInstruction,
+  clusterApiUrl,
+  sendAndConfirmTransaction,
+} from '@solana/web3.js';
+
+import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { serialize } from 'borsh';
-
-/*
-function unshiftVariant(array, ...elements) {
-  const newArray = new Uint8Array(elements.length + 1);
-  newArray.set(elements);
-  newArray.set(array, elements.length);
-  return newArray;
-}
-
-let newArray = unshiftVariant(originalArray, 1, 2);
-*/
+import { addVariant } from '../util/solana';
+import { connection } from '../hooks/useSolanaConnection';
 
 const DualSpaceSchema = {
   struct: {
@@ -40,34 +43,77 @@ const DualSpaceSchema = {
 
 function CreateDualSpace({ variant, terms }) {
 
+  const { wallets, ready } = useSolanaWallets();
+  const { signTransaction } = useWallet();
+
   const createSpace = async () => {
     try {
       console.log("var", variant);
       console.log("terms", terms);
 
-      const connection = new Connection(clusterApiUrl('devnet'));
-      console.log("connection", connection);
+      const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 
-      const programId = new PublicKey('7JiTvmnVTBHXisWWiFVpM1Ca8NAjBY2GgUGexL8AWr8q');
-      console.log(programId);
+      const seeds = [Buffer.from("gerben")];
+      const [pda, bump] = PublicKey.findProgramAddressSync(
+        seeds,
+        programId
+      );
 
-      const wa = new PublicKey("HWeDsoC6T9mCfaGKvoF7v6WdZyfEFhU2VaPEMzEjCq3J").toBytes();
-      const wb = new PublicKey("7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD").toBytes();
+      console.log(`PDA: ${pda}`);
+      console.log(`Bump: ${bump}`);
+
+      const opposingWallet = new PublicKey("HWeDsoC6T9mCfaGKvoF7v6WdZyfEFhU2VaPEMzEjCq3J");
+
+      //const userWallet = new PublicKey("7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD").toBytes();
+      const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
+      const userWallet = new PublicKey(desiredWallet.address);
       
       const dualSpace = {
         terms: "Trump switches to Regular Coke in 2025",
-        wallet_a: wa, // switch to user_account
+        wallet_a: userWallet.toBytes(),
         belief_a: 0.65,
-        wallet_b: wb,
+        wallet_b: opposingWallet.toBytes(),
         belief_b: 0.88,
       };
 
       const serializedData = serialize(DualSpaceSchema, dualSpace);
-      // const instructionData = serializedData.unshift(variant); // add variant to beginning
-      console.log("serialized", serializedData);
+      const instructionData = addVariant(variant, serializedData);
+
+      // Create the instruction
+      const instruction = new TransactionInstruction({
+        keys: [
+          { pubkey: pda, isSigner: false, isWritable: true },
+          { pubkey: userWallet, isSigner: true, isWritable: true },
+          { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+        ],
+        programId,
+        data: instructionData // instructionData.slice(0, serializedData.length + 1), // Cut off the unused part
+      });
+
+      const {
+        value: { blockhash, lastValidBlockHeight },
+      }  = await connection.getLatestBlockhashAndContext();
+
+      console.log("instruction", instruction);
+      const transaction = new Transaction().add(instruction);
+      transaction.feePayer = userWallet;
+      transaction.recentBlockhash = blockhash;
+
+      
+      if (signTransaction) {
+        const signedTx = await desiredWallet.signTransaction(transaction)
+        const signature = await connection.sendRawTransaction(signedTx.serialize())
+
+        const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+        alert(`Space Creation complete! Transaction signature: ${signature}`);
+      }
+
+      // return signature;
 
     } catch (error) {
       alert(`create space failed: ${error?.message}`);
+
+      console.log(error.GetLogs())
     }
   }
 

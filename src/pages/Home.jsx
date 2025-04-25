@@ -1,4 +1,9 @@
 import CreateForm from '../components/CreateForm';
+import GetSpace from '../components/GetSpace';
+import ListSpaces from '../components/ListSpaces';
+import useSpaceRequest from '../hooks/useSpaceRequest';
+import { connection } from '../hooks/useSolanaConnection';
+
 import '../styles/main.css'
 import '../styles/type.css'
 import '../styles/flex.css'
@@ -27,97 +32,91 @@ import {
 } from "@solana/web3.js";
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
+import { InstructionVariant } from '../util/solana';
 
-class InstructionVariant {
-  // Private Fields
-  static #_CREATE = 0;
-  static #_GET = 1;
 
-  // Accessors for "get" functions only (no "set" functions)
-  static get CREATE() { return this.#_CREATE; }
-  static get GET() { return this.#_GET; }
-}
+function Home() {
 
-function Home() { 
-  
-  const { wallets, ready } = useSolanaWallets();
-  const { signTransaction } = useWallet();
+	const { wallets, ready } = useSolanaWallets();
+	const { signTransaction } = useWallet();
 
-  const logDetails = () => {
-    const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
-    console.log("desired", desiredWallet);
+	const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
+	const { loading, status, spaces } = useSpaceRequest(programId);
 
-    console.log(InstructionVariant.CREATE)
-    console.log(InstructionVariant.GET)
-  }
-  
-  const makePayment = async () => {
+	const logDetails = async () => {
+		console.log("details")
 
-    try {
-      const connection = new Connection(clusterApiUrl('devnet'));
-      console.log("connection", connection)
+		console.log("spaces", spaces)
+	}
+	
+	const makePayment = async () => {
 
-      const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
-      console.log("desired", desiredWallet);
+		try {
+			const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
+			const publicKey = new PublicKey(desiredWallet.address);
+			
+			console.log("connection", connection)
+			console.log("desired", desiredWallet);
+			console.log("publicKey", publicKey)
 
-      const publicKey = new PublicKey(desiredWallet.address);
-      console.log("publicKey", publicKey)
+			const destinationWallet = new PublicKey('4DRFsCcnsDPGGVKGg75p1e9pPBQtser87f5AXm9rEfF2');
 
-      const destinationWallet = new PublicKey('4DRFsCcnsDPGGVKGg75p1e9pPBQtser87f5AXm9rEfF2');
+			const transactionLamports = 0.001 * LAMPORTS_PER_SOL; // Convert SOL to lamports
 
-      const transactionLamports = 0.001 * LAMPORTS_PER_SOL; // Convert SOL to lamports
+			const {
+				value: { blockhash, lastValidBlockHeight },
+			}  = await connection.getLatestBlockhashAndContext();
 
-      const {
-        value: { blockhash, lastValidBlockHeight },
-      }  = await connection.getLatestBlockhashAndContext();
+			const transaction = new Transaction() // Transaction
+				.add(
+				SystemProgram.transfer({
+				fromPubkey: publicKey,
+				toPubkey: destinationWallet,
+				lamports: transactionLamports,
+				})
+			);
 
-      const transaction = new Transaction() // Transaction
-        .add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: destinationWallet,
-          lamports: transactionLamports,
-        })
-      );
+			transaction.recentBlockhash = blockhash;
+			transaction.feePayer = publicKey;
 
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = publicKey;
+			if (signTransaction) {
+				const signedTx = await desiredWallet.signTransaction(transaction)
+				
+				// Send the transaction
+				const signature = await connection.sendRawTransaction(signedTx.serialize())
 
-      if (signTransaction) {
-        const signedTx = await desiredWallet.signTransaction(transaction)
-        
-        // Send the transaction
-        const signature = await connection.sendRawTransaction(signedTx.serialize())
+				const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+				alert(`Transfer complete! Transaction signature: ${signature}`);
+			}
 
-        const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-        alert(`Transfer complete! Transaction signature: ${signature}`);
-      }
+		} catch (error) {
+			console.error('Error sending transaction:', error);
+			alert(`Transaction failed: ${error?.message}`);
+		}
+	}
 
-    } catch (error) {
-      console.error('Error sending transaction:', error);
-      alert(`Transaction failed: ${error?.message}`);
-    }
-  }
-
-  return (
-    <div>
-      <article>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <button onClick={logDetails}>
-            details
-        </button>
-        <button onClick={makePayment}>
-            make pay
-        </button>
-      </article>
-      <div className="flex-center">
-      <CreateForm variant={InstructionVariant.CREATE}/>
-      </div>
-    </div>
-  );
+	return (
+		<div>
+		<article>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<button onClick={logDetails}>
+				details
+			</button>
+			<button onClick={makePayment}>
+				make pay
+			</button>
+		</article>
+		<div className="flex-center">
+		<CreateForm variant={InstructionVariant.CREATE}/>
+		</div>
+		<div className="flex-center">
+			<ListSpaces spaces={spaces}/>
+		</div>
+		</div>
+	);
 }
 
 export default Home;

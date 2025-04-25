@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CreateDualSpace from './CreateDualSpace';
-import { serialize } from 'borsh';
+import { serialize } from 'borsh'; // schema.get error on occasion
+import { InstructionVariant } from '../util/solana';
 
 import {
     Input,
@@ -27,7 +28,7 @@ const ParagraphSchema = {
     struct: {
       terms: 'string',
     }
-  }
+}
 
 function CreateForm({ variant }) {
 
@@ -38,10 +39,13 @@ function CreateForm({ variant }) {
     }
 
     const serializeForm = () => {
+
+        const variant = InstructionVariant.CREATE;
+        
         const testParagraph = { terms: terms }
         const serializedArray = serialize(ParagraphSchema, testParagraph);
 
-        const variantArray = new Uint8Array([0]);
+        const variantArray = new Uint8Array([variant]);
         const mergedArray = new Uint8Array(serializedArray.length + 1);
 
         mergedArray.set(variantArray)
