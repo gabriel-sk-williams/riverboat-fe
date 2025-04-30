@@ -1,25 +1,35 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import './styles/layout.css'
 
+
+function AppLayout() {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  return (
+    <div className="container">
+      {!isHomePage && <Navbar />}
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+      {!isHomePage && <Footer />}
+    </div>
+  );
+}
 
 function Index() {
   return (
     <Router>
-      <div className="container">
-        <Navbar />
-        <main className="">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            {/*<Route path="/:id" element={<Duel />} />*/}
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AppLayout />
     </Router>
-  )
+  );
 }
 
 export default Index

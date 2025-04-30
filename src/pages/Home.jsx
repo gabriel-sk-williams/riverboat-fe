@@ -1,12 +1,12 @@
-import CreateForm from '../components/CreateForm';
-import GetSpace from '../components/GetSpace';
-import ListSpaces from '../components/ListSpaces';
+
 import useSpaceRequest from '../hooks/useSpaceRequest';
 import { connection } from '../hooks/useSolanaConnection';
 
 import '../styles/main.css'
 import '../styles/type.css'
 import '../styles/flex.css'
+
+import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 
 import {
   useSolanaWallets,
@@ -31,9 +31,21 @@ import {
   // sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
 
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { InstructionVariant } from '../util/solana';
+import {
+    Input,
+    Textarea,
+    Box,
+    Button,
+    Flex,
+    Text,
+    Image
+  } from 'theme-ui'
 
+import boat from '../assets/riverboat.jpg'
+
+const images = {
+	boat: boat
+}
 
 function Home() {
 
@@ -96,25 +108,14 @@ function Home() {
 	}
 
 	return (
-		<div>
-		<article>
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<button onClick={logDetails}>
-				details
-			</button>
-			<button onClick={makePayment}>
-				make pay
-			</button>
-		</article>
-		<div className="flex-center">
-		<CreateForm variant={InstructionVariant.CREATE}/>
-		</div>
-		<div className="flex-center">
-			<ListSpaces spaces={spaces}/>
-		</div>
+		<div className="container">
+			<div className="flex-column center">
+				<div style={{paddingTop:'6rem'}}/>
+				<Image src={images.boat} variant="avatar" />
+				<h1>riverboat</h1>
+				<h2>the decentralized prediction protocol</h2>
+				<h2>coming soon</h2>
+			</div>
 		</div>
 	);
 }

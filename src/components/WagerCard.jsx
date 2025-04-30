@@ -1,4 +1,9 @@
 import React, { useEffect } from 'react';
+import '../styles/main.css'
+import '../styles/type.css'
+import '../styles/flex.css'
+import '../styles/layout.css'
+import '../styles/entry.css'
 
 /*
 Example Space object:
@@ -31,7 +36,7 @@ const DualSpaceSchema = {
 import { serialize, deserialize } from 'borsh';
 
 // Component to display a single space
-function SpaceItem({ data }) {
+function WagerCard({ data }) {
     const { account, pubkey } = data;
 
     console.log(account.data)
@@ -51,9 +56,8 @@ function SpaceItem({ data }) {
     const bufferData = Buffer.from(account.data);
     decodeSpaceData(bufferData);
     
-
     return (
-        <div>
+        <div className="wager-card">
             <div>
                 {pubkey.toString()}
             </div>
@@ -62,20 +66,6 @@ function SpaceItem({ data }) {
             </div>
         </div>
     );
-
-    /*
-    return (
-        <div className="p-4 border rounded-lg mb-4 shadow-sm">
-            <h3 className="text-lg font-medium">{title}</h3>
-            <div className="mt-2 text-sm text-gray-500">
-                <p>Public Key: {pubkey.toString()}</p>
-                <p>Lamports: {account.lamports}</p>
-                <p>Owner: {typeof account.owner === 'object' ? account.owner.toString() : account.owner}</p>
-                <p>Space Size: {account.space} bytes</p>
-            </div>
-        </div>
-    );
-    */
 }
 
-export default SpaceItem;
+export default WagerCard;

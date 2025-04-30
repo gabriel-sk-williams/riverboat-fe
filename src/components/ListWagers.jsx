@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import useSpaceRequest from '../hooks/useSpaceRequest';
 import SpaceItem from './SpaceItem';
+import WagerCard from './WagerCard';
 
 import {
     Connection,
@@ -16,8 +17,13 @@ import {
   } from '@solana/web3.js';
 import { serialize } from 'borsh';
 
+import '../styles/main.css'
+import '../styles/type.css'
+import '../styles/flex.css'
+import '../styles/layout.css'
 
-function ListSpaces({spaces}) {
+
+function ListWagers({spaces}) {
 
     const logDetails = () => {
         console.log("spaces", spaces)
@@ -29,9 +35,9 @@ function ListSpaces({spaces}) {
 
     return (
         <div className="flex-column">
-            <div className="">
+            <div className="" style={{marginTop:'4rem'}}>
                 {spaces.map((space) => (
-                    <SpaceItem 
+                    <WagerCard 
                         key={typeof space.pubkey === 'object' ? space.pubkey.toString() : space.pubkey}
                         data={space}
                     />
@@ -41,4 +47,4 @@ function ListSpaces({spaces}) {
     );
 }
 
-export default ListSpaces;
+export default ListWagers;
