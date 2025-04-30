@@ -25,9 +25,9 @@
   margin-top:4rem;
 }
 
-@media (min-width:700px) {
+@media (min-width:960px) {
   .container {
-    width:700px;
+    width:960px;
     height:100%;
     margin-top:4rem;
     margin: 0 auto;

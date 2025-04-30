@@ -155,13 +155,13 @@ const PrivyWalletButtonBase = ({ text, style, mobile = false }) => { // PrivyWal
     // Generate blockie for the wallet address
     const getWalletAvatar = useCallback((address) => {
         try {
-        // For Solana addresses, ensure we have a valid format for blockie generation
-        const isSolanaAddress = address.length > 0 && !address.startsWith('0x');
-        const formattedAddress = isSolanaAddress ? `0x${address.slice(0, 40).padEnd(40, '0')}` : address;
-        return makeBlockie(formattedAddress || '0x0');
+            // For Solana addresses, ensure we have a valid format for blockie generation
+            const isSolanaAddress = address.length > 0 && !address.startsWith('0x');
+            const formattedAddress = isSolanaAddress ? `0x${address.slice(0, 40).padEnd(40, '0')}` : address;
+            return makeBlockie(formattedAddress || '0x0');
         } catch (error) {
-        console.error("Error generating blockie:", error);
-        return '';
+            console.error("Error generating blockie:", error);
+            return '';
         }
     }, []);
 
@@ -187,16 +187,16 @@ const PrivyWalletButtonBase = ({ text, style, mobile = false }) => { // PrivyWal
         <Button
             onClick={handleButtonClick}
             sx={{
-            ...buttonCommonStyle,
-            padding: isConnected ? '10px 16px' : '10px 24px',
-            gap: '8px',
-            width: mobile ? '100%' : 'auto',
-            fontWeight: '400',
-            fontSize: '16px',
-            letterSpacing: '0.5px',
-            '&:hover': {
-                backgroundColor: 'rgba(116, 61, 192, 0.1)'
-            },
+                ...buttonCommonStyle,
+                padding: isConnected ? '10px 16px' : '10px 24px',
+                gap: '8px',
+                width: mobile ? '100%' : 'auto',
+                fontWeight: '400',
+                fontSize: '16px',
+                letterSpacing: '0.5px',
+                '&:hover': {
+                    backgroundColor: 'rgba(116, 61, 192, 0.1)'
+                },
             // Custom mobile styling
             ...(mobile && {
                 height: '40px',
@@ -270,25 +270,25 @@ const PrivyWalletButtonBase = ({ text, style, mobile = false }) => { // PrivyWal
                     key={wallet.address}
                     onClick={() => handleWalletClick(wallet.address)}
                     sx={{
-                    py: 2,
-                    px: 2,
-                    cursor: 'pointer',
-                    alignItems: 'center',
-                    gap: 2,
-                    backgroundColor: activeWallet?.address === wallet.address ? 'rgba(116, 61, 192, 0.3)' : 'transparent',
-                    borderRadius: '4px',
-                    transition: 'all 0.2s ease',
+                        py: 2,
+                        px: 2,
+                        cursor: 'pointer',
+                        alignItems: 'center',
+                        gap: 2,
+                        backgroundColor: activeWallet?.address === wallet.address ? 'rgba(116, 61, 192, 0.3)' : 'transparent',
+                        borderRadius: '4px',
+                        transition: 'all 0.2s ease',
                     }}
                 >
                     <Box
-                    sx={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '50%',
-                        backgroundImage: `url(${getWalletAvatar(wallet.address)})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
+                        sx={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            backgroundImage: `url(${getWalletAvatar(wallet.address)})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
                     />
                     <Flex sx={{ flexDirection: 'column', flex: 1 }}>
                     <Text sx={{ 

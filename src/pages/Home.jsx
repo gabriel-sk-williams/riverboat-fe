@@ -41,11 +41,7 @@ import {
     Image
   } from 'theme-ui'
 
-import boat from '../assets/riverboat.jpg'
-
-const images = {
-	boat: boat
-}
+// import boat from '../assets/riverboat.jpg'
 
 function Home() {
 
@@ -111,7 +107,7 @@ function Home() {
 		<div className="container">
 			<div className="flex-column center">
 				<div style={{paddingTop:'6rem'}}/>
-				<Image src={images.boat} variant="avatar" />
+				{/*<Image src={images.boat} variant="avatar" />*/}
 				<h1>riverboat</h1>
 				<h2>the decentralized prediction protocol</h2>
 				<h2>coming soon</h2>
