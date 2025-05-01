@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom'
 import '../styles/main.css'
 import '../styles/type.css'
 import '../styles/flex.css'
@@ -81,7 +82,7 @@ function WagerCard({ data }) {
     // Parse the data
     const bufferData = Buffer.from(account.data);
     const dd = decodeSpaceData(bufferData);
-    console.log(dd)
+
 
     // Generate blockie for the wallet address
     const getWalletAvatar = useCallback((address) => {
@@ -104,37 +105,60 @@ function WagerCard({ data }) {
 
     const avatarUrlA = getWalletAvatar(solanaAddressA)
     const avatarUrlB = getWalletAvatar(solanaAddressB)
+
+    const beliefA = `${Math.floor(dd.belief_a * 100)}%`;
+    const beliefB = `${Math.floor(dd.belief_b * 100)}%`;
     
     return (
-        <div className="wager-card">
-            <div className='flex-center'>
-                <Box
-                    sx={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    backgroundImage: `url(${avatarUrlA})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                    }}
-                />
-                <div classNAme="flex-column">
-                    <div>
-                        {dd.terms}
-                    </div>
-                </div>
-                <Box
-                    sx={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    backgroundImage: `url(${avatarUrlA})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                    }}
-                />
-            </div>
-        </div>
+        <Link to={`/${data.account.owner}`}>
+            <Box sx={{
+                padding: '1rem',
+                border: `1px solid #d4d3d3`,
+                borderRadius: '8px',
+            }}>
+                <Flex sx={{alignItems: 'center', gap: '2rem'}}>
+                    <Box sx={{
+                        width: '4rem',
+                        height: '4rem',
+                        borderRadius: '50%',
+                        backgroundImage: `url(${avatarUrlA})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}/>
+                    <h5>{beliefA}</h5>
+                    <Box sx={{
+                        border: `1px solid #ccc`,
+                        borderRadius: '8px',
+                        p:'1rem',
+                    }}>
+                        <Text sx={{
+                            width: '24rem',
+                            lineHeight: '1.5em',
+                            maxHeight: 'calc(1.5em * 3)+2',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: 'vertical',
+                        }}>
+                            Trump switches to Regular Coke in 2025, 
+                            then he also does a backflip and eats SHIT lmao
+                            Are you fricking kidding me big dawg, he's outta control
+                            for real dude!
+                        </Text>
+                    </Box>
+                    <h5>{beliefB}</h5>
+                    <Box sx={{
+                        width: '4rem',
+                        height: '4rem',
+                        borderRadius: '50%',
+                        backgroundImage: `url(${avatarUrlB})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                    }}/>
+                </Flex>
+            </Box>
+        </Link>
     );
 }
 

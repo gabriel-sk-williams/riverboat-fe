@@ -33,6 +33,8 @@ function ListWagers({spaces}) {
         return <div className="">No spaces found</div>;
     }
 
+    console.log(spaces)
+
     return (
         <div className="flex-column">
             <div className="" style={{marginTop:'4rem'}}>

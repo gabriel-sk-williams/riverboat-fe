@@ -42,6 +42,10 @@
   gap: 2rem;
 }
 
+.align-vertical {
+  align-items: center;
+}
+
 img {
   width: 100%;
 }
