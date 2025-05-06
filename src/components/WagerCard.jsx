@@ -8,6 +8,7 @@ import '../styles/entry.css'
 
 import { deserialize } from 'borsh';
 import makeBlockie from 'ethereum-blockies-base64';
+import { DualSpaceSchema } from '../util/borsh';
 
 import { 
     PublicKey, 
@@ -49,30 +50,17 @@ Example Wager object:
 }
 */
 
-const DualSpaceSchema = {
-    struct: {
-        terms: 'string',
-        wallet_a: { array: { type: 'u8', len: 32 }},
-        belief_a: 'f64',
-        wallet_b: { array: { type: 'u8', len: 32 }},
-        belief_b: 'f64',
-    }
-}
-
-
-
 // Component to display a single space
 function WagerCard({ data }) {
     const { account, pubkey } = data;
 
-    console.log(account.data)
+    // console.log(account.data)
 
     // Helper function to decode the buffer data
     const decodeSpaceData = (buffer) => {
         try {
             const deserializedData = deserialize(DualSpaceSchema, buffer);
             return deserializedData
-            //console.log("dd", deserializedData)
         } catch (error) {
             console.error("Error decoding space data:", error);
             return { title: "Error decoding data" };
@@ -82,6 +70,7 @@ function WagerCard({ data }) {
     // Parse the data
     const bufferData = Buffer.from(account.data);
     const dd = decodeSpaceData(bufferData);
+    console.log(dd);
 
 
     // Generate blockie for the wallet address
@@ -102,6 +91,8 @@ function WagerCard({ data }) {
 
     const publicKeyB = new PublicKey(dd.wallet_b);
     const solanaAddressB = publicKeyB.toBase58();
+
+    console.log("madderson", solanaAddressB)
 
     const avatarUrlA = getWalletAvatar(solanaAddressA)
     const avatarUrlB = getWalletAvatar(solanaAddressB)
@@ -140,11 +131,9 @@ function WagerCard({ data }) {
                             display: '-webkit-box',
                             WebkitLineClamp: 3,
                             WebkitBoxOrient: 'vertical',
+                            textAlign: 'center'
                         }}>
-                            Trump switches to Regular Coke in 2025, 
-                            then he also does a backflip and eats SHIT lmao
-                            Are you fricking kidding me big dawg, he's outta control
-                            for real dude!
+                            {dd.terms}
                         </Text>
                     </Box>
                     <h5>{beliefB}</h5>

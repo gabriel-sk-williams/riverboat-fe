@@ -18,17 +18,8 @@ Example Space object:
 }
 */
 
-const DualSpaceSchema = {
-    struct: {
-        terms: 'string',
-        wallet_a: { array: { type: 'u8', len: 32 }},
-        belief_a: 'f64',
-        wallet_b: { array: { type: 'u8', len: 32 }},
-        belief_b: 'f64',
-    }
-}
-
 import { serialize, deserialize } from 'borsh';
+import { DualSpaceSchema } from '../util/borsh';
 
 // Component to display a single space
 function SpaceItem({ data }) {

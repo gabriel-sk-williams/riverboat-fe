@@ -5,7 +5,6 @@
 // import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
 // import { PrivyWalletButton } from './PrivyWalletButton';
 
-
 import {
   useSolanaWallets,
   // useActiveWallet,
@@ -28,56 +27,60 @@ import {
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { serialize } from 'borsh';
-import { addVariant } from '../util/solana';
+import { addVariant, InstructionVariant } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
+import { DualSpaceSchema } from "../util/borsh";
+import { sha256 } from '@noble/hashes/sha2';
+// import { TextEncoder } from 'util';
 
-const DualSpaceSchema = {
-  struct: {
-    terms: 'string',
-    wallet_a: { array: { type: 'u8', len: 32 }},
-    belief_a: 'f64',
-    wallet_b: { array: { type: 'u8', len: 32 }},
-    belief_b: 'f64',
-  }
-}
 
-function CreateDualSpace({ variant, terms }) {
+function CreateDualSpace({ terms, walletA, beliefA, walletB, beliefB,  }) {
 
   const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
 
   const createSpace = async () => {
     try {
-      console.log("var", variant);
-      console.log("terms", terms);
-
       const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 
-      const seeds = [Buffer.from("gerben")];
+      // Hash the terms
+      const termsBytes = new TextEncoder().encode(terms); // Uint8Array
+      const termsHash = sha256(termsBytes); // Uint8Array of length 32
+
+      const donationAddress = import.meta.env.VITE_DONATION_WALLET;
+      const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
+      const userWallet = new PublicKey(desiredWallet.address);
+
+      const publicWalletA = new PublicKey(walletA);
+      const publicWalletB = new PublicKey(walletB);
+
+      console.log("pa", publicWalletA);
+      console.log("pb", publicWalletB);
+
       const [pda, bump] = PublicKey.findProgramAddressSync(
-        seeds,
+        [
+          termsHash,
+          publicWalletA.toBuffer(),
+          publicWalletB.toBuffer(),
+        ],
         programId
       );
 
       console.log(`PDA: ${pda}`);
       console.log(`Bump: ${bump}`);
-
-      const opposingWallet = new PublicKey("HWeDsoC6T9mCfaGKvoF7v6WdZyfEFhU2VaPEMzEjCq3J");
-
-      //const userWallet = new PublicKey("7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD").toBytes();
-      const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
-      const userWallet = new PublicKey(desiredWallet.address);
       
       const dualSpace = {
-        terms: "Trump switches to Regular Coke in 2025",
-        wallet_a: userWallet.toBytes(),
-        belief_a: 0.65,
-        wallet_b: opposingWallet.toBytes(),
-        belief_b: 0.88,
+        terms: terms,
+        wallet_a: publicWalletA.toBytes(),
+        belief_a: beliefA,
+        wallet_b: publicWalletB.toBytes(),
+        belief_b: beliefB,
       };
 
+      console.log("ds", dualSpace)
+
       const serializedData = serialize(DualSpaceSchema, dualSpace);
-      const instructionData = addVariant(variant, serializedData);
+      const instructionData = addVariant(InstructionVariant.CREATE, serializedData);
 
       // Create the instruction
       const instruction = new TransactionInstruction({
@@ -87,7 +90,7 @@ function CreateDualSpace({ variant, terms }) {
           { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
         ],
         programId,
-        data: instructionData // instructionData.slice(0, serializedData.length + 1), // Cut off the unused part
+        data: instructionData
       });
 
       const {
@@ -112,8 +115,7 @@ function CreateDualSpace({ variant, terms }) {
 
     } catch (error) {
       alert(`create space failed: ${error?.message}`);
-
-      console.log(error.GetLogs())
+      // console.log(error.GetLogs())
     }
   }
 

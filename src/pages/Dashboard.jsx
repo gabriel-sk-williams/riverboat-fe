@@ -1,6 +1,10 @@
-import CreateForm from '../components/CreateForm';
+import { useState, useEffect, useCallback } from 'react';
+
+
+import Tabs from '../components/Tabs';
+import DualSpaceForm from '../components/DualSpaceForm';
 import GetSpace from '../components/GetSpace';
-import ListWagers from '../components/ListWagers';
+import WagerList from '../components/WagerList';
 import useSpaceRequest from '../hooks/useSpaceRequest';
 import { connection } from '../hooks/useSolanaConnection';
 
@@ -31,11 +35,26 @@ import {
   // sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
 
+import {
+    Box,
+    Button,
+    Flex,
+    Text,
+    Image
+} from 'theme-ui'
+
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { InstructionVariant } from '../util/solana';
 
+const tabsData = [
+    { label: 'Wagers' }, // 0
+    { label: 'Create' }, // 1
+];
 
 function Dashboard() {
+
+	// recent wagers || create wager
+	const [ currentTab, setCurrentTab ] = useState(1);
 
 	const { wallets, ready } = useSolanaWallets();
 	const { signTransaction } = useWallet();
@@ -45,14 +64,14 @@ function Dashboard() {
 
 	const logDetails = async () => {
 		console.log("details")
-
 		console.log("spaces", spaces)
 	}
 	
 	const makePayment = async () => {
 
 		try {
-			const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
+			const donationAddress = import.meta.env.VITE_DONATION_WALLET;
+			const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
 			const publicKey = new PublicKey(desiredWallet.address);
 			
 			console.log("connection", connection)
@@ -96,31 +115,60 @@ function Dashboard() {
 	}
 
 	return (
-		<div>
-            <div style={{marginTop:'4rem'}}>
-                <div className="flex-center">
-                    <button onClick={logDetails}>
-                        details
-                    </button>
-                    <button onClick={makePayment}>
-                        make pay
-                    </button>
-                </div>
-            </div>
-            <div className="flex-column">
-                <div className="flex-center">
-                    <div style={{marginTop:'4rem'}}>
-                        <CreateForm variant={InstructionVariant.CREATE}/>
-                    </div>
-                </div>
-                <div className="flex-center">
-                    <div style={{marginTop:'4rem'}}>
-                        <ListWagers spaces={spaces}/>
-                    </div>
-                </div>
-            </div>
-		</div>
+		<Box sx={{
+			
+		}}>
+			<div className='flex-container'>
+				<Tabs 
+					tabs={tabsData}
+					activeTab={currentTab}
+					onTabChange={setCurrentTab} 
+				/>
+			</div>
+			<Box sx={{
+				//border: '1px solid #ccc',
+				//borderRadius: '8px',
+				mt: '2rem',
+				pb: '2rem',
+			}}>
+				<div className="flex-center">
+					<div>
+						{currentTab == 0 && <WagerList spaces={spaces} />}
+						{currentTab == 1 && <DualSpaceForm />}
+					</div>
+				</div>
+			</Box>
+		</Box>
 	);
 }
 
 export default Dashboard;
+
+/*
+return (
+	<div>
+		<div style={{marginTop:'4rem'}}>
+			<div className="flex-center">
+				<button onClick={logDetails}>
+					details
+				</button>
+				<button onClick={makePayment}>
+					make pay
+				</button>
+			</div>
+		</div>
+		<div className="flex-column">
+			<div className="flex-center">
+				<div style={{marginTop:'4rem'}}>
+					<DualSpaceForm variant={InstructionVariant.CREATE}/>
+				</div>
+			</div>
+			<div className="flex-center">
+				<div style={{marginTop:'4rem'}}>
+					<ListWagers spaces={spaces}/>
+				</div>
+			</div>
+		</div>
+	</div>
+);
+*/

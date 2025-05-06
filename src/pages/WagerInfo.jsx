@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+//
+// isolated / expanded Wager info
+//
+
 function Wager() {
   const { id } = useParams(); // Get ID from URL
   const [content, setContent] = useState('');

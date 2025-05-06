@@ -42,12 +42,12 @@ function Navbar() {
   const canRemoveAccount = true;
 
   const handleLogin = useCallback(() => {
+    console.log("loggin in")
     return login({
       loginMethods: ['wallet'],
       walletChainType: 'ethereum-and-solana', // solana-only
       disableSignup: false
     });
-   console.log("loggin in")
   }, [login]);
 
   const handleConnect = () => {

@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import Wager from './pages/Wager';
+import Wager from './pages/WagerInfo';
 import './styles/layout.css'
 
 

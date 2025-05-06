@@ -57,10 +57,11 @@ function Home() {
 		console.log("spaces", spaces)
 	}
 	
-	const makePayment = async () => {
+	const makeDonation = async () => {
 
 		try {
-			const desiredWallet = wallets.find((wallet) => wallet.address === '7V4wLNxUvejyeZ5Bmr2GpvfBL1mZxzQMhsyR7noiM3uD');
+			const donationAddress = import.meta.env.VITE_DONATION_WALLET;
+			const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
 			const publicKey = new PublicKey(desiredWallet.address);
 			
 			console.log("connection", connection)
