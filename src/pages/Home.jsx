@@ -1,5 +1,5 @@
 
-import useSpaceRequest from '../hooks/useSpaceRequest';
+import useProgramRequest from '../hooks/useProgramRequest';
 import { connection } from '../hooks/useSolanaConnection';
 
 import '../styles/main.css'
@@ -49,7 +49,7 @@ function Home() {
 	const { signTransaction } = useWallet();
 
 	const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
-	const { loading, status, spaces } = useSpaceRequest(programId);
+	const { loading, status, spaces } = useProgramRequest(programId);
 
 	const logDetails = async () => {
 		console.log("details")

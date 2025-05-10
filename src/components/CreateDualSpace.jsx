@@ -34,7 +34,7 @@ import { sha256 } from '@noble/hashes/sha2';
 // import { TextEncoder } from 'util';
 
 
-function CreateDualSpace({ terms, walletA, beliefA, walletB, beliefB,  }) {
+function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
 
   const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
@@ -72,8 +72,8 @@ function CreateDualSpace({ terms, walletA, beliefA, walletB, beliefB,  }) {
       const dualSpace = {
         terms: terms,
         wallet_a: publicWalletA.toBytes(),
-        belief_a: beliefA,
         wallet_b: publicWalletB.toBytes(),
+        belief_a: beliefA,
         belief_b: beliefB,
       };
 

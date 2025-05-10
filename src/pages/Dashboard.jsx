@@ -5,7 +5,7 @@ import Tabs from '../components/Tabs';
 import DualSpaceForm from '../components/DualSpaceForm';
 import GetSpace from '../components/GetSpace';
 import WagerList from '../components/WagerList';
-import useSpaceRequest from '../hooks/useSpaceRequest';
+import useProgramRequest from '../hooks/useProgramRequest';
 import { connection } from '../hooks/useSolanaConnection';
 
 import '../styles/main.css'
@@ -54,17 +54,17 @@ const tabsData = [
 function Dashboard() {
 
 	// recent wagers || create wager
-	const [ currentTab, setCurrentTab ] = useState(1);
+	const [ currentTab, setCurrentTab ] = useState(0);
 
 	const { wallets, ready } = useSolanaWallets();
 	const { signTransaction } = useWallet();
 
 	const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
-	const { loading, status, spaces } = useSpaceRequest(programId);
+	const { loading, status, accounts } = useProgramRequest(programId);
 
 	const logDetails = async () => {
 		console.log("details")
-		console.log("spaces", spaces)
+		console.log("spaces", accounts)
 	}
 	
 	const makePayment = async () => {
@@ -115,9 +115,7 @@ function Dashboard() {
 	}
 
 	return (
-		<Box sx={{
-			
-		}}>
+		<Box>
 			<div className='flex-container'>
 				<Tabs 
 					tabs={tabsData}
@@ -133,7 +131,7 @@ function Dashboard() {
 			}}>
 				<div className="flex-center">
 					<div>
-						{currentTab == 0 && <WagerList spaces={spaces} />}
+						{currentTab == 0 && <WagerList spaces={accounts} />}
 						{currentTab == 1 && <DualSpaceForm />}
 					</div>
 				</div>
@@ -143,32 +141,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-/*
-return (
-	<div>
-		<div style={{marginTop:'4rem'}}>
-			<div className="flex-center">
-				<button onClick={logDetails}>
-					details
-				</button>
-				<button onClick={makePayment}>
-					make pay
-				</button>
-			</div>
-		</div>
-		<div className="flex-column">
-			<div className="flex-center">
-				<div style={{marginTop:'4rem'}}>
-					<DualSpaceForm variant={InstructionVariant.CREATE}/>
-				</div>
-			</div>
-			<div className="flex-center">
-				<div style={{marginTop:'4rem'}}>
-					<ListWagers spaces={spaces}/>
-				</div>
-			</div>
-		</div>
-	</div>
-);
-*/

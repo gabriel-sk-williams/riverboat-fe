@@ -15,14 +15,11 @@ import '../styles/type.css'
 import '../styles/flex.css'
 import '../styles/layout.css'
 
-
 function WagerList({spaces}) {
 
     if (!spaces || spaces.length === 0) {
         return <div className="">No spaces found</div>;
     }
-
-    console.log(spaces)
 
     return (
         <Box sx={{mt:'4rem'}}>
@@ -32,7 +29,7 @@ function WagerList({spaces}) {
                     {spaces.map((space) => (
                         <WagerCard 
                             key={typeof space.pubkey === 'object' ? space.pubkey.toString() : space.pubkey}
-                            data={space}
+                            props={space}
                         />
                     ))}
                 </div>

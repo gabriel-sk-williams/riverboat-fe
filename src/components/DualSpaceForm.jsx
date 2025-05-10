@@ -1,10 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { serialize } from 'borsh'; // schema.get error on occasion
-import { InstructionVariant } from '../util/solana';
-import { DualSpaceSchema, ParagraphSchema } from '../util/borsh';
-
 import CreateDualSpace from './CreateDualSpace';
 import PercentageField from '../components/PercentageField';
 
@@ -110,8 +106,8 @@ function DualSpaceForm() {
                 <CreateDualSpace 
                     terms={terms}
                     walletA={walletA}
-                    beliefA={beliefA}
                     walletB={walletB}
+                    beliefA={beliefA}
                     beliefB={beliefB}
                 />
             </div>

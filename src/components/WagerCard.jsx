@@ -6,10 +6,6 @@ import '../styles/flex.css'
 import '../styles/layout.css'
 import '../styles/entry.css'
 
-import { deserialize } from 'borsh';
-import makeBlockie from 'ethereum-blockies-base64';
-import { DualSpaceSchema } from '../util/borsh';
-
 import { 
     PublicKey, 
     SystemProgram, 
@@ -32,90 +28,48 @@ import {
     Image
 } from 'theme-ui'
 
+import { deserialize } from 'borsh';
+import makeBlockie from 'ethereum-blockies-base64';
+import { DualSpaceSchema } from '../util/borsh';
+import { deserializeDualSpace } from '../util/borsh';
+import Blockie from './Blockie'
+
 /*
-Example Wager object:
-{
-    "account": {
-      "data": {
-        "type": "Buffer",
-        "data": [ 38, 0, 0, 0, ... ]
-      },
-      "executable": false,
-      "lamports": 1740000,
-      "owner": "HPQKvAZrphgoifPai59wsYHDRtfd2ESsa4bJPDi9AnK4",
-      "rentEpoch": 18446744073709552000,
-      "space": 122
-    },
-    "pubkey": "Gjrp7PJ8LnpRTnHst9iQ5CyySfsXzdtTvMxy1R27Yv6n"
-}
+    Example Wager object:
+    {
+        "account": {
+            "data": {
+                "type": "Buffer",
+                "data": [ 38, 0, 0, 0, ... ]
+            },
+            "executable": false,
+            "lamports": 1740000,
+            "owner": "HPQKvAZrphgoifPai59wsYHDRtfd2ESsa4bJPDi9AnK4",
+            "rentEpoch": 18446744073709552000,
+            "space": 122
+        },
+        "pubkey": "Gjrp7PJ8LnpRTnHst9iQ5CyySfsXzdtTvMxy1R27Yv6n"
+    }
 */
 
-// Component to display a single space
-function WagerCard({ data }) {
-    const { account, pubkey } = data;
+// Component to display a single wager
+function WagerCard({ props }) {
+    const { account, pubkey } = props;
 
-    // console.log(account.data)
+    const ds = account.data;
 
-    // Helper function to decode the buffer data
-    const decodeSpaceData = (buffer) => {
-        try {
-            const deserializedData = deserialize(DualSpaceSchema, buffer);
-            return deserializedData
-        } catch (error) {
-            console.error("Error decoding space data:", error);
-            return { title: "Error decoding data" };
-        }
-    };
-    
-    // Parse the data
-    const bufferData = Buffer.from(account.data);
-    const dd = decodeSpaceData(bufferData);
-    console.log(dd);
-
-
-    // Generate blockie for the wallet address
-    const getWalletAvatar = useCallback((address) => {
-        try {
-            // For Solana addresses, ensure we have a valid format for blockie generation
-            const isSolanaAddress = address.length > 0 && !address.startsWith('0x');
-            const formattedAddress = isSolanaAddress ? `0x${address.slice(0, 40).padEnd(40, '0')}` : address;
-            return makeBlockie(formattedAddress || '0x0');
-        } catch (error) {
-            console.error("Error generating blockie:", error);
-            return '';
-        }
-    }, []);
-
-    const publicKeyA = new PublicKey(dd.wallet_a);
-    const solanaAddressA = publicKeyA.toBase58();
-
-    const publicKeyB = new PublicKey(dd.wallet_b);
-    const solanaAddressB = publicKeyB.toBase58();
-
-    console.log("madderson", solanaAddressB)
-
-    const avatarUrlA = getWalletAvatar(solanaAddressA)
-    const avatarUrlB = getWalletAvatar(solanaAddressB)
-
-    const beliefA = `${Math.floor(dd.belief_a * 100)}%`;
-    const beliefB = `${Math.floor(dd.belief_b * 100)}%`;
+    const beliefA = `${Math.floor(ds.belief_a * 100)}%`;
+    const beliefB = `${Math.floor(ds.belief_b * 100)}%`;
     
     return (
-        <Link to={`/${data.account.owner}`}>
+        <Link to={`/wager/${pubkey}`}>
             <Box sx={{
                 padding: '1rem',
                 border: `1px solid #d4d3d3`,
                 borderRadius: '8px',
             }}>
-                <Flex sx={{alignItems: 'center', gap: '2rem'}}>
-                    <Box sx={{
-                        width: '4rem',
-                        height: '4rem',
-                        borderRadius: '50%',
-                        backgroundImage: `url(${avatarUrlA})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}/>
+                <div className='flex-container' style={{gap:'2rem'}}>
+                    <Blockie walletAddress={ds.wallet_a}/>
                     <h5>{beliefA}</h5>
                     <Box sx={{
                         border: `1px solid #ccc`,
@@ -133,31 +87,15 @@ function WagerCard({ data }) {
                             WebkitBoxOrient: 'vertical',
                             textAlign: 'center'
                         }}>
-                            {dd.terms}
+                            {ds.terms}
                         </Text>
                     </Box>
                     <h5>{beliefB}</h5>
-                    <Box sx={{
-                        width: '4rem',
-                        height: '4rem',
-                        borderRadius: '50%',
-                        backgroundImage: `url(${avatarUrlB})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}/>
-                </Flex>
+                    <Blockie walletAddress={ds.wallet_b}/>
+                </div>
             </Box>
         </Link>
     );
 }
-
-/*
-<div>
-{pubkey.toString()}
-</div>
-<div>
-{account.lamports}
-</div>
-*/
 
 export default WagerCard;

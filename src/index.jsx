@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import Wager from './pages/WagerInfo';
+import WagerLayout from './pages/WagerLayout';
 import './styles/layout.css'
 
 
@@ -18,7 +18,7 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/:id" element={<Wager />} />
+          <Route path="/wager/:id" element={<WagerLayout />} />
         </Routes>
       </main>
       {!isHomePage && <Footer />}

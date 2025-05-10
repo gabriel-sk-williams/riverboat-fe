@@ -1,24 +1,31 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { Connection } from '@solana/web3.js';
 
-import { serialize } from 'borsh';
 import { connection } from './useSolanaConnection';
+import { deserializeDualSpace } from '../util/borsh'
 
 
-export default function useSpaceRequest(programId) {
+export default function useProgramRequest(programId) {
 
     const [loading, setLoading] = useState(false); // boolean
     const [status, setStatus] = useState(null); // string || null
-    const [spaces, setSpaces] = useState([]); // []Space
+    const [accounts, setAccounts] = useState([]); // []Space
 
-    async function getSpaces() {
+    async function getAccounts() {
         try {
             setStatus(null);
             setLoading(true);
             const response = await connection.getProgramAccounts(programId);
-            setSpaces(response);
+
+            const dsAccounts = response.map(obj => ({
+                ...obj,
+                account: {
+                    ...obj.account,
+                    data: deserializeDualSpace(obj.account.data)
+                }
+            }));
+            setAccounts(dsAccounts);
         } catch (error) {
             setLoading(false);
             setStatus(error);
@@ -28,8 +35,8 @@ export default function useSpaceRequest(programId) {
     }
 
     useEffect(() => {
-        getSpaces();
+        getAccounts();
     }, []);
 
-    return { loading, status, spaces };
+    return { loading, status, accounts };
 }
