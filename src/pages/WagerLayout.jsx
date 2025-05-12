@@ -25,23 +25,13 @@ import WagerInfo from '../components/WagerInfo';
 
 
 function WagerLayout() {
-  const { id } = useParams(); // Get ID from URL
-  const [content, setContent] = useState('');
-  const [error, setError] = useState(null);
 
-  const pda = new PublicKey(id);
-  const { loading, status, account } = useAccountRequest(pda);
-
-  const updateStatus = () => {
-    console.log("updating status")
-    console.log(account.parlor)
-    console.log(account.wallet_a_decision)
-    console.log(account.wallet_b_decision)
-  }
+  const { id } = useParams();
+  const { loading, status, account } = useAccountRequest(new PublicKey(id)); // pda
 
   if (loading) {
     return <div className="">Loading Wager Info</div>;
-}
+  }
 
   return (
     <Box>
@@ -50,7 +40,7 @@ function WagerLayout() {
       </Link>
 
       {account && (
-        <WagerInfo pda={id} props={account}/>
+        <WagerInfo id={id} props={account}/>
       )}
 
     </Box>

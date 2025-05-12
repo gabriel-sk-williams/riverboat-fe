@@ -29,14 +29,24 @@ import {
 } from 'theme-ui'
 
 import Blockie from './Blockie'
+import { ApprovalState } from '../util/solana';
+import UpdateDualSpace from '../components/UpdateDualSpace';
 
 // Component to display a single wager
-function WagerLayout({ pda, props }) {
+function WagerLayout({ id, props }) {
 
     const { parlor, wallet_a_decision, wallet_b_decision } = props;
 
+    const [ updateA, setUpdateA ] = useState(wallet_a_decision);
+    const [ updateB, setUpdateB ] = useState(wallet_b_decision);
+
+    console.log(props);
+
     const beliefA = `${Math.floor(parlor.belief_a * 100)}%`;
     const beliefB = `${Math.floor(parlor.belief_b * 100)}%`;
+
+    const decisionA = ApprovalState.getApprovalState(wallet_a_decision);
+    const decisionB = ApprovalState.getApprovalState(wallet_b_decision);
 
     const updateStatus = () => {
         console.log("updating status!")
@@ -44,16 +54,40 @@ function WagerLayout({ pda, props }) {
     
     return (
         <Box sx={{my:'3rem'}}>
-            <h2>PDA: {pda}</h2>
-            <h2>{parlor.terms} </h2>
-            <Blockie walletAddress={parlor.wallet_a}/>
-            <h5>{beliefA}</h5>
-            <Blockie walletAddress={parlor.wallet_b}/>
-            <h5>{beliefB}</h5>
+            
+            <Box sx={{
+              //padding: '12px 16px',
+              //my: '3rem',
+              color: 'primary',
+              borderBottom: '2px solid #ccc',
+              // marginBottom: '-1px',
+            }}>
+                <div className="flex-center" style={{marginBotton:'3rem'}}>
+                    <h2>Wager</h2>
+                </div>
+            </Box>
+
+            <h2>{id}</h2>
+            <h1>{parlor.terms} </h1>
+
+
+            <h2>Participants:</h2>
+
+            <div className="flex align-vertical" style={{gap:'2rem'}}>
+                <Blockie walletAddress={parlor.wallet_a}/>
+                <h5>{beliefA}</h5>
+                <h5>{decisionA}</h5>
+                <UpdateDualSpace id={id} updateChoice={updateA} />
+            </div>
+
+            <div className="flex align-vertical" style={{gap:'2rem'}}>
+                <Blockie walletAddress={parlor.wallet_b}/>
+                <h5>{beliefB}</h5>
+                <h5>{decisionB}</h5>
+                <UpdateDualSpace id={id} updateChoice={updateB} />
+            </div>
+
             <Box sx={{my:'3rem'}}>
-            <button onClick={updateStatus}>
-                Update Status
-            </button>
             </Box>
         </Box>
     );

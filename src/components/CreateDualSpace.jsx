@@ -15,6 +15,10 @@ import {
 } from "@privy-io/react-auth";
 
 import {
+  Button
+} from 'theme-ui'
+
+import {
   Connection,
   PublicKey,
   Keypair,
@@ -31,10 +35,9 @@ import { addVariant, InstructionVariant } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
 import { DualSpaceSchema } from "../util/borsh";
 import { sha256 } from '@noble/hashes/sha2';
-// import { TextEncoder } from 'util';
 
 
-function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
+function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
 
   const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
@@ -54,8 +57,8 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
       const publicWalletA = new PublicKey(walletA);
       const publicWalletB = new PublicKey(walletB);
 
-      console.log("pa", publicWalletA);
-      console.log("pb", publicWalletB);
+      // console.log("pa", publicWalletA);
+      // console.log("pb", publicWalletB);
 
       const [pda, bump] = PublicKey.findProgramAddressSync(
         [
@@ -66,8 +69,8 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
         programId
       );
 
-      console.log(`PDA: ${pda}`);
-      console.log(`Bump: ${bump}`);
+      // console.log(`PDA: ${pda}`);
+      // console.log(`Bump: ${bump}`);
       
       const dualSpace = {
         terms: terms,
@@ -77,7 +80,7 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
         belief_b: beliefB,
       };
 
-      console.log("ds", dualSpace)
+      // console.log("ds", dualSpace)
 
       const serializedData = serialize(DualSpaceSchema, dualSpace);
       const instructionData = addVariant(InstructionVariant.CREATE, serializedData);
@@ -97,7 +100,8 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
         value: { blockhash, lastValidBlockHeight },
       }  = await connection.getLatestBlockhashAndContext();
 
-      console.log("instruction", instruction);
+      // console.log("instruction", instruction);
+      
       const transaction = new Transaction().add(instruction);
       transaction.feePayer = userWallet;
       transaction.recentBlockhash = blockhash;
@@ -106,25 +110,21 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB,  }) {
       if (signTransaction) {
         const signedTx = await desiredWallet.signTransaction(transaction)
         const signature = await connection.sendRawTransaction(signedTx.serialize())
-
         const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-        alert(`Space Creation complete! Transaction signature: ${signature}`);
+        alert(`Wager Creation complete! Transaction signature: ${signature}`);
       }
 
       // return signature;
 
     } catch (error) {
-      alert(`create space failed: ${error?.message}`);
-      // console.log(error.GetLogs())
+      alert(`create wager failed: ${error?.message}`);
     }
   }
 
   return (
-    <div>
-      <button onClick={createSpace}>
-        Create Space
-      </button>
-    </div>
+    <Button onClick={createSpace} sx={{cursor:'pointer'}}>
+      Create Wager
+    </Button>
   )
 }
 

@@ -32,7 +32,9 @@ function Blockie({ walletAddress }) {
     const avatarUrl = getWalletAvatar(solanaAddress)
     
     return (
-        <Box sx={{
+        <Box 
+            title={walletAddress}
+            sx={{
             width: '4rem',
             height: '4rem',
             borderRadius: '50%',

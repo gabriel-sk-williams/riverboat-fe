@@ -14,7 +14,7 @@ function Tabs({ tabs, activeTab, onTabChange }) {
       <Box
         sx={{
           display: 'flex',
-          borderBottom: '1px solid #e0e0e0',
+          //borderBottom: '1px solidrgb(39, 27, 27)',
         }}
       >
         {tabs.map((tab, index) => (
@@ -25,8 +25,8 @@ function Tabs({ tabs, activeTab, onTabChange }) {
               padding: '12px 16px',
               cursor: 'pointer',
               fontWeight: activeTab === index ? 'bold' : 'normal',
-              color: activeTab === index ? 'primary' : 'text',
-              borderBottom: activeTab === index ? '2px solid primary' : 'none',
+              color: activeTab === index ? '#333' : 'text',
+              borderBottom: activeTab === index ? '2px solid #333' : 'none',
               marginBottom: activeTab === index ? '-1px' : '0',
               transition: 'all 0.3s ease',
               '&:hover': {
