@@ -1,6 +1,8 @@
+import { useState, useEffect, useCallback } from 'react';
+
 import {
     useSolanaWallets,
-    // useActiveWallet,
+    useActiveWallet,
     // getAccessToken, 
     // usePrivy, 
     // useLogin,
@@ -21,6 +23,7 @@ import {
 import {
     Box,
     Button,
+    Select,
     Flex,
     Text,
     Image
@@ -33,63 +36,48 @@ import { connection } from '../hooks/useSolanaConnection';
 import { DualSpaceSchema } from "../util/borsh";
 import { sha256 } from '@noble/hashes/sha2';
 
-function UpdateDualSpace({ id, updateChoice }) {
+function UpdateDualSpace({ status, active, onSelect, submitUpdate }) {
 
-    const { wallets, ready } = useSolanaWallets();
-    const { signTransaction } = useWallet();
+    const buttonType = ApprovalState.getApprovalState(status);
 
-    const updateStatus = async () => {
-        try {
-
-            const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
-
-            const donationAddress = import.meta.env.VITE_DONATION_WALLET;
-            const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
-            const userWallet = new PublicKey(desiredWallet.address);
-
-            const instructionData = new Uint8Array([InstructionVariant.UPDATE, ApprovalState.LANDED])
-
-            console.log("id", instructionData);
-
-            const pda = new PublicKey(id)
-
-            // Create the instruction
-            const instruction = new TransactionInstruction({
-                keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
-                { pubkey: userWallet, isSigner: true, isWritable: true },
-                ],
-                programId,
-                data: instructionData
-            });
-
-            const {
-                value: { blockhash, lastValidBlockHeight },
-            }  = await connection.getLatestBlockhashAndContext();
-
-            const transaction = new Transaction().add(instruction);
-            transaction.feePayer = userWallet;
-            transaction.recentBlockhash = blockhash;
-
-            if (signTransaction) {
-                const signedTx = await desiredWallet.signTransaction(transaction)
-                const signature = await connection.sendRawTransaction(signedTx.serialize())
-                const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-                alert(`Wager Update complete! Transaction signature: ${signature}`);
-            }
-        
-        } catch (error) {
-            alert(`update wager failed: ${error?.message}`);
-        }
-    }
+    const updateStates = ['Pending', 'Landed', 'Missed', 'Push'];
+    
+    const handleSelect = (e) => {
+        const value = e.target.value;
+        const index = ApprovalState.getApprovalIndex(value)
+        onSelect(index);
+    };
 
     return (
-        <Button 
-            onClick={updateStatus} 
-            sx={{cursor:'pointer'}}>
-                Update Status
-        </Button>
-    )
+        <div className='flex' style={{gap:'1rem'}}>
+            <Button disabled variant={buttonType}>
+                    {buttonType}
+            </Button>
+            
+            { active && ( 
+                <div className='flex' style={{gap:'1rem'}}>
+                    <Select 
+                        defaultValue='Select'
+                        onChange={handleSelect}
+                        sx={{width:'12rem'}}
+                    >
+                        {updateStates.map((status) => (
+                            <option key={status} value={status}>
+                            {status}
+                            </option>
+                        ))}
+                    </Select>
+
+                    <Button
+                        onClick={submitUpdate}
+                        sx={{cursor:'pointer'}}>
+                        Submit
+                    </Button>
+                </div>
+            )}
+
+        </div>
+    );
 }
 
 export default UpdateDualSpace;

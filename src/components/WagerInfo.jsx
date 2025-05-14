@@ -6,88 +6,153 @@ import '../styles/flex.css'
 import '../styles/layout.css'
 import '../styles/entry.css'
 
-import { 
-    PublicKey, 
-    SystemProgram, 
-    LAMPORTS_PER_SOL, 
-    clusterApiUrl,
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+
+import {
+    useSolanaWallets,
+    useActiveWallet,
+    // getAccessToken, 
+    // usePrivy, 
+    // useLogin,
+    // useSendTransaction,
+} from "@privy-io/react-auth";
+
+import {
     Connection,
+    PublicKey,
+    Keypair,
     Transaction,
-    // TransactionMessage,
-    // VersionedTransaction,
-    // sendAndConfirmTransaction, 
-    // ComputeBudgetProgram, 
-    // sendAndConfirmRawTransaction,
-} from "@solana/web3.js";
+    SystemProgram,
+    TransactionInstruction,
+    clusterApiUrl,
+    sendAndConfirmTransaction,
+} from '@solana/web3.js';
 
 import {
     Box,
+    Spinner,
     Button,
     Flex,
     Text,
-    Image
+    Image,
 } from 'theme-ui'
 
-import Blockie from './Blockie'
-import { ApprovalState } from '../util/solana';
+import Blockie from './Blockie';
 import UpdateDualSpace from '../components/UpdateDualSpace';
+import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
+import { connection } from '../hooks/useSolanaConnection';
+import { sha256 } from '@noble/hashes/sha2';
+import { truncate } from '../util/wallet';
 
 // Component to display a single wager
-function WagerLayout({ id, props }) {
+function WagerLayout({ id, refreshAccountRequest, props }) {
+
+    const { ready } = useSolanaWallets();
+    const { wallet: activeWallet } = useActiveWallet();
+    const { signTransaction } = useWallet();
 
     const { parlor, wallet_a_decision, wallet_b_decision } = props;
 
-    const [ updateA, setUpdateA ] = useState(wallet_a_decision);
-    const [ updateB, setUpdateB ] = useState(wallet_b_decision);
+    const [ update, setUpdate ] = useState(0);
 
-    console.log(props);
+    const publicKeyA = new PublicKey(parlor.wallet_a);
+    const publicKeyB = new PublicKey(parlor.wallet_b);
+
+    const solanaAddressA = publicKeyA.toBase58();
+    const solanaAddressB = publicKeyB.toBase58();
 
     const beliefA = `${Math.floor(parlor.belief_a * 100)}%`;
     const beliefB = `${Math.floor(parlor.belief_b * 100)}%`;
 
-    const decisionA = ApprovalState.getApprovalState(wallet_a_decision);
-    const decisionB = ApprovalState.getApprovalState(wallet_b_decision);
+    const activeButtonA = activeWallet?.address == solanaAddressA;
+    const activeButtonB = activeWallet?.address == solanaAddressB;
 
-    const updateStatus = () => {
-        console.log("updating status!")
+    const truncatedId = truncate(id);
+
+    const updateStatus = async () => {
+        try {
+            const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
+
+            const userWallet = new PublicKey(activeWallet.address);
+
+            const instructionData = new Uint8Array([InstructionVariant.UPDATE, update]);
+
+            console.log("data", instructionData);
+
+            const pda = new PublicKey(id)
+
+            // Create the instruction
+            const instruction = new TransactionInstruction({
+                keys: [
+                { pubkey: pda, isSigner: false, isWritable: true },
+                { pubkey: userWallet, isSigner: true, isWritable: true },
+                ],
+                programId,
+                data: instructionData
+            });
+
+            const {
+                value: { blockhash, lastValidBlockHeight },
+            }  = await connection.getLatestBlockhashAndContext();
+
+            const transaction = new Transaction().add(instruction);
+            transaction.feePayer = userWallet;
+            transaction.recentBlockhash = blockhash;
+
+            if (signTransaction) {
+                const signedTx = await activeWallet.signTransaction(transaction)
+                const signature = await connection.sendRawTransaction(signedTx.serialize())
+                const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+                refreshAccountRequest();
+                alert(`Wager Update complete! Transaction signature: ${signature}`);
+            }
+        
+        } catch (error) {
+            alert(`update wager failed: ${error?.message}`);
+        }
+    }
+
+    if (!ready) {
+        return (
+            <div className='flex-center'>
+                <Spinner />
+            </div>
+        );
     }
     
     return (
         <Box sx={{my:'3rem'}}>
             
-            <Box sx={{
-              //padding: '12px 16px',
-              //my: '3rem',
-              color: 'primary',
-              borderBottom: '2px solid #ccc',
-              // marginBottom: '-1px',
-            }}>
-                <div className="flex-center" style={{marginBotton:'3rem'}}>
-                    <h2>Wager</h2>
-                </div>
-            </Box>
-
-            <h2>{id}</h2>
-            <h1>{parlor.terms} </h1>
-
-
-            <h2>Participants:</h2>
-
-            <div className="flex align-vertical" style={{gap:'2rem'}}>
-                <Blockie walletAddress={parlor.wallet_a}/>
-                <h5>{beliefA}</h5>
-                <h5>{decisionA}</h5>
-                <UpdateDualSpace id={id} updateChoice={updateA} />
+            <div className="flex-center" style={{marginBotton:'3rem'}}>
+                <h2>Wager: {truncatedId}</h2>
             </div>
 
-            <div className="flex align-vertical" style={{gap:'2rem'}}>
-                <Blockie walletAddress={parlor.wallet_b}/>
-                <h5>{beliefB}</h5>
-                <h5>{decisionB}</h5>
-                <UpdateDualSpace id={id} updateChoice={updateB} />
-            </div>
+            <h1>{parlor.terms}</h1>
 
             <Box sx={{my:'3rem'}}>
+                <h2>Participants:</h2>
+
+                <div className="flex align-vertical" style={{gap:'2rem'}}>
+                    <Blockie walletAddress={parlor.wallet_a}/>
+                    <h5>{beliefA}</h5>
+                    <UpdateDualSpace 
+                        status={wallet_a_decision} 
+                        active={activeButtonA} 
+                        onSelect={setUpdate} 
+                        submitUpdate={updateStatus}
+                    />
+                </div>
+
+                <div className="flex align-vertical" style={{gap:'2rem'}}>
+                    <Blockie walletAddress={parlor.wallet_b}/>
+                    <h5>{beliefB}</h5>
+                    <UpdateDualSpace 
+                        status={wallet_b_decision} 
+                        active={activeButtonB} 
+                        onSelect={setUpdate} 
+                        submitUpdate={updateStatus}
+                    />
+                </div>
             </Box>
         </Box>
     );

@@ -65,13 +65,21 @@ function WagerCard({ props }) {
         <Link to={`/wager/${pubkey}`}>
             <Box sx={{
                 padding: '1rem',
-                border: `1px solid #d4d3d3`,
+                bg: 'white',
+                    transition: 'background-color 0.1s ease-in-out',
+                    '&:hover': {
+                    bg: 'muted', // assumes 'muted' is light grey in your theme
+                },
+                borderRadius: 4,
+                cursor: 'pointer',
+                // border: `1px solid #d4d3d3`,
                 borderRadius: '8px',
             }}>
-                <div className='flex-container' style={{gap:'2rem'}}>
+                <div className='flex-container' style={{height:'3rem', gap:'2rem'}}>
                     <Blockie walletAddress={ds.wallet_a}/>
                     <h5>{beliefA}</h5>
                     <Box sx={{
+                        bg: 'white',
                         border: `1px solid #ccc`,
                         borderRadius: '8px',
                         p:'1rem',

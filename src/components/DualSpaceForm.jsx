@@ -16,7 +16,7 @@ import {
     Label
   } from 'theme-ui'
 
-function DualSpaceForm() {
+function DualSpaceForm({ refreshProgramRequest }) {
 
     const [ walletA, setWalletA ] = useState(import.meta.env.VITE_DONATION_WALLET);
     const [ walletB, setWalletB ] = useState(import.meta.env.VITE_DEV_WALLET_A);

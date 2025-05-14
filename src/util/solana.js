@@ -39,15 +39,47 @@ export class ApprovalState {
     static getApprovalState(state) {
         switch (state) {
         case this.PENDING:
-            return "Pending";
+            return "PENDING";
         case this.LANDED:
-            return "Landed";
+            return "LANDED";
         case this.MISSED:
-            return "Missed";
+            return "MISSED";
         case this.PUSH:
-            return "Push";
+            return "PUSH";
         default:
             return "Unknown";
         }
     }
+
+    static getApprovalIndex(state) {
+        switch (state) {
+        case "Pending":
+            return this.PENDING;
+        case "Landed":
+            return this.LANDED;
+        case "Missed":
+            return this.MISSED;
+        case "Push":
+            return this.PUSH;
+        default:
+            return 0;
+        }
+    }
 }
+
+/*
+    static getApprovalColor(state) {
+        switch (state) {
+        case this.PENDING:
+            return "#e7b416";
+        case this.LANDED:
+            return "#2dc937";
+        case this.MISSED:
+            return "#cc3232";
+        case this.PUSH:
+            return "#743dc0";
+        default:
+            return "#fff";
+        }
+    }
+*/

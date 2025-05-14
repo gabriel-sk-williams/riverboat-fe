@@ -30,5 +30,5 @@ export default function useAccountRequest(pda) {
         getAccount();
     }, []);
 
-    return { loading, status, account };
+    return { loading, status, account, refresh: getAccount };
 }

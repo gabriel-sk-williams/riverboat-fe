@@ -25,6 +25,7 @@ export default function useProgramRequest(programId) {
                     data: deserializeDualSpace(obj.account.data)
                 }
             }));
+            
             setAccounts(dsAccounts);
         } catch (error) {
             setLoading(false);
@@ -38,5 +39,5 @@ export default function useProgramRequest(programId) {
         getAccounts();
     }, []);
 
-    return { loading, status, accounts };
+    return { loading, status, accounts, refresh: getAccounts };
 }

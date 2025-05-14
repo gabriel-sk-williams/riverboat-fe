@@ -11,12 +11,7 @@ function Tabs({ tabs, activeTab, onTabChange }) {
       }}
     >
       {/* Tab Headers */}
-      <Box
-        sx={{
-          display: 'flex',
-          //borderBottom: '1px solidrgb(39, 27, 27)',
-        }}
-      >
+      <div className='flex-center'>
         {tabs.map((tab, index) => (
           <Box
             key={index}
@@ -37,17 +32,7 @@ function Tabs({ tabs, activeTab, onTabChange }) {
             {tab.label}
           </Box>
         ))}
-      </Box>
-
-      {/* Tab Content */}
-      <Box
-        sx={{
-          padding: '16px',
-          bg: 'background',
-        }}
-      >
-        {tabs[activeTab].content}
-      </Box>
+      </div>
     </Box>
   );
 }

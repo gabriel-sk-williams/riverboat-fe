@@ -4,6 +4,7 @@ import WagerCard from './WagerCard';
 
 import {
     Box,
+    Spinner,
     Button,
     Flex,
     Text,
@@ -15,7 +16,15 @@ import '../styles/type.css'
 import '../styles/flex.css'
 import '../styles/layout.css'
 
-function WagerList({spaces}) {
+function WagerList({ loading, spaces}) {
+
+    if (loading) {
+        return (
+            <div className='flex-center'>
+                <Spinner />
+            </div>
+        )
+    }
 
     if (!spaces || spaces.length === 0) {
         return <div className="">No spaces found</div>;

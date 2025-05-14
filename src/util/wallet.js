@@ -1,16 +1,52 @@
-import React, { useState, useEffect, useRef, useCallback, memo } from 'react'
-import makeBlockie from 'ethereum-blockies-base64'
+//
+// Utility Functions
+//
 
+export const truncate = (accountId) => {
+    const firstFour = accountId.slice(0, 4);
+    const lastFour = accountId.slice(39);
+    return `${firstFour}...${lastFour}`;
+};
 
-// Generate blockie for the wallet address
-export const getWalletAvatar = useCallback((address) => {
+export const makePayment = async () => {
+
     try {
-        // For Solana addresses, ensure we have a valid format for blockie generation
-        const isSolanaAddress = address.length > 0 && !address.startsWith('0x');
-        const formattedAddress = isSolanaAddress ? `0x${address.slice(0, 40).padEnd(40, '0')}` : address;
-        return makeBlockie(formattedAddress || '0x0');
+        const donationAddress = import.meta.env.VITE_DONATION_WALLET;
+        const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
+        const publicKey = new PublicKey(desiredWallet.address);
+
+        const destinationWallet = new PublicKey(donationAddress);
+
+        const transactionLamports = 0.001 * LAMPORTS_PER_SOL; // Convert SOL to lamports
+
+        const {
+            value: { blockhash, lastValidBlockHeight },
+        }  = await connection.getLatestBlockhashAndContext();
+
+        const transaction = new Transaction() // Transaction
+            .add(
+            SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: destinationWallet,
+            lamports: transactionLamports,
+            })
+        );
+
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = publicKey;
+
+        if (signTransaction) {
+            const signedTx = await desiredWallet.signTransaction(transaction)
+            
+            // Send the transaction
+            const signature = await connection.sendRawTransaction(signedTx.serialize())
+
+            const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+            alert(`Transfer complete! Transaction signature: ${signature}`);
+        }
+
     } catch (error) {
-        console.error("Error generating blockie:", error);
-        return '';
+        console.error('Error sending transaction:', error);
+        alert(`Transaction failed: ${error?.message}`);
     }
-}, []);
+}

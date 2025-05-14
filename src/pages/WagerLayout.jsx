@@ -23,11 +23,10 @@ import {
 
 import WagerInfo from '../components/WagerInfo';
 
-
 function WagerLayout() {
 
   const { id } = useParams();
-  const { loading, status, account } = useAccountRequest(new PublicKey(id)); // pda
+  const { loading, status, account, refresh } = useAccountRequest(new PublicKey(id)); // pda
 
   if (loading) {
     return <div className="">Loading Wager Info</div>;
@@ -36,11 +35,11 @@ function WagerLayout() {
   return (
     <Box>
       <Link to={`/dashboard`}>
-        <h2>{'<- Back to Dashboard'}</h2>
+        <h4>{'<- Dashboard'}</h4>
       </Link>
 
       {account && (
-        <WagerInfo id={id} props={account}/>
+        <WagerInfo id={id} props={account} refreshAccountRequest={refresh} />
       )}
 
     </Box>

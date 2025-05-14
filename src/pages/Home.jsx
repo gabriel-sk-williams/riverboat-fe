@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom'
 import useProgramRequest from '../hooks/useProgramRequest';
 import { connection } from '../hooks/useSolanaConnection';
 
@@ -113,7 +113,15 @@ function Home() {
 					</div>
 					<h1>riverboat</h1>
 					<h2>the decentralized prediction protocol</h2>
-					<h2>coming soon</h2>
+					<h2>now live on 
+						<code style={{ marginLeft: '8px', backgroundColor: '#f5f5f5', fontSize: '1rem', padding: '2px 4px', borderRadius: '4px' }}>
+						devnet
+					</code>
+
+					</h2>
+					<Link to='/dashboard' style={{marginTop:'1rem'}}>
+						<Button>Enter</Button>
+					</Link>
 			</div>
 		</div>
 	);

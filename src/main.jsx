@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { PrivyProvider } from "@privy-io/react-auth";
+import { ThemeUIProvider } from 'theme-ui'
+import theme from './theme'
 import Index from './index.jsx'
 
 import {toSolanaWalletConnectors} from '@privy-io/react-auth/solana';
@@ -17,12 +19,17 @@ createRoot(document.getElementById('root')).render(
       connectors={solanaConnectors}
       onSuccess={(user) => console.log(`User ${user.id} logged in!`)}
       config={{
+        appearance: {
+          walletChainType: 'solana-only',
+        },
         externalWallets: {
           solana: {connectors: solanaConnectors}
         }
       }}
     >
-      <Index />
+      <ThemeUIProvider theme={theme}>
+        <Index />
+      </ThemeUIProvider>
     </PrivyProvider>
   </StrictMode>,
 )

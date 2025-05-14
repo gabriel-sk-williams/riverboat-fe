@@ -33,7 +33,7 @@ function Blockie({ walletAddress }) {
     
     return (
         <Box 
-            title={walletAddress}
+            title={solanaAddress}
             sx={{
             width: '4rem',
             height: '4rem',

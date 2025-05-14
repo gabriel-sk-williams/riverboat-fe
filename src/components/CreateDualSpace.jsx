@@ -7,7 +7,7 @@
 
 import {
   useSolanaWallets,
-  // useActiveWallet,
+  useActiveWallet,
   // getAccessToken, 
   // usePrivy, 
   // useLogin,
@@ -39,6 +39,7 @@ import { sha256 } from '@noble/hashes/sha2';
 
 function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
 
+  const { wallet: activeWallet } = useActiveWallet();
   const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
 
@@ -50,9 +51,7 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
       const termsBytes = new TextEncoder().encode(terms); // Uint8Array
       const termsHash = sha256(termsBytes); // Uint8Array of length 32
 
-      const donationAddress = import.meta.env.VITE_DONATION_WALLET;
-      const desiredWallet = wallets.find((wallet) => wallet.address === donationAddress);
-      const userWallet = new PublicKey(desiredWallet.address);
+      const userWallet = new PublicKey(activeWallet.address);
 
       const publicWalletA = new PublicKey(walletA);
       const publicWalletB = new PublicKey(walletB);
@@ -108,13 +107,11 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
 
       
       if (signTransaction) {
-        const signedTx = await desiredWallet.signTransaction(transaction)
+        const signedTx = await activeWallet.signTransaction(transaction)
         const signature = await connection.sendRawTransaction(signedTx.serialize())
         const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
         alert(`Wager Creation complete! Transaction signature: ${signature}`);
       }
-
-      // return signature;
 
     } catch (error) {
       alert(`create wager failed: ${error?.message}`);
