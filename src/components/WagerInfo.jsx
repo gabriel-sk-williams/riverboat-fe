@@ -41,8 +41,7 @@ import Blockie from './Blockie';
 import UpdateDualSpace from '../components/UpdateDualSpace';
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
-import { sha256 } from '@noble/hashes/sha2';
-import { truncate } from '../util/wallet';
+import { calcRisk, truncate, constructSentence } from '../util/wallet';
 
 // Component to display a single wager
 function WagerLayout({ id, refreshAccountRequest, props }) {
@@ -68,6 +67,14 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     const activeButtonB = activeWallet?.address == solanaAddressB;
 
     const truncatedId = truncate(id);
+    const pka = truncate(solanaAddressA);
+    const pkb = truncate(solanaAddressB);
+
+    const [ riskA, riskB ] = calcRisk(parlor.stake, parlor.belief_a, parlor.belief_b);
+
+    const landStatement = constructSentence(pka, beliefA, riskA, "LAND");
+    const missStatement = constructSentence(pkb, beliefB, riskB, "MISS");
+
 
     const updateStatus = async () => {
         try {
@@ -123,11 +130,19 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     return (
         <Box sx={{my:'3rem'}}>
             
-            <div className="flex-center" style={{marginBotton:'3rem'}}>
+            <div className="flex-column">
                 <h2>Wager: {truncatedId}</h2>
+                <h2>Stake: {parlor.stake} SOL</h2>
             </div>
 
-            <h1>{parlor.terms}</h1>
+            <Box sx={{my:'3rem'}}>
+                <h1>{parlor.terms}</h1>
+            </Box>
+
+            <Box sx={{my:'3rem'}}>
+                <h2>{landStatement}</h2>
+                <h2>{missStatement}</h2>
+            </Box>
 
             <Box sx={{my:'3rem'}}>
                 <h2>Participants:</h2>

@@ -1,17 +1,7 @@
 
-// import { useState, useEffect, useCallback } from 'react';
-// import { Link, useLocation, useNavigate } from 'react-router-dom';
-// import { WalletButton } from './solana/solana-provider';
-// import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
-// import { PrivyWalletButton } from './PrivyWalletButton';
-
 import {
   useSolanaWallets,
   useActiveWallet,
-  // getAccessToken, 
-  // usePrivy, 
-  // useLogin,
-  // useSendTransaction,
 } from "@privy-io/react-auth";
 
 import {
@@ -19,14 +9,10 @@ import {
 } from 'theme-ui'
 
 import {
-  Connection,
   PublicKey,
-  Keypair,
   Transaction,
   SystemProgram,
   TransactionInstruction,
-  clusterApiUrl,
-  sendAndConfirmTransaction,
 } from '@solana/web3.js';
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
@@ -37,10 +23,9 @@ import { DualSpaceSchema } from "../util/borsh";
 import { sha256 } from '@noble/hashes/sha2';
 
 
-function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
+function CreateDualSpace({ stake, terms, walletA, walletB, beliefA, beliefB }) {
 
   const { wallet: activeWallet } = useActiveWallet();
-  const { wallets, ready } = useSolanaWallets();
   const { signTransaction } = useWallet();
 
   const createSpace = async () => {
@@ -56,9 +41,6 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
       const publicWalletA = new PublicKey(walletA);
       const publicWalletB = new PublicKey(walletB);
 
-      // console.log("pa", publicWalletA);
-      // console.log("pb", publicWalletB);
-
       const [pda, bump] = PublicKey.findProgramAddressSync(
         [
           termsHash,
@@ -67,9 +49,6 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
         ],
         programId
       );
-
-      // console.log(`PDA: ${pda}`);
-      // console.log(`Bump: ${bump}`);
       
       const dualSpace = {
         terms: terms,
@@ -77,9 +56,8 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
         wallet_b: publicWalletB.toBytes(),
         belief_a: beliefA,
         belief_b: beliefB,
+        stake: stake,
       };
-
-      // console.log("ds", dualSpace)
 
       const serializedData = serialize(DualSpaceSchema, dualSpace);
       const instructionData = addVariant(InstructionVariant.CREATE, serializedData);
@@ -98,8 +76,6 @@ function CreateDualSpace({ terms, walletA, walletB, beliefA, beliefB }) {
       const {
         value: { blockhash, lastValidBlockHeight },
       }  = await connection.getLatestBlockhashAndContext();
-
-      // console.log("instruction", instruction);
       
       const transaction = new Transaction().add(instruction);
       transaction.feePayer = userWallet;

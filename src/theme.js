@@ -7,6 +7,8 @@ export default {
     muted: '#f6f6f6',
     mutedDark:   '#e0e0e0',
 
+    // 5AA9E6 blue from deck
+
     // ApprovalState colors
     pendingBg: '#f6f6f6',
     landedBg:  '#71bd71',

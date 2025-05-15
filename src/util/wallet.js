@@ -2,12 +2,27 @@
 // Utility Functions
 //
 
+import { 
+  PublicKey, 
+  SystemProgram, 
+  LAMPORTS_PER_SOL, 
+  clusterApiUrl,
+  Connection,
+  Transaction,
+  // TransactionMessage,
+  // VersionedTransaction,
+  // sendAndConfirmTransaction, 
+  // ComputeBudgetProgram, 
+  // sendAndConfirmRawTransaction,
+} from "@solana/web3.js";
+
 export const truncate = (accountId) => {
     const firstFour = accountId.slice(0, 4);
     const lastFour = accountId.slice(39);
     return `${firstFour}...${lastFour}`;
 };
 
+// TODO: for donations
 export const makePayment = async () => {
 
     try {
@@ -49,4 +64,41 @@ export const makePayment = async () => {
         console.error('Error sending transaction:', error);
         alert(`Transaction failed: ${error?.message}`);
     }
+}
+
+// square of surprise
+export const calcRisk = (stake, beliefA, beliefB) => {
+
+    if (beliefA == beliefB) return [ 0.0, 0.0 ];
+
+    const p = Math.max(beliefA, beliefB);
+    const q = (1 - Math.min(beliefA, beliefB));
+
+    console.log("pq", p, q);
+
+    const pSqd = Math.pow(p, 2);
+    const qSqd = Math.pow(q, 2);
+
+    const pSurprise = 1 - p;
+    const qSurprise = 1 - q;
+
+    const pSurpriseSqd = Math.pow(pSurprise, 2);
+    const qSurpriseSqd = Math.pow(qSurprise, 2);
+
+    const portionA = pSqd - qSurpriseSqd;
+    const portionB = qSqd - pSurpriseSqd;
+
+    // allow five decimal places but remove trailing zeroes
+    const riskA = parseFloat((stake * portionA).toFixed(5));
+    const riskB = parseFloat((stake * portionB).toFixed(5));
+
+    return [riskA, riskB]
+}
+
+export const calcStake = (stake, risk) => {
+    return stake * risk;
+}
+
+export const constructSentence = (address, belief, stake, favorite) => {
+    return `At ${belief} certainty, wallet ${address} risks ${stake} SOL that the wager will ${favorite}`;
 }

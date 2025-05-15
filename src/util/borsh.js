@@ -11,6 +11,7 @@ export const DualSpaceSchema = {
         wallet_b: { array: { type: 'u8', len: 32 }},
         belief_a: 'f64',
         belief_b: 'f64',
+        stake: 'f64',
     }
 }
 
@@ -39,7 +40,7 @@ export const deserializeWager = (data) => {
         const deserializedData = deserialize(WagerSchema, buffer);
         return deserializedData
     } catch (error) {
-        console.error("Error decoding space data:", error);
+        console.error("Error decoding wager data:", error);
         return { title: "Error decoding data" };
     }
 }
