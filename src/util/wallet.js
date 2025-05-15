@@ -92,11 +92,19 @@ export const calcRisk = (stake, beliefA, beliefB) => {
     const riskA = parseFloat((stake * portionA).toFixed(5));
     const riskB = parseFloat((stake * portionB).toFixed(5));
 
-    return [riskA, riskB]
+    if (beliefA > beliefB) {
+        return [riskA, riskB]
+    } else {
+        return [riskB, riskA]
+    }
 }
 
-export const calcStake = (stake, risk) => {
-    return stake * risk;
+export const getFavorite = (beliefA, beliefB) => {
+    if (beliefA > beliefB) {
+        return ["LAND", "MISS"]
+    } else {
+        return ["MISS", "LAND"]
+    }
 }
 
 export const constructSentence = (address, belief, stake, favorite) => {

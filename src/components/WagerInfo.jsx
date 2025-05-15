@@ -41,7 +41,7 @@ import Blockie from './Blockie';
 import UpdateDualSpace from '../components/UpdateDualSpace';
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
-import { calcRisk, truncate, constructSentence } from '../util/wallet';
+import { calcRisk, truncate, constructSentence, getFavorite } from '../util/wallet';
 
 // Component to display a single wager
 function WagerLayout({ id, refreshAccountRequest, props }) {
@@ -71,9 +71,10 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     const pkb = truncate(solanaAddressB);
 
     const [ riskA, riskB ] = calcRisk(parlor.stake, parlor.belief_a, parlor.belief_b);
+    const [ faveA, faveB ] = getFavorite(beliefA, beliefB);
 
-    const landStatement = constructSentence(pka, beliefA, riskA, "LAND");
-    const missStatement = constructSentence(pkb, beliefB, riskB, "MISS");
+    const landStatement = constructSentence(pka, beliefA, riskA, faveA);
+    const missStatement = constructSentence(pkb, beliefB, riskB, faveB);
 
 
     const updateStatus = async () => {

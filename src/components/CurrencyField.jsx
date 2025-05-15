@@ -15,7 +15,7 @@ function CurrencyField({ label, onInputChange }) {
                 }}
             >
                 <Input
-                    defaultValue={0}
+                    defaultValue={0.1}
                     onChange={onInputChange}
                     sx={{
                     border: 'none',
