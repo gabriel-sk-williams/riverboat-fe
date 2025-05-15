@@ -31,7 +31,7 @@ function WagerList({ loading, spaces}) {
     }
 
     return (
-        <Box sx={{mt:'4rem'}}>
+        <Box sx={{mt:'1rem'}}>
             <h2 className="center">Recent Wagers</h2>
             <div className="flex-column">
                 <div style={{marginTop:'1rem'}}>
