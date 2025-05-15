@@ -129,23 +129,23 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     }
     
     return (
-        <Box sx={{my:'3rem'}}>
+        <Box sx={{my:'2rem'}}>
             
             <div className="flex-column">
                 <h2>Wager: {truncatedId}</h2>
                 <h2>Stake: {parlor.stake} SOL</h2>
             </div>
 
-            <Box sx={{my:'3rem'}}>
+            <Box sx={{my:'2rem'}}>
                 <h1>{parlor.terms}</h1>
             </Box>
 
-            <Box sx={{my:'3rem'}}>
+            <Box sx={{my:'2rem'}}>
                 <h2>{landStatement}</h2>
                 <h2>{missStatement}</h2>
             </Box>
 
-            <Box sx={{my:'3rem'}}>
+            <Box sx={{my:'2rem'}}>
                 <h2>Participants:</h2>
 
                 <div className="flex align-vertical" style={{gap:'2rem'}}>
