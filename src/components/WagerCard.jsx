@@ -6,20 +6,6 @@ import '../styles/flex.css'
 import '../styles/layout.css'
 import '../styles/entry.css'
 
-import { 
-    PublicKey, 
-    SystemProgram, 
-    LAMPORTS_PER_SOL, 
-    clusterApiUrl,
-    Connection,
-    Transaction,
-    // TransactionMessage,
-    // VersionedTransaction,
-    // sendAndConfirmTransaction, 
-    // ComputeBudgetProgram, 
-    // sendAndConfirmRawTransaction,
-} from "@solana/web3.js";
-
 import {
     Box,
     Button,
@@ -28,10 +14,6 @@ import {
     Image
 } from 'theme-ui'
 
-import { deserialize } from 'borsh';
-import makeBlockie from 'ethereum-blockies-base64';
-import { DualSpaceSchema } from '../util/borsh';
-import { deserializeDualSpace } from '../util/borsh';
 import Blockie from './Blockie'
 
 /*

@@ -1,40 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-
 import {
-    useSolanaWallets,
-    useActiveWallet,
-    // getAccessToken, 
-    // usePrivy, 
-    // useLogin,
-    // useSendTransaction,
-} from "@privy-io/react-auth";
-
-import {
-    Connection,
-    PublicKey,
-    Keypair,
-    Transaction,
-    SystemProgram,
-    TransactionInstruction,
-    clusterApiUrl,
-    sendAndConfirmTransaction,
-} from '@solana/web3.js';
-
-import {
-    Box,
     Button,
     Select,
-    Flex,
-    Text,
-    Image
   } from 'theme-ui'
 
-
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
-import { connection } from '../hooks/useSolanaConnection';
-import { DualSpaceSchema } from "../util/borsh";
-import { sha256 } from '@noble/hashes/sha2';
 
 function UpdateDualSpace({ status, active, onSelect, submitUpdate }) {
 

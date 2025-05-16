@@ -11,21 +11,6 @@ import {
   Image
 } from 'theme-ui'
 
-/*
-// Define wallet interface based on what we need for display
-interface DisplayWallet {
-  address: string;
-  walletClientType: string;
-  isActive: boolean;
-}
-
-interface PrivyWalletButtonProps {
-  text?: string;
-  style?: any;
-  mobile?: boolean;
-}
-*/
-
 const PrivyWalletButtonBase = ({ text, style, mobile = false }) => { // PrivyWalletButtonProps
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);

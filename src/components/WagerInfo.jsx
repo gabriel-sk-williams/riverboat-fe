@@ -11,21 +11,12 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
     useSolanaWallets,
     useActiveWallet,
-    // getAccessToken, 
-    // usePrivy, 
-    // useLogin,
-    // useSendTransaction,
 } from "@privy-io/react-auth";
 
 import {
-    Connection,
     PublicKey,
-    Keypair,
     Transaction,
-    SystemProgram,
     TransactionInstruction,
-    clusterApiUrl,
-    sendAndConfirmTransaction,
 } from '@solana/web3.js';
 
 import {

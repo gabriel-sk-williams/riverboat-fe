@@ -66,20 +66,3 @@ export class ApprovalState {
         }
     }
 }
-
-/*
-    static getApprovalColor(state) {
-        switch (state) {
-        case this.PENDING:
-            return "#e7b416";
-        case this.LANDED:
-            return "#2dc937";
-        case this.MISSED:
-            return "#cc3232";
-        case this.PUSH:
-            return "#743dc0";
-        default:
-            return "#fff";
-        }
-    }
-*/

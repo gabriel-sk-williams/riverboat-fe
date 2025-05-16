@@ -1,14 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import WagerCard from './WagerCard';
 
 import {
     Box,
     Spinner,
-    Button,
-    Flex,
-    Text,
-    Image
 } from 'theme-ui'
 
 import '../styles/main.css'
