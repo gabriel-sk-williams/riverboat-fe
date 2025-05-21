@@ -3,17 +3,10 @@
 //
 
 import { 
-  PublicKey, 
-  SystemProgram, 
-  LAMPORTS_PER_SOL, 
-  clusterApiUrl,
-  Connection,
+  PublicKey,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
   Transaction,
-  // TransactionMessage,
-  // VersionedTransaction,
-  // sendAndConfirmTransaction, 
-  // ComputeBudgetProgram, 
-  // sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
 
 export const truncate = (accountId) => {
@@ -74,7 +67,7 @@ export const calcRisk = (stake, beliefA, beliefB) => {
     const p = Math.max(beliefA, beliefB);
     const q = (1 - Math.min(beliefA, beliefB));
 
-    console.log("pq", p, q);
+    // console.log("pq", p, q);
 
     const pSqd = Math.pow(p, 2);
     const qSqd = Math.pow(q, 2);
@@ -100,6 +93,9 @@ export const calcRisk = (stake, beliefA, beliefB) => {
 }
 
 export const getFavorite = (beliefA, beliefB) => {
+
+    console.log(beliefA, beliefB);
+
     if (beliefA > beliefB) {
         return ["LAND", "MISS"]
     } else {

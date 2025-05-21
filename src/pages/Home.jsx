@@ -98,7 +98,7 @@ function Home() {
 			<div className="flex-column center">
 					<div style={{paddingTop:'6rem'}}/>
 					<div className="flex-center">
-						<Image src={boat} sx={{width:'660px'}} />
+						<Image src={boat} sx={{width:'400px'}} />
 					</div>
 					<h1>riverboat</h1>
 					<h2>the decentralized prediction protocol</h2>

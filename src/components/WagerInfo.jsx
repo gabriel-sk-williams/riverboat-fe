@@ -62,7 +62,7 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     const pkb = truncate(solanaAddressB);
 
     const [ riskA, riskB ] = calcRisk(parlor.stake, parlor.belief_a, parlor.belief_b);
-    const [ faveA, faveB ] = getFavorite(beliefA, beliefB);
+    const [ faveA, faveB ] = getFavorite(parlor.belief_a, parlor.belief_b);
 
     const landStatement = constructSentence(pka, beliefA, riskA, faveA);
     const missStatement = constructSentence(pkb, beliefB, riskB, faveB);
