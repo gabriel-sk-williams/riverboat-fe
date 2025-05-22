@@ -10,7 +10,9 @@ import '../styles/type.css'
 import '../styles/flex.css'
 import '../styles/layout.css'
 
-function WagerList({ loading, spaces}) {
+function WagerList({ loading, wagers}) {
+
+    console.log(wagers)
 
     if (loading) {
         return (
@@ -20,8 +22,8 @@ function WagerList({ loading, spaces}) {
         )
     }
 
-    if (!spaces || spaces.length === 0) {
-        return <div className="">No spaces found</div>;
+    if (!wagers || wagers.length === 0) {
+        return <div className="">No wagers found</div>;
     }
 
     return (
@@ -29,10 +31,10 @@ function WagerList({ loading, spaces}) {
             <h2 className="center">Recent Wagers</h2>
             <div className="flex-column">
                 <div style={{marginTop:'1rem'}}>
-                    {spaces.map((space) => (
+                    {wagers.map((wager) => (
                         <WagerCard 
-                            key={typeof space.pubkey === 'object' ? space.pubkey.toString() : space.pubkey}
-                            props={space}
+                            key={typeof wager.pubkey === 'object' ? wager.pubkey.toString() : wager.pubkey}
+                            props={wager}
                         />
                     ))}
                 </div>

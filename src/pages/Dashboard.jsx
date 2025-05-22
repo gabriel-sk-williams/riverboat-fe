@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import Tabs from '../components/Tabs';
-import DualSpaceForm from '../components/DualSpaceForm';
 import WagerList from '../components/WagerList';
 import useProgramRequest from '../hooks/useProgramRequest';
+import VersusContractForm from '../components/VersusContractForm';
 
 import '../styles/main.css'
 import '../styles/type.css'
@@ -16,6 +16,7 @@ import {
 import {
     Box,
 } from 'theme-ui'
+
 
 const tabsData = [
     { label: 'Wagers' }, // 0
@@ -44,8 +45,8 @@ function Dashboard() {
 			}}>
 				<div className="flex-center">
 					<div>
-						{currentTab == 0 && <WagerList loading={loading} spaces={accounts} />}
-						{currentTab == 1 && <DualSpaceForm refreshProgramRequest={refresh} />}
+						{currentTab == 0 && <WagerList loading={loading} wagers={accounts} />}
+						{currentTab == 1 && <VersusContractForm refreshProgramRequest={refresh} />}
 					</div>
 				</div>
 			</Box>

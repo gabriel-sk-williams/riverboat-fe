@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import PercentageField from '../components/PercentageField';
-import CurrencyField from '../components/CurrencyField';
+import CurrencyField from './CurrencyField';
 
 import {
   useSolanaWallets,
@@ -21,13 +20,14 @@ import {
   Transaction,
   SystemProgram,
   TransactionInstruction,
+  LAMPORTS_PER_SOL,
 } from '@solana/web3.js';
 
 import { useWallet } from '@solana/wallet-adapter-react'
 import { serialize } from 'borsh';
 import { addVariant, InstructionVariant } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
-import { DualSpaceSchema } from "../util/borsh";
+import { VersusContractSchema } from "../util/borsh";
 import { sha256 } from '@noble/hashes/sha2';
 
 /*
@@ -41,13 +41,12 @@ import { sha256 } from '@noble/hashes/sha2';
     }
 */
 
-function DualSpaceForm({ refreshProgramRequest }) {
+function VersusContractForm({ refreshProgramRequest }) {
 
-    const [ stake, setStake ] = useState(0.1);
+    const [ stake, setStake ] = useState(100000000); // 0.1
     const [ walletA, setWalletA ] = useState(import.meta.env.VITE_DONATION_WALLET);
     const [ walletB, setWalletB ] = useState(import.meta.env.VITE_DEV_WALLET_A);
-    const [ beliefA, setBeliefA ] = useState(0.0);
-    const [ beliefB, setBeliefB ] = useState(0.0);
+
     const [ terms, setTerms ] = useState('');
 
     const { wallet: activeWallet } = useActiveWallet();
@@ -55,7 +54,9 @@ function DualSpaceForm({ refreshProgramRequest }) {
 
     const handleStakeInputChange = (event) => {
         const floatAmount = parseFloat(event.target.value);
-        setStake(floatAmount);
+        const lamportsAmount = floatAmount * LAMPORTS_PER_SOL;
+        console.log(lamportsAmount);
+        setStake(lamportsAmount);
     }
 
     const handleWalletAInputChange = (event) => {
@@ -66,23 +67,11 @@ function DualSpaceForm({ refreshProgramRequest }) {
         setWalletB(event.target.value);
     }
 
-    const handleBeliefAInputChange = (event) => {
-        const integer = parseInt(event.target.value);
-        const belief = integer / 100;
-        setBeliefA(belief);
-    }
-
-    const handleBeliefBInputChange = (event) => {
-        const integer = parseInt(event.target.value);
-        const belief = integer / 100;
-        setBeliefB(belief);
-    }
-
     const handleTermsInputChange = (event) => {
         setTerms(event.target.value);
     }
 
-    const createSpace = async () => {
+    const createWager = async () => {
         try {
             const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 
@@ -104,16 +93,14 @@ function DualSpaceForm({ refreshProgramRequest }) {
                 programId
             );
             
-            const dualSpace = {
+            const contract = {
                 terms: terms,
                 wallet_a: publicWalletA.toBytes(),
                 wallet_b: publicWalletB.toBytes(),
-                belief_a: beliefA,
-                belief_b: beliefB,
                 stake: stake,
             };
 
-            const serializedData = serialize(DualSpaceSchema, dualSpace);
+            const serializedData = serialize(VersusContractSchema, contract);
             const instructionData = addVariant(InstructionVariant.CREATE, serializedData);
 
             // Create the instruction
@@ -166,7 +153,6 @@ function DualSpaceForm({ refreshProgramRequest }) {
                     onChange={handleWalletAInputChange} 
                     sx={{mb:'1rem'}}
                 />
-                <PercentageField label="Belief A" onInputChange={handleBeliefAInputChange} />
             </div>
             
             <div className="flex-container">
@@ -177,8 +163,6 @@ function DualSpaceForm({ refreshProgramRequest }) {
                     onChange={handleWalletBInputChange} 
                     sx={{mb:'1rem'}}
                 />
-                <PercentageField label="Belief B" onInputChange={handleBeliefBInputChange} />
-
             </div>
             
             <Label htmlFor="textarea">Terms</Label>
@@ -196,22 +180,12 @@ function DualSpaceForm({ refreshProgramRequest }) {
                 onChange={handleTermsInputChange} 
             />
             <div className='flex-center' style={{marginTop:'1.5rem'}}>
-                <Button onClick={createSpace} sx={{cursor:'pointer'}}>
+                <Button onClick={createWager} sx={{cursor:'pointer'}}>
                     Create Wager
                 </Button>
-                {/*
-                <CreateDualSpace
-                    stake={stake}
-                    terms={terms}
-                    walletA={walletA}
-                    walletB={walletB}
-                    beliefA={beliefA}
-                    beliefB={beliefB}
-                />
-                */}
             </div>
         </Box>
     )
 }
 
-export default DualSpaceForm;
+export default VersusContractForm;

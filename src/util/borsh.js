@@ -4,32 +4,37 @@
 
 import { serialize, deserialize } from 'borsh';
 
-export const DualSpaceSchema = {
+export const VersusContractSchema = {
     struct: {
         terms: 'string',
         wallet_a: { array: { type: 'u8', len: 32 }},
         wallet_b: { array: { type: 'u8', len: 32 }},
-        belief_a: 'f64',
-        belief_b: 'f64',
-        stake: 'f64',
+        stake: 'u64',
     }
 }
 
-export const WagerSchema = {
+export const VersusWagerSchema = {
     struct: {
-        parlor: DualSpaceSchema,
-        wallet_a_decision: 'u8', // ApprovalState as u8
-        wallet_b_decision: 'u8',  // ApprovalState as u8
+        contract: VersusContractSchema,
+        decision_a: 'u8', // ApprovalState as u8
+        decision_b: 'u8', // ApprovalState as u8
+        belief_a: 'u8',
+        belief_b: 'u8',
+        paid_a: 'bool',
+        paid_b: 'bool',
     }
 }
 
-export const deserializeDualSpace = (data) => {
+export const deserializeVersusContract = (data) => {
     try {
         const buffer = Buffer.from(data);
-        const deserializedData = deserialize(DualSpaceSchema, buffer);
+        const deserializedData = deserialize(VersusContractSchema, buffer);
+
+        console.log(deserializedData);
+
         return deserializedData
     } catch (error) {
-        console.error("Error decoding space data:", error);
+        console.error("Error decoding contract data:", error);
         return { title: "Error decoding data" };
     }
 };
@@ -37,7 +42,7 @@ export const deserializeDualSpace = (data) => {
 export const deserializeWager = (data) => {
     try {
         const buffer = Buffer.from(data);
-        const deserializedData = deserialize(WagerSchema, buffer);
+        const deserializedData = deserialize(VersusWagerSchema, buffer);
         return deserializedData
     } catch (error) {
         console.error("Error decoding wager data:", error);
