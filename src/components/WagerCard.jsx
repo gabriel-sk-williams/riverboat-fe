@@ -58,7 +58,7 @@ function WagerCard({ props }) {
                 borderRadius: '8px',
             }}>
                 <div className='flex-container' style={{height:'3rem', gap:'2rem'}}>
-                    <Blockie walletAddress={ds.wallet_a}/>
+                    <Blockie walletAddress={ds.contract.wallet_a}/>
                     <h5>{beliefA}</h5>
                     <Box sx={{
                         bg: 'white',
@@ -77,11 +77,11 @@ function WagerCard({ props }) {
                             WebkitBoxOrient: 'vertical',
                             textAlign: 'center'
                         }}>
-                            {ds.terms}
+                            {ds.contract.terms}
                         </Text>
                     </Box>
                     <h5>{beliefB}</h5>
-                    <Blockie walletAddress={ds.wallet_b}/>
+                    <Blockie walletAddress={ds.contract.wallet_b}/>
                 </div>
             </Box>
         </Link>

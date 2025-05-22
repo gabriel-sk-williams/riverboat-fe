@@ -14,6 +14,7 @@ import {
 } from "@privy-io/react-auth";
 
 import {
+    LAMPORTS_PER_SOL,
     PublicKey,
     Transaction,
     TransactionInstruction,
@@ -29,7 +30,7 @@ import {
 } from 'theme-ui'
 
 import Blockie from './Blockie';
-import UpdateDualSpace from '../components/UpdateDualSpace';
+import UpdateWager from './UpdateWager';
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 import { connection } from '../hooks/useSolanaConnection';
 import { calcRisk, truncate, constructSentence, getFavorite } from '../util/wallet';
@@ -41,18 +42,18 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     const { wallet: activeWallet } = useActiveWallet();
     const { signTransaction } = useWallet();
 
-    const { parlor, wallet_a_decision, wallet_b_decision } = props;
+    const { contract, decision_a, decision_b, belief_a, belief_b, paid_a, paid_b } = props;
 
     const [ update, setUpdate ] = useState(0);
 
-    const publicKeyA = new PublicKey(parlor.wallet_a);
-    const publicKeyB = new PublicKey(parlor.wallet_b);
+    const publicKeyA = new PublicKey(contract.wallet_a);
+    const publicKeyB = new PublicKey(contract.wallet_b);
 
     const solanaAddressA = publicKeyA.toBase58();
     const solanaAddressB = publicKeyB.toBase58();
 
-    const beliefA = `${Math.floor(parlor.belief_a * 100)}%`;
-    const beliefB = `${Math.floor(parlor.belief_b * 100)}%`;
+    const beliefA = `${Math.floor(belief_a * 100)}%`;
+    const beliefB = `${Math.floor(belief_b * 100)}%`;
 
     const activeButtonA = activeWallet?.address == solanaAddressA;
     const activeButtonB = activeWallet?.address == solanaAddressB;
@@ -61,11 +62,14 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
     const pka = truncate(solanaAddressA);
     const pkb = truncate(solanaAddressB);
 
-    const [ riskA, riskB ] = calcRisk(parlor.stake, parlor.belief_a, parlor.belief_b);
-    const [ faveA, faveB ] = getFavorite(parlor.belief_a, parlor.belief_b);
+    const [ riskA, riskB ] = calcRisk(contract.stake, belief_a, belief_b);
+    const [ faveA, faveB ] = getFavorite(belief_a, belief_b);
 
     const landStatement = constructSentence(pka, beliefA, riskA, faveA);
     const missStatement = constructSentence(pkb, beliefB, riskB, faveB);
+
+    const stakeLamports = Number(contract.stake);
+    const stakeSol = stakeLamports / LAMPORTS_PER_SOL;
 
 
     const updateStatus = async () => {
@@ -124,11 +128,11 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
             
             <div className="flex-column">
                 <h2>Wager: {truncatedId}</h2>
-                <h2>Stake: {parlor.stake} SOL</h2>
+                <h2>Stake: {stakeSol} SOL ({stakeLamports} Lamports) </h2>
             </div>
 
             <Box sx={{my:'2rem'}}>
-                <h1>{parlor.terms}</h1>
+                <h1>{contract.terms}</h1>
             </Box>
 
             <Box sx={{my:'2rem'}}>
@@ -140,10 +144,10 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
                 <h2>Participants:</h2>
 
                 <div className="flex align-vertical" style={{gap:'2rem'}}>
-                    <Blockie walletAddress={parlor.wallet_a}/>
+                    <Blockie walletAddress={contract.wallet_a}/>
                     <h5>{beliefA}</h5>
-                    <UpdateDualSpace 
-                        status={wallet_a_decision} 
+                    <UpdateWager 
+                        status={decision_a} 
                         active={activeButtonA} 
                         onSelect={setUpdate} 
                         submitUpdate={updateStatus}
@@ -151,10 +155,10 @@ function WagerLayout({ id, refreshAccountRequest, props }) {
                 </div>
 
                 <div className="flex align-vertical" style={{gap:'2rem'}}>
-                    <Blockie walletAddress={parlor.wallet_b}/>
+                    <Blockie walletAddress={contract.wallet_b}/>
                     <h5>{beliefB}</h5>
-                    <UpdateDualSpace 
-                        status={wallet_b_decision} 
+                    <UpdateWager 
+                        status={decision_a} 
                         active={activeButtonB} 
                         onSelect={setUpdate} 
                         submitUpdate={updateStatus}

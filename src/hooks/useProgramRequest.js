@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 import { connection } from './useSolanaConnection';
-import { deserializeDualSpace } from '../util/borsh'
+import { deserializeVersusContract, deserializeWager } from '../util/borsh'
 
 
 export default function useProgramRequest(programId) {
@@ -22,9 +22,11 @@ export default function useProgramRequest(programId) {
                 ...obj,
                 account: {
                     ...obj.account,
-                    data: deserializeDualSpace(obj.account.data)
+                    data: deserializeWager(obj.account.data)
                 }
             }));
+
+            console.log("ds", dsAccounts);
             
             setAccounts(dsAccounts);
         } catch (error) {

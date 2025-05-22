@@ -93,9 +93,6 @@ export const calcRisk = (stake, beliefA, beliefB) => {
 }
 
 export const getFavorite = (beliefA, beliefB) => {
-
-    console.log(beliefA, beliefB);
-
     if (beliefA > beliefB) {
         return ["LAND", "MISS"]
     } else {

@@ -5,7 +5,7 @@ import {
 
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 
-function UpdateDualSpace({ status, active, onSelect, submitUpdate }) {
+function UpdateWager({ status, active, onSelect, submitUpdate }) {
 
     const buttonType = ApprovalState.getApprovalState(status);
 
@@ -49,4 +49,4 @@ function UpdateDualSpace({ status, active, onSelect, submitUpdate }) {
     );
 }
 
-export default UpdateDualSpace;
+export default UpdateWager;
