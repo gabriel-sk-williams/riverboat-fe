@@ -28,7 +28,7 @@ function WagerLayout() {
       </Link>
 
       {account && (
-        <WagerInfo id={id} props={account} refreshAccountRequest={refresh} />
+        <WagerInfo id={id} refreshAccountRequest={refresh} props={account} />
       )}
 
     </Box>
