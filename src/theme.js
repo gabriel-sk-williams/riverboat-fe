@@ -19,6 +19,16 @@ export default {
 
   buttons: {
 
+    // PaidState Buttons
+    PAID: {
+      bg: 'landedBg',
+      color: 'white',
+    },
+    UNPAID: {
+      bg: 'pendingBg',
+      color: 'black',
+    },
+    
     // ApprovalState Buttons
     PENDING: {
       bg: 'pendingBg',
@@ -36,7 +46,6 @@ export default {
       bg: 'pushBg',
       color: 'white',
     },
-
 
     primary: {
       color: 'background',

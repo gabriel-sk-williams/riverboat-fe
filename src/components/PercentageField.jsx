@@ -3,7 +3,7 @@ import { Box, Flex, Label, Input } from 'theme-ui';
 
 function PercentageField({ label, onInputChange }) {
     return (
-        <Box mb={3}>
+        <Box mb={23}>
             <Label>{label}</Label>
             <Flex
                 sx={{

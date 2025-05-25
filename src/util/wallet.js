@@ -62,6 +62,8 @@ export const makePayment = async () => {
 // square of surprise
 export const calcRisk = (stake, beliefA, beliefB) => {
 
+    console.log("calc", beliefA, beliefB);
+
     if (beliefA == beliefB) return [ 0.0, 0.0 ];
 
     const p = Math.max(beliefA, beliefB);

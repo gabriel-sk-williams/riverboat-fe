@@ -6,12 +6,17 @@ export class InstructionVariant {
     // Private Fields
     static #_GET = 0;
     static #_CREATE = 1;
-    static #_UPDATE = 2;
+    static #_SUBMIT = 2;
+    static #_UPDATE = 3;
+    static #_SET = 4;
   
     // Accessors for "get" functions only (no "set" functions)
     static get GET() { return this.#_GET; }
     static get CREATE() { return this.#_CREATE; }
+    static get SUBMIT() { return this.#_SUBMIT; }
     static get UPDATE() { return this.#_UPDATE; }
+    static get SET() { return this.#_SET; }
+    
 }
 
 export const addVariant = (variant, serializedArray) => {

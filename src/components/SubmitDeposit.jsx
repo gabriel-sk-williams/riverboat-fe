@@ -1,51 +1,47 @@
-import { useState, useEffect, useCallback } from 'react';
-
-import {
-    useSolanaWallets,
-    useActiveWallet,
-} from "@privy-io/react-auth";
-
-import { useWallet } from '@solana/wallet-adapter-react'
-
-import {
-    LAMPORTS_PER_SOL,
-    PublicKey,
-    Transaction,
-    TransactionInstruction,
-} from '@solana/web3.js';
-
 import {
     Button,
     Select,
   } from 'theme-ui'
 
+import {
+  useSolanaWallets,
+  useActiveWallet,
+} from "@privy-io/react-auth";
+
+import { useWallet } from '@solana/wallet-adapter-react'
+
+import {
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  TransactionInstruction,
+  LAMPORTS_PER_SOL,
+} from '@solana/web3.js';
 
 import { connection } from '../hooks/useSolanaConnection';
 import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
-import PercentageField from './PercentageField';
 
-function UpdateBelief({ id, active, refreshAccountRequest }) {
+function SubmitDeposit({ id, stake, paid, refreshAccountRequest }) {
 
-    const buttonType = "UPDATE"
-
-    const [ belief, setBelief ] = useState(255);
+    const buttonType = paid ? "PAID" : "UNPAID";
 
     const { wallet: activeWallet } = useActiveWallet();
     const { signTransaction } = useWallet();
 
-    const handleBeliefInputChange = (event) => {
-        const belief = parseInt(event.target.value);
-        setBelief(belief);
-    }
-
-    const updateBelief = async () => {
+    const submitDeposit = async () => {
         try {
+            console.log("paid", paid);
+            console.log("submitting deposit", stake);
+
             const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 
             const userWallet = new PublicKey(activeWallet.address);
 
-            const instructionData = new Uint8Array([InstructionVariant.UPDATE, belief]);
-            console.log(instructionData);
+            // const instructionData = new Uint8Array([InstructionVariant.SUBMIT, stake]);
+
+            const encodedData = Buffer.alloc(9);
+            encodedData.writeUInt8(2, 0); // Submit variant
+            encodedData.writeBigUInt64LE(BigInt(stake), 1);
 
             const pda = new PublicKey(id)
 
@@ -54,9 +50,10 @@ function UpdateBelief({ id, active, refreshAccountRequest }) {
                 keys: [
                 { pubkey: pda, isSigner: false, isWritable: true },
                 { pubkey: userWallet, isSigner: true, isWritable: true },
+                { pubkey: SystemProgram.programId, isSigner: false, isWritable: false }
                 ],
                 programId,
-                data: instructionData
+                data: encodedData
             });
 
             const {
@@ -72,30 +69,34 @@ function UpdateBelief({ id, active, refreshAccountRequest }) {
                 const signature = await connection.sendRawTransaction(signedTx.serialize())
                 const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
                 refreshAccountRequest();
-                alert(`Belief Update complete! Transaction signature: ${signature}`);
+                alert(`Stake Deposit complete! Transaction signature: ${signature}`);
             }
-        
+
         } catch (error) {
-            alert(`update belief failed: ${error?.message}`);
+            alert(`submit deposit failed: ${error?.message}`);
         }
     }
 
-    if (!active) {
-        return <div/>
-    }
-
     return (
-        <div className='flex align-vertical' style={{gap:'1rem'}}>
-            <PercentageField label="Belief" onInputChange={handleBeliefInputChange} />
+        <div className='flex' style={{gap:'1rem'}}>
 
-            <Button
-                onClick={updateBelief}
-                sx={{cursor:'pointer', height: '2rem'}}
-            >
-                Update Belief
+            <Button disabled variant={buttonType}>
+                {buttonType}
             </Button>
+            
+            { !paid && ( 
+                <div className='flex' style={{gap:'1rem'}}>
+                    <Button
+                        onClick={submitDeposit}
+                        sx={{cursor:'pointer'}}
+                    >
+                        Submit Stake
+                    </Button>
+                </div>
+            )}
+
         </div>
     );
 }
 
-export default UpdateBelief;
+export default SubmitDeposit;

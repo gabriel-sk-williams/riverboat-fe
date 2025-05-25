@@ -14,6 +14,10 @@ import {
     Image
 } from 'theme-ui'
 
+import {
+  LAMPORTS_PER_SOL,
+} from '@solana/web3.js';
+
 import Blockie from './Blockie'
 
 /*
@@ -38,10 +42,13 @@ import Blockie from './Blockie'
 function WagerCard({ props }) {
     const { account, pubkey } = props;
 
+    console.log("lamports", account.lamports);
+    console.log("SOL", account.lamports / LAMPORTS_PER_SOL);
+
     const ds = account.data;
 
-    const beliefA = `${Math.floor(ds.belief_a * 100)}%`;
-    const beliefB = `${Math.floor(ds.belief_b * 100)}%`;
+    const beliefA = ds.belief_a > 100 ? "—" : `${ds.belief_a}%`;
+    const beliefB = ds.belief_b > 100 ? "—" : `${ds.belief_b}%`;
     
     return (
         <Link to={`/wager/${pubkey}`}>
@@ -50,11 +57,10 @@ function WagerCard({ props }) {
                 bg: 'white',
                     transition: 'background-color 0.1s ease-in-out',
                     '&:hover': {
-                    bg: 'muted', // assumes 'muted' is light grey in your theme
+                    bg: 'muted',
                 },
                 borderRadius: 4,
                 cursor: 'pointer',
-                // border: `1px solid #d4d3d3`,
                 borderRadius: '8px',
             }}>
                 <div className='flex-container' style={{height:'3rem', gap:'2rem'}}>
