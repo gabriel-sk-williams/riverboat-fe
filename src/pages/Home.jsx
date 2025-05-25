@@ -27,17 +27,15 @@ function Home() {
 					</div>
 					<h1>riverboat</h1>
 					<h2>the decentralized prediction protocol</h2>
-					<h2>new update coming soon on </h2>
+					<h2>pre-alpha is live on</h2>
 					<h2>
 					<code style={{ marginLeft: '8px', backgroundColor: '#f5f5f5', fontSize: '1rem', padding: '2px 4px', borderRadius: '4px' }}>
 					solana devnet
 					</code>
 					</h2>
-					{/*
 					<Link to='/dashboard' style={{marginTop:'1rem'}}>
 						<Button>Enter</Button>
 					</Link>
-					*/}
 			</div>
 		</div>
 	);
