@@ -25,8 +25,6 @@ export default function useProgramRequest(programId) {
                     data: deserializeWager(obj.account.data)
                 }
             }));
-
-            console.log("ds", dsAccounts);
             
             setAccounts(dsAccounts);
         } catch (error) {

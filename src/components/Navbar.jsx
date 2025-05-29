@@ -70,9 +70,11 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+      
       <Link to="/">
         <h1>riverboat</h1>
       </Link>
+      
       <PrivyWalletButton />
     </nav>
   );

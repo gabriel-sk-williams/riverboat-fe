@@ -1,83 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import {
-    useSolanaWallets,
-    useActiveWallet,
-} from "@privy-io/react-auth";
-
-import { useWallet } from '@solana/wallet-adapter-react'
-
-import {
-    LAMPORTS_PER_SOL,
-    PublicKey,
-    Transaction,
-    TransactionInstruction,
-} from '@solana/web3.js';
-
-import {
     Button,
     Select,
   } from 'theme-ui'
 
-
-import { connection } from '../hooks/useSolanaConnection';
-import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 import PercentageField from './PercentageField';
 
-function UpdateBelief({ id, active, refreshAccountRequest }) {
+function UpdateBelief({ active, updateBelief }) {
 
     const buttonType = "UPDATE"
 
     const [ belief, setBelief ] = useState(255);
-
-    const { wallet: activeWallet } = useActiveWallet();
-    const { signTransaction } = useWallet();
 
     const handleBeliefInputChange = (event) => {
         const belief = parseInt(event.target.value);
         setBelief(belief);
     }
 
-    const updateBelief = async () => {
-        try {
-            const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
-
-            const userWallet = new PublicKey(activeWallet.address);
-
-            const instructionData = new Uint8Array([InstructionVariant.UPDATE, belief]);
-            console.log(instructionData);
-
-            const pda = new PublicKey(id)
-
-            // Create the instruction
-            const instruction = new TransactionInstruction({
-                keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
-                { pubkey: userWallet, isSigner: true, isWritable: true },
-                ],
-                programId,
-                data: instructionData
-            });
-
-            const {
-                value: { blockhash, lastValidBlockHeight },
-            }  = await connection.getLatestBlockhashAndContext();
-
-            const transaction = new Transaction().add(instruction);
-            transaction.feePayer = userWallet;
-            transaction.recentBlockhash = blockhash;
-
-            if (signTransaction) {
-                const signedTx = await activeWallet.signTransaction(transaction)
-                const signature = await connection.sendRawTransaction(signedTx.serialize())
-                const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-                refreshAccountRequest();
-                alert(`Belief Update complete! Transaction signature: ${signature}`);
-            }
-        
-        } catch (error) {
-            alert(`update belief failed: ${error?.message}`);
-        }
+    const handleUpdateBelief = () => {
+        updateBelief(belief);
     }
 
     if (!active) {
@@ -89,10 +31,10 @@ function UpdateBelief({ id, active, refreshAccountRequest }) {
             <PercentageField label="Belief" onInputChange={handleBeliefInputChange} />
 
             <Button
-                onClick={updateBelief}
+                onClick={handleUpdateBelief}
                 sx={{cursor:'pointer', height: '2rem'}}
             >
-                Update Belief
+                Update
             </Button>
         </div>
     );

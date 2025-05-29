@@ -42,8 +42,8 @@ import Blockie from './Blockie'
 function WagerCard({ props }) {
     const { account, pubkey } = props;
 
-    console.log("lamports", account.lamports);
-    console.log("SOL", account.lamports / LAMPORTS_PER_SOL);
+    //console.log("lamports", account.lamports);
+    //console.log("SOL", account.lamports / LAMPORTS_PER_SOL);
 
     const ds = account.data;
 

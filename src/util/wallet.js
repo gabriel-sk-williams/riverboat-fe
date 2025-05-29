@@ -11,7 +11,7 @@ import {
 
 export const truncate = (accountId) => {
     const firstFour = accountId.slice(0, 4);
-    const lastFour = accountId.slice(39);
+    const lastFour = accountId.slice(40);
     return `${firstFour}...${lastFour}`;
 };
 
@@ -102,6 +102,28 @@ export const getFavorite = (beliefA, beliefB) => {
     }
 }
 
-export const constructSentence = (address, belief, stake, favorite) => {
-    return `At ${belief} certainty, wallet ${address} risks ${stake} SOL that the wager will ${favorite}`;
+export const constructSentence = (address, stake, favorite) => {
+    return `${address} risks ${stake} SOL that the wager will ${favorite}`;
+}
+
+export const validSolanaWallet = (wallet) => {
+    try {
+        if (!wallet || typeof wallet.address !== "string") return false;
+        new PublicKey(wallet.address); // throws if invalid
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+
+export const getParticipantState = (wager, participant) => {
+
+    // 0 InWager
+    // 1 DepositSubmitted
+    // 2 BeliefUpdated
+    // 3 StatusLocked
+
+
+    return false
 }

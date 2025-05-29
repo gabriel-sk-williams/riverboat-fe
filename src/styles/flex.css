@@ -54,9 +54,22 @@
 }
 
 .flex-container {
-display:-webkit-box;
-display:-ms-flexbox;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.centered-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }

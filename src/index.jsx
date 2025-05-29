@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import WagerLayout from './pages/WagerLayout';
-import './styles/layout.css'
+import Wager from './pages/Wager';
 
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+import './styles/layout.css'
 
 function AppLayout() {
   const location = useLocation();
@@ -18,7 +20,7 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/wager/:id" element={<WagerLayout />} />
+          <Route path="/wager/:accountId" element={<Wager />} />
         </Routes>
       </main>
       {!isHomePage && <Footer />}
