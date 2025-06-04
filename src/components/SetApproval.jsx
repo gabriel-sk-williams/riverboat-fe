@@ -11,8 +11,6 @@ import { ApprovalState } from '../util/solana';
 
 function SetApproval({ decision, setApproval }) {
 
-    console.log("dec", decision);
-
     const [ approvalState, setApprovalState ] = useState(decision);
 
     const approvalStates = ['Pending', 'Landed', 'Missed', 'Push'];

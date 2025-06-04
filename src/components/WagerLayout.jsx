@@ -31,8 +31,12 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
 
     const { contract, decision_a, decision_b, belief_a, belief_b, paid_a, paid_b } = account;
 
-    if (!account || !activeWallet) {
-        return <Spinner />
+    if (!account) {
+        return (
+            <div className="flex-center">
+                <Spinner />
+            </div>
+        );
     }
 
     const stakeLamports = Number(contract.stake);
