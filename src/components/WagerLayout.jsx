@@ -145,7 +145,7 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
             
             <Box sx={{my:'2rem'}}>
                 <Participant
-                    activeWallet={activeWallet.address}
+                    //activeWallet={activeWallet.address}
                     address={contract.wallet_a}
                     paid={paid_a}
                     belief={displayA}
@@ -157,7 +157,7 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
 
             <Box sx={{my:'2rem'}}>
                 <Participant
-                    activeWallet={activeWallet.address}
+                    //activeWallet={activeWallet.address}
                     address={contract.wallet_b}
                     paid={paid_b}
                     belief={displayB}
