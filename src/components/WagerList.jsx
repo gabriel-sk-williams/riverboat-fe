@@ -10,9 +10,7 @@ import '../styles/type.css'
 import '../styles/flex.css'
 import '../styles/layout.css'
 
-function WagerList({ loading, wagers}) {
-
-    console.log(wagers)
+function WagerList({loading, wagers}) {
 
     if (loading) {
         return (

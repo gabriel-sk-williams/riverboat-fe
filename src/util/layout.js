@@ -2,16 +2,8 @@
 // Utility functions for frontend
 //
 
-// 0 InWager
-// 1 DepositSubmitted
-// 2 BeliefUpdated
-// 3 StatusLocked
 
-
-
-// locked
-
-export const getParticipantState = (decision, belief, paid) => {
+export const getParticipantState = (decision, belief, paid) => { // locked
 
     //console.log("dec", decision);
     //console.log("bel", belief);

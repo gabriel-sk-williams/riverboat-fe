@@ -27,21 +27,11 @@ import { calcRisk, truncate, constructSentence, getFavorite } from '../util/wall
 import { ParticipantState, getParticipantState, getNullActionDisplay } from '../util/layout';
 
 
-/*
-    contract: {
-        terms
-        wallet_a
-        wallet_b
-        stake
-    }
-*/
-
-
 function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief, lockSubmission, setApproval }) {
 
     const { contract, decision_a, decision_b, belief_a, belief_b, paid_a, paid_b } = account;
 
-    if (!account) {
+    if (!account || !activeWallet) {
         return <Spinner />
     }
 
@@ -57,8 +47,8 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     const activeButtonA = activeWallet?.address == solanaAddressA;
     const activeButtonB = activeWallet?.address == solanaAddressB;
 
-    const pkActive = activeWallet?.address
-    const pkv = truncate(pkActive);
+    //const pkActive = activeWallet?.address;
+    //const pkv = truncate(pkActive);
 
     const pka = truncate(solanaAddressA);
     const pkb = truncate(solanaAddressB);
@@ -100,7 +90,7 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
         : <div/>
 
     const activeHeadline = display == ParticipantState.INIT 
-        ? "Welcome"
+        ? "Welcome!"
         : display == ParticipantState.DEPOSIT_SUBMITTED
         ? "Set your Belief that the Outcome will Land:"
         : display == ParticipantState.BELIEF_UPDATED
@@ -131,7 +121,7 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
                 textAlign:'center',
             }}> 
 
-                <h4>{pkv}</h4>
+                {/*<h4>{pkv}</h4>*/}
                 <h4>{activeHeadline}</h4>
 
                 {/* Alert for matching activeWallets */}

@@ -11,6 +11,8 @@ import { ApprovalState } from '../util/solana';
 
 function SetApproval({ decision, setApproval }) {
 
+    console.log("dec", decision);
+
     const [ approvalState, setApprovalState ] = useState(decision);
 
     const approvalStates = ['Pending', 'Landed', 'Missed', 'Push'];
@@ -20,7 +22,7 @@ function SetApproval({ decision, setApproval }) {
         'The event has occurred, and the predicted outcome has come true.',
         'The event has occurred, but the predicted outcome did not come true.',
         'The event was canceled, rendered invalid, or the participants have agreed to return their funds without a winner.',
-    ]
+    ];
 
     const headline = ApprovalState.getApprovalState(approvalState);
     const activeCopy = approvalCopy[approvalState];
