@@ -1,41 +1,52 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import {
+    Box,
     Button,
-    Select,
+    Slider,
   } from 'theme-ui'
 
 import PercentageField from './PercentageField';
 
-function UpdateBelief({ active, updateBelief }) {
+function UpdateBelief({ belief, updateBelief }) {
 
-    const buttonType = "UPDATE"
+    const defaultBelief = belief == 255 ? 50 : belief;
 
-    const [ belief, setBelief ] = useState(255);
+    const [ currentBelief, setCurrentBelief ] = useState(defaultBelief);
 
     const handleBeliefInputChange = (event) => {
         const belief = parseInt(event.target.value);
-        setBelief(belief);
+        setCurrentBelief(belief);
     }
 
     const handleUpdateBelief = () => {
-        updateBelief(belief);
-    }
-
-    if (!active) {
-        return <div/>
+        updateBelief(currentBelief);
     }
 
     return (
-        <div className='flex align-vertical' style={{gap:'1rem'}}>
-            <PercentageField label="Belief" onInputChange={handleBeliefInputChange} />
+        <div className='flex-column center' style={{gap:'1rem'}}>
 
-            <Button
-                onClick={handleUpdateBelief}
-                sx={{cursor:'pointer', height: '2rem'}}
-            >
-                Update
-            </Button>
+            {/*<PercentageField label="Belief" onInputChange={handleBeliefInputChange} />*/}
+
+            <h1>{currentBelief}%</h1>
+            <Box sx={{
+                margin:'auto',
+                width:'28rem'
+            }}>
+                <Slider
+                    defaultValue={defaultBelief}
+                    onChange={handleBeliefInputChange}
+                />
+            </Box>
+
+            <div>
+                <Button
+                    onClick={handleUpdateBelief}
+                    sx={{cursor:'pointer', height:'2rem', my:'1rem'}}
+                >
+                    Update Belief
+                </Button>
+            </div>
         </div>
     );
 }

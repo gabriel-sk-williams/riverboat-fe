@@ -6,17 +6,23 @@ import {
   useActiveWallet,
 } from "@privy-io/react-auth";
 
+import { useWallet } from '@solana/wallet-adapter-react'
+import useAccountRequest from '../hooks/useAccountRequest';
+
 import {
   Box,
 } from 'theme-ui'
 
 import WagerLayout from '../components/WagerLayout';
-import { calcRisk, truncate, constructSentence, getFavorite } from '../util/wallet';
+import { truncate } from '../util/wallet';
 
 function Wager() {
 
   const { accountId } = useParams();
+  const { signTransaction } = useWallet();
   const { wallet: activeWallet } = useActiveWallet();
+
+  const { loading, status, error, account, submitDeposit, updateBelief, lockSubmission, setApproval } = useAccountRequest(accountId, signTransaction, activeWallet);
 
   const truncatedId = truncate(accountId);
 
@@ -35,10 +41,15 @@ function Wager() {
         borderRadius:'1rem',
         px:'2rem'
       }}>
-      
+
         <WagerLayout
-          accountId={accountId} 
+          account={account}
           activeWallet={activeWallet}
+          error={error}
+          submitDeposit={submitDeposit}
+          updateBelief={updateBelief}
+          lockSubmission={lockSubmission}
+          setApproval={setApproval}
         />
 
       </Box>

@@ -62,7 +62,7 @@ export const makePayment = async () => {
 // square of surprise
 export const calcRisk = (stake, beliefA, beliefB) => {
 
-    console.log("calc", beliefA, beliefB);
+    // console.log("calc", beliefA, beliefB);
 
     if (beliefA == beliefB) return [ 0.0, 0.0 ];
 
@@ -114,16 +114,4 @@ export const validSolanaWallet = (wallet) => {
     } catch {
         return false;
     }
-}
-
-
-export const getParticipantState = (wager, participant) => {
-
-    // 0 InWager
-    // 1 DepositSubmitted
-    // 2 BeliefUpdated
-    // 3 StatusLocked
-
-
-    return false
 }

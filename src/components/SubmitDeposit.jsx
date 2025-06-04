@@ -3,31 +3,33 @@ import {
     Select,
   } from 'theme-ui'
 
-function SubmitDeposit({ stake, paid, submitDeposit }) {
+import {
+    LAMPORTS_PER_SOL,
+} from '@solana/web3.js';
 
-    const buttonType = paid ? "PAID" : "UNPAID";
+function SubmitDeposit({ stake, submitDeposit }) {
+
+    const stakeLamports = Number(stake);
+    const stakeSol = stakeLamports / LAMPORTS_PER_SOL;
 
     const handleSubmitDeposit = () => {
         submitDeposit(stake);
     }
 
     return (
-        <div className='flex' style={{gap:'1rem'}}>
+        <div className='flex-column center' style={{gap:'1rem'}}>
 
-            <Button disabled variant={buttonType}>
-                {buttonType}
-            </Button>
+            <h2>The stake for this wager is:</h2>
+            <h4>{stakeSol} SOL</h4>
             
-            { !paid && ( 
-                <div className='flex' style={{gap:'1rem'}}>
-                    <Button
-                        onClick={handleSubmitDeposit}
-                        sx={{cursor:'pointer'}}
-                    >
-                        Submit Stake
-                    </Button>
-                </div>
-            )}
+            <div>
+                <Button
+                    onClick={handleSubmitDeposit}
+                    sx={{cursor:'pointer'}}
+                >
+                    Submit Stake
+                </Button>
+            </div>
 
         </div>
     );

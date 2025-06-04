@@ -17,9 +17,13 @@ export default {
     white:     '#ffffff',
   },
 
-  buttons: {
+  fonts: {
+    badge: 'Alright Sans', // optional custom badge font
+  },
 
-    // PaidState Buttons
+  badges: {
+
+    // PaidState
     PAID: {
       bg: 'landedBg',
       color: 'white',
@@ -28,8 +32,18 @@ export default {
       bg: 'pendingBg',
       color: 'black',
     },
-    
-    // ApprovalState Buttons
+
+    // LockedState
+    LOCKED: {
+      bg: 'landedBg',
+      color: 'white',
+    },
+    UNLOCKED: {
+      bg: 'pendingBg',
+      color: 'black',
+    },
+
+    // ApprovalState
     PENDING: {
       bg: 'pendingBg',
       color: 'black',
@@ -46,6 +60,11 @@ export default {
       bg: 'pushBg',
       color: 'white',
     },
+  },
+
+  buttons: {
+    
+    
 
     primary: {
       color: 'background',

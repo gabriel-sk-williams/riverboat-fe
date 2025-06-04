@@ -7,11 +7,10 @@ import {
   TransactionInstruction,
 } from '@solana/web3.js';
 
-
 import { connection } from './useSolanaConnection';
-import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 import { validSolanaWallet } from '../util/wallet';
 import { deserializeWager } from '../util/borsh';
+import { addVariant, InstructionVariant, ApprovalState } from '../util/solana';
 
 
 export default function useAccountRequest(accountId, signTransaction, activeWallet) {
