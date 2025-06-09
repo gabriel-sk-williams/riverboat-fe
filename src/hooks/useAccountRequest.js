@@ -21,14 +21,15 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
     const [account, setAccount] = useState(false); // {}
 
     const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
-    const pda = new PublicKey(accountId)
+    const wagerPda = new PublicKey(accountId)
 
     async function getAccount() {
         try {
             setStatus(null);
             setLoading(true);
-            const response = await connection.getAccountInfo(pda);
+            const response = await connection.getAccountInfo(wagerPda);
             const wagerAccount = deserializeWager(response.data)
+            console.log("wawa", wagerAccount);
             setAccount(wagerAccount);
         } catch (error) {
             setLoading(false);
@@ -44,13 +45,23 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
 
             // TODO cleanup
             const encodedData = Buffer.alloc(9);
-            encodedData.writeUInt8(2, 0); // Submit variant
+            encodedData.writeUInt8(2, 0); // InstructionVariant.SUBMIT_DEPOSIT
             encodedData.writeBigUInt64LE(BigInt(stakeAmount), 1);
+
+            // find vault PDA TODO: export function?
+            const [vaultPda, vaultBump] = PublicKey.findProgramAddressSync(
+                [
+                Buffer.from("vault"),
+                wagerPda.toBuffer(),
+                ],
+                programId
+            );
 
             // Create the instruction
             const instruction = new TransactionInstruction({
                 keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
+                { pubkey: wagerPda, isSigner: false, isWritable: true },
+                { pubkey: vaultPda, isSigner: false, isWritable: true },
                 { pubkey: userWallet, isSigner: true, isWritable: true },
                 { pubkey: SystemProgram.programId, isSigner: false, isWritable: false }
                 ],
@@ -85,13 +96,12 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
         try {
             const userWallet = new PublicKey(activeWallet.address);
 
-            const instructionData = new Uint8Array([InstructionVariant.UPDATE, belief]);
-            console.log(instructionData);
+            const instructionData = new Uint8Array([InstructionVariant.UPDATE_BELIEF, belief]);
 
             // Create the instruction
             const instruction = new TransactionInstruction({
                 keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
+                { pubkey: wagerPda, isSigner: false, isWritable: true },
                 { pubkey: userWallet, isSigner: true, isWritable: true },
                 ],
                 programId,
@@ -114,32 +124,24 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
             }
         
         } catch (error) {
-            setStatus(`update belief failed: ${error?.message}`)
+            console.log(error);
+            setStatus(`belief update failed: ${error?.message}`);
         } finally {
             getAccount();
         }
     }
 
-    async function lockSubmission(bool) {
+    async function lockSubmission() {
         try {
-
-        } catch (error) {
-            setStatus(`update wager failed: ${error?.message}`);
-        } finally {
-            getAccount();
-        }
-    }
-
-    async function setApproval(approval) {
-        try {
+            console.log("locking submission...")
             const userWallet = new PublicKey(activeWallet.address);
 
-            const instructionData = new Uint8Array([InstructionVariant.SET, approval]);
+            const instructionData = new Uint8Array([InstructionVariant.LOCK_SUBMISSION]);
 
             // Create the instruction
             const instruction = new TransactionInstruction({
                 keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
+                { pubkey: wagerPda, isSigner: false, isWritable: true },
                 { pubkey: userWallet, isSigner: true, isWritable: true },
                 ],
                 programId,
@@ -158,11 +160,50 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
                 const signedTx = await activeWallet.signTransaction(transaction)
                 const signature = await connection.sendRawTransaction(signedTx.serialize())
                 const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
-                alert(`Wager Update complete! Transaction signature: ${signature}`);
+                alert(`Submission Locked! Transaction signature: ${signature}`);
+            }
+
+        } catch (error) {
+            setStatus(`lock submission failed: ${error?.message}`);
+        } finally {
+            getAccount();
+        }
+    }
+
+    async function setApproval(approval) {
+        try {
+            const userWallet = new PublicKey(activeWallet.address);
+
+            const instructionData = new Uint8Array([InstructionVariant.SET_APPROVAL, approval]);
+            console.log("struciton", instructionData);
+
+            // Create the instruction
+            const instruction = new TransactionInstruction({
+                keys: [
+                { pubkey: wagerPda, isSigner: false, isWritable: true },
+                { pubkey: userWallet, isSigner: true, isWritable: true },
+                ],
+                programId,
+                data: instructionData
+            });
+
+            const {
+                value: { blockhash, lastValidBlockHeight },
+            }  = await connection.getLatestBlockhashAndContext();
+
+            const transaction = new Transaction().add(instruction);
+            transaction.feePayer = userWallet;
+            transaction.recentBlockhash = blockhash;
+
+            if (signTransaction) {
+                const signedTx = await activeWallet.signTransaction(transaction)
+                const signature = await connection.sendRawTransaction(signedTx.serialize())
+                const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature })
+                alert(`Wager Outcome Approved! Transaction signature: ${signature}`);
             }
         
         } catch (error) {
-            setStatus(`update wager failed: ${error?.message}`);
+            setStatus(`approve outcome failed: ${error?.message}`);
         } finally {
             getAccount();
         }

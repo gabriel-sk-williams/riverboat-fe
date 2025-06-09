@@ -5,9 +5,10 @@ export default {
     primary: '#66aacc', // '#3399cc',
     secondary: '#336680', // '#7340b3',
     muted: '#f6f6f6',
-    mutedDark:   '#e0e0e0',
+    mutedDark: '#e0e0e0',
 
-    // 5AA9E6 blue from deck
+    testRed: '#ff0000',
+    goodBlue: '#5AA9E6', // blue from deck
 
     // ApprovalState colors
     pendingBg: '#f6f6f6',
@@ -22,11 +23,10 @@ export default {
   },
 
   badges: {
-
     // PaidState
     PAID: {
-      bg: 'landedBg',
-      color: 'white',
+      bg: 'goodBlue',
+      color: 'testRed',
     },
     UNPAID: {
       bg: 'pendingBg',
@@ -35,7 +35,7 @@ export default {
 
     // LockedState
     LOCKED: {
-      bg: 'landedBg',
+      bg: 'goodBlue',
       color: 'white',
     },
     UNLOCKED: {
@@ -63,9 +63,6 @@ export default {
   },
 
   buttons: {
-    
-    
-
     primary: {
       color: 'background',
       bg:    'primary',
@@ -84,6 +81,17 @@ export default {
       '&:disabled:hover': {
         bg: 'mutedDark',
       },
+    },
+  },
+
+  forms: {
+    slider: {
+      //color: 'testRed',
+      //bg: 'testRed',
+    },
+    muted: {
+      color: 'mutedDark',
+      bg: 'muted',
     },
   },
 }

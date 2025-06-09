@@ -23,10 +23,7 @@ function SubmitDeposit({ stake, submitDeposit }) {
             <h4>{stakeSol} SOL</h4>
             
             <div>
-                <Button
-                    onClick={handleSubmitDeposit}
-                    sx={{cursor:'pointer'}}
-                >
+                <Button onClick={handleSubmitDeposit} sx={{cursor:'pointer'}}>
                     Submit Stake
                 </Button>
             </div>

@@ -4,19 +4,22 @@
 
 export class InstructionVariant {
     // Private Fields
-    static #_GET = 0;
-    static #_CREATE = 1;
-    static #_SUBMIT = 2;
-    static #_UPDATE = 3;
-    static #_SET = 4;
+    static #_GET_WAGER = 0;
+    static #_CREATE_WAGER = 1;
+    static #_SUBMIT_DEPOSIT = 2;
+    static #_UPDATE_BELIEF = 3;
+    static #_LOCK_SUBMISSION = 4;
+    static #_SET_APPROVAL = 5;
+    static #_CLAIM_PAYOUT = 6;
   
     // Accessors for "get" functions only (no "set" functions)
-    static get GET() { return this.#_GET; }
-    static get CREATE() { return this.#_CREATE; }
-    static get SUBMIT() { return this.#_SUBMIT; }
-    static get UPDATE() { return this.#_UPDATE; }
-    static get SET() { return this.#_SET; }
-    
+    static get GET_WAGER() { return this.#_GET_WAGER; }
+    static get CREATE_WAGER() { return this.#_CREATE_WAGER; }
+    static get SUBMIT_DEPOSIT() { return this.#_SUBMIT_DEPOSIT; }
+    static get UPDATE_BELIEF() { return this.#_UPDATE_BELIEF; }
+    static get LOCK_SUBMISSION() { return this.#_LOCK_SUBMISSION; }
+    static get SET_APPROVAL() { return this.#_SET_APPROVAL; }
+    static get CLAIM_PAYOUT() { return this.#_CLAIM_PAYOUT; }
 }
 
 export const addVariant = (variant, serializedArray) => {
@@ -69,4 +72,19 @@ export class ApprovalState {
             return 0;
         }
     }
+}
+
+export class PayoutStatus {
+
+    static #_NOT_STAKED = 0;
+    static #_STAKED = 1;
+    static #_LOCKED = 2;
+    static #_CLAIMED_PARTIAL = 3;
+    static #_SETTLED = 4;
+  
+    static get NOT_STAKED() { return this.#_NOT_STAKED; }
+    static get STAKED() { return this.#_STAKED; }
+    static get LOCKED() { return this.#_LOCKED; }
+    static get CLAIMED_PARTIAL() { return this.#_CLAIMED_PARTIAL; }
+    static get SETTLED() { return this.#_SETTLED; }
 }

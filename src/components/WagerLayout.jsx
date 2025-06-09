@@ -24,12 +24,12 @@ import ErrorBanner from './ErrorBanner';
 import Participant from './Participant';
 
 import { calcRisk, truncate, constructSentence, getFavorite } from '../util/wallet';
-import { ParticipantState, getParticipantState, getNullActionDisplay } from '../util/layout';
+import { PayoutStatus } from '../util/solana';
 
 
 function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief, lockSubmission, setApproval }) {
 
-    const { contract, decision_a, decision_b, belief_a, belief_b, paid_a, paid_b } = account;
+    const { contract, status_a, status_b, belief_a, belief_b, decision_a, decision_b, } = account;
 
     if (!account) {
         return (
@@ -48,8 +48,7 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     const solanaAddressA = publicKeyA.toBase58();
     const solanaAddressB = publicKeyB.toBase58();
 
-    const activeButtonA = activeWallet?.address == solanaAddressA;
-    const activeButtonB = activeWallet?.address == solanaAddressB;
+    
 
     //const pkActive = activeWallet?.address;
     //const pkv = truncate(pkActive);
@@ -66,46 +65,43 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     const [ riskA, riskB ] = calcRisk(stakeSol, beliefA, beliefB);
     const [ faveA, faveB ] = getFavorite(beliefA, beliefA);
 
-    const lockedA = false;
-    const lockedB = false;
-
     const StatementA = constructSentence(pka, riskA, faveA);
     const StatementB = constructSentence(pkb, riskB, faveB);
 
-    // If activeWallet matches a wallet in the wager, show next action
-    const display = activeWallet?.address == solanaAddressA
-        ? getParticipantState(decision_a, belief_a, paid_a)
-        : activeWallet?.address == solanaAddressB
-        ? getParticipantState(decision_b, belief_b, paid_b)
-        : getNullActionDisplay();
+    const activeWalletA = activeWallet?.address == solanaAddressA;
+    const activeWalletB = activeWallet?.address == solanaAddressB;
 
-    // const display = ParticipantState.BELIEF_UPDATED;
+    let [status, belief, decision] = activeWalletA
+        ? [status_a, belief_a, decision_a]
+        : activeWalletB
+        ? [status_b, belief_b, decision_b]
+        : [false, false, false]
 
-    const widget = display == ParticipantState.INIT 
+    const widget = status == PayoutStatus.NOT_STAKED 
         ? <SubmitDeposit stake={contract.stake} submitDeposit={submitDeposit} />
-        : display == ParticipantState.DEPOSIT_SUBMITTED
-        ? <UpdateBelief belief={belief_a} updateBelief={updateBelief} />
-        : display == ParticipantState.BELIEF_UPDATED
-        ? <UpdateBelief belief={belief_a} updateBelief={updateBelief} />
-        : display == ParticipantState.STATUS_LOCKED
-        ? <SetApproval decision={decision_a} setApproval={setApproval} />
-        : display == ParticipantState.APPROVAL_SET 
-        ? <SetApproval decision={decision_a} setApproval={setApproval} />
+        : status == PayoutStatus.STAKED
+        ? <UpdateBelief belief={belief} updateBelief={updateBelief} lockSubmission={lockSubmission} />
+        : status == PayoutStatus.LOCKED
+        ? <SetApproval decision={decision} setApproval={setApproval} />
+        : status == PayoutStatus.CLAIMED_PARTIAL
+        ? <ClaimPayout /*decision={decision_a} setApproval={setApproval}*/ />
+        : status == PayoutStatus.SETTLED 
+        ? <DisplayOutcome /*decision={decision_a} setApproval={setApproval}*/ />
         : <div/>
 
-    const activeHeadline = display == ParticipantState.INIT 
-        ? "Welcome!"
-        : display == ParticipantState.DEPOSIT_SUBMITTED
-        ? "Set your Belief that the Outcome will Land:"
-        : display == ParticipantState.BELIEF_UPDATED
-        ? "Lock your Belief:"
-        : display == ParticipantState.STATUS_LOCKED
+    const activeHeadline = status == PayoutStatus.NOT_STAKED 
+        ? "Welcome! Deposit your Stake to Continue:"
+        : status == PayoutStatus.STAKED
+        ? "Set and Lock your Belief that the Outcome will Land:"
+        : status == PayoutStatus.LOCKED
+        ? "What is the Outcome of the Wager?"
+        : status == PayoutStatus.CLAIMED_PARTIAL
         ? "Update the actual Outcome of the Wager:"
-        : display == ParticipantState.APPROVAL_SET 
+        : status == PayoutStatus.SETTLED 
         ? "The Outcome of the Event has been set:"
         : "Error"
 
-    const date = "99 January 1999"
+    const date = new Date().toDateString();
 
     return (
         <Box sx={{my:'2rem'}}>
@@ -115,8 +111,8 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
             </Box>
 
             <Box sx={{my:'1rem'}}>
-                <h4>Stake: {stakeSol} SOL ({stakeLamports} Lamports)</h4>
-                <h4>Created: {date}</h4>
+                <h4>{stakeSol} SOL ({stakeLamports} Lamports)</h4>
+                <h4>{date}</h4>
             </Box>
 
             <Box sx={{ 
@@ -141,10 +137,9 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
                 <Participant
                     //activeWallet={activeWallet.address}
                     address={contract.wallet_a}
-                    paid={paid_a}
+                    status={status_a}
                     belief={displayA}
                     risk={riskA}
-                    locked={lockedA}
                     decision={decision_a}
                 />
             </Box>
@@ -153,10 +148,9 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
                 <Participant
                     //activeWallet={activeWallet.address}
                     address={contract.wallet_b}
-                    paid={paid_b}
+                    status={status_b}
                     belief={displayB}
                     risk={riskB}
-                    locked={lockedB}
                     decision={decision_b}
                 />
             </Box>
@@ -165,19 +159,3 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
 }
 
 export default WagerLayout;
-
-{/*
-    <Box sx={{my:'1rem'}}>
-        <h2>{StatementA}</h2>
-        <h2>{StatementB}</h2>
-    </Box>
-    */}
-
-/*
-    <SubmitDeposit stake={contract.stake} paid={paid_a} submitDeposit={submitDeposit} />
-    { paid_a &&
-        <UpdateBelief active={activeButtonA} updateBelief={updateBelief} /> 
-    }
-    <LockSubmission/>
-    <SetApproval status={decision_a} active={activeButtonA} setApproval={setApproval} />
-*/

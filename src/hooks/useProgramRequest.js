@@ -18,7 +18,13 @@ export default function useProgramRequest(programId) {
             setLoading(true);
             const response = await connection.getProgramAccounts(programId);
 
-            const dsAccounts = response.map(obj => ({
+            // const accountMap = response.map(obj => obj.pubkey.toBase58());
+            // console.log("map", accountMap);
+            
+
+            const dsAccounts = response
+                .filter(obj => obj.account.data.length > 0 ) // ignore vaults
+                .map(obj => ({
                 ...obj,
                 account: {
                     ...obj.account,

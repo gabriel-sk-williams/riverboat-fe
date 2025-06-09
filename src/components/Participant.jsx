@@ -10,15 +10,18 @@ import {
 } from 'theme-ui'
 
 import Blockie from './Blockie';
-import { ApprovalState } from '../util/solana';
+import { ApprovalState, PayoutStatus } from '../util/solana';
 
-function Participant({address, paid, belief, risk, locked, decision}) {
+function Participant({address, status, belief, risk, decision}) {
 
-    const paidButton = paid ? "PAID" : "UNPAID";
+    const paidButton = status >= PayoutStatus.STAKED ? "PAID" : "UNPAID";
+    const paidText = status >= PayoutStatus.STAKED ? '#fff' : '#6b6b6b';
+
+    const lockedButton = status >= PayoutStatus.LOCKED ? "LOCKED" : "UNLOCKED";
+    const lockedText = status >= PayoutStatus.LOCKED ? '#fff' : '#6b6b6b';
 
     const approvalButton = ApprovalState.getApprovalState(decision);
-
-    const lockedButton = locked ? "LOCKED" : "UNLOCKED";
+    const approvalText = decision > ApprovalState.PENDING ? '#fff' : '#6b6b6b';
 
 
     return (
@@ -26,20 +29,20 @@ function Participant({address, paid, belief, risk, locked, decision}) {
             <Blockie walletAddress={address} />
             
 
-            <Badge disabled variant={paidButton}>
-                <h4 style={{marginTop:'3px', marginBottom:'0px'}}>
+            <Badge disabled variant={paidButton} sx={{borderRadius:'4px'}}>
+                <h4 style={{marginTop:'3px', marginBottom:'0px', color:paidText }}>
                 {paidButton}
                 </h4>
             </Badge>
 
-            <Badge disabled variant={lockedButton}>
-                <h4 style={{marginTop:'3px', marginBottom:'0px'}}>
+            <Badge disabled variant={lockedButton} sx={{borderRadius:'4px'}}>
+                <h4 style={{marginTop:'3px', marginBottom:'0px', color:lockedText }}>
                 {lockedButton}
                 </h4>
             </Badge>
 
-            <Badge disabled variant={approvalButton}>
-                <h4 style={{marginTop:'3px', marginBottom:'0px'}}>
+            <Badge disabled variant={approvalButton} sx={{borderRadius:'4px'}}>
+                <h4 style={{marginTop:'3px', marginBottom:'0px', color:approvalText }}>
                 {approvalButton}
                 </h4>
             </Badge>

@@ -16,12 +16,12 @@ export const VersusContractSchema = {
 export const VersusWagerSchema = {
     struct: {
         contract: VersusContractSchema,
-        decision_a: 'u8', // ApprovalState as u8
-        decision_b: 'u8', // ApprovalState as u8
+        status_a: 'u8',     // PayoutStatus as u8
+        status_b: 'u8',     // PayoutStatus as u8
         belief_a: 'u8',
         belief_b: 'u8',
-        paid_a: 'bool',
-        paid_b: 'bool',
+        decision_a: 'u8',   // ApprovalState as u8
+        decision_b: 'u8',   // ApprovalState as u8
     }
 }
 

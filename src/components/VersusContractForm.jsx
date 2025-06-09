@@ -84,11 +84,21 @@ function VersusContractForm({ refreshProgramRequest }) {
             const publicWalletA = new PublicKey(walletA);
             const publicWalletB = new PublicKey(walletB);
 
-            const [pda, bump] = PublicKey.findProgramAddressSync(
+            // find wager PDA
+            const [wagerPda, wagerBump] = PublicKey.findProgramAddressSync(
                 [
                 termsHash,
                 publicWalletA.toBuffer(),
                 publicWalletB.toBuffer(),
+                ],
+                programId
+            );
+
+            // find vault PDA
+            const [vaultPda, vaultBump] = PublicKey.findProgramAddressSync(
+                [
+                Buffer.from("vault"),
+                wagerPda.toBuffer(),
                 ],
                 programId
             );
@@ -101,12 +111,13 @@ function VersusContractForm({ refreshProgramRequest }) {
             };
 
             const serializedData = serialize(VersusContractSchema, contract);
-            const instructionData = addVariant(InstructionVariant.CREATE, serializedData);
+            const instructionData = addVariant(InstructionVariant.CREATE_WAGER, serializedData);
 
             // Create the instruction
             const instruction = new TransactionInstruction({
                 keys: [
-                { pubkey: pda, isSigner: false, isWritable: true },
+                { pubkey: wagerPda, isSigner: false, isWritable: true },
+                { pubkey: vaultPda, isSigner: false, isWritable: true },
                 { pubkey: userWallet, isSigner: true, isWritable: true },
                 { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
                 ],
