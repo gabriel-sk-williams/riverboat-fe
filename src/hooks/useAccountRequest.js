@@ -29,7 +29,7 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
             setLoading(true);
             const response = await connection.getAccountInfo(wagerPda);
             const wagerAccount = deserializeWager(response.data)
-            console.log("wawa", wagerAccount);
+            // console.log("wawa", wagerAccount);
             setAccount(wagerAccount);
         } catch (error) {
             setLoading(false);
@@ -133,7 +133,6 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
 
     async function lockSubmission() {
         try {
-            console.log("locking submission...")
             const userWallet = new PublicKey(activeWallet.address);
 
             const instructionData = new Uint8Array([InstructionVariant.LOCK_SUBMISSION]);
@@ -175,7 +174,6 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
             const userWallet = new PublicKey(activeWallet.address);
 
             const instructionData = new Uint8Array([InstructionVariant.SET_APPROVAL, approval]);
-            console.log("struciton", instructionData);
 
             // Create the instruction
             const instruction = new TransactionInstruction({
@@ -209,6 +207,16 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
         }
     }
 
+    async function claimPayout() {
+        try{
+            console.log("claiming payout...")
+        } catch (error) {
+            setStatus(`claim payout failed: ${error?.message}`);
+        } finally {
+            getAccount();
+        }
+    }
+
     useEffect(() => {
         getAccount();
     }, []);
@@ -227,5 +235,5 @@ export default function useAccountRequest(accountId, signTransaction, activeWall
     }, [activeWallet]);
     
    
-    return { loading, status, error, account, submitDeposit, updateBelief, lockSubmission, setApproval };
+    return { loading, status, error, account, submitDeposit, updateBelief, lockSubmission, setApproval, claimPayout };
 }

@@ -67,11 +67,14 @@ h2 {
 
 /* Chapter Heading */
 h3 {
-  font-family:'Plantin Bold';
-  font-weight: 700;
-  letter-spacing:0.012rem;
-  font-size: 1.25rem;
+  display: inline-block;
+  font-family:'Plantin', serif;
+  font-weight:300;
+  letter-spacing:0rem;
+  font-size: 2.8rem;
+  line-height: 0;
   color:var(--color-black);
+  margin: auto 0;
 }
 
 /* Subtitle */

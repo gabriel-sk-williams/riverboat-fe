@@ -22,7 +22,7 @@ function Wager() {
   const { signTransaction } = useWallet();
   const { wallet: activeWallet } = useActiveWallet();
 
-  const { loading, status, error, account, submitDeposit, updateBelief, lockSubmission, setApproval } = useAccountRequest(accountId, signTransaction, activeWallet);
+  const { loading, status, error, account, submitDeposit, updateBelief, lockSubmission, setApproval, claimPayout } = useAccountRequest(accountId, signTransaction, activeWallet);
 
   const truncatedId = truncate(accountId);
 
@@ -50,6 +50,7 @@ function Wager() {
           updateBelief={updateBelief}
           lockSubmission={lockSubmission}
           setApproval={setApproval}
+          claimPayout={claimPayout}
         />
 
       </Box>

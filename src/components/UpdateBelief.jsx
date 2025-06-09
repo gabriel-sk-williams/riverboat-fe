@@ -91,10 +91,4 @@ function UpdateBelief({ belief, updateBelief, lockSubmission }) {
     );
 }
 
-{/*
-<Button onClick={lockSubmission} sx={{cursor:'pointer', height:'2rem', my:'1rem'}}>
-    Lock
-</Button>
-*/}
-
 export default UpdateBelief;

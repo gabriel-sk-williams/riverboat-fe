@@ -6,6 +6,7 @@ import {
     Flex,
     Text,
     Image,
+    Divider,
 } from 'theme-ui'
 
 import {
@@ -48,8 +49,6 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     const solanaAddressA = publicKeyA.toBase58();
     const solanaAddressB = publicKeyB.toBase58();
 
-    
-
     //const pkActive = activeWallet?.address;
     //const pkv = truncate(pkActive);
 
@@ -63,97 +62,93 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     const beliefB = belief_b > 100 ? 0.0 : belief_b / 100;
     
     const [ riskA, riskB ] = calcRisk(stakeSol, beliefA, beliefB);
-    const [ faveA, faveB ] = getFavorite(beliefA, beliefA);
 
-    const StatementA = constructSentence(pka, riskA, faveA);
-    const StatementB = constructSentence(pkb, riskB, faveB);
+    // const [ faveA, faveB ] = getFavorite(beliefA, beliefA);
+    // const StatementA = constructSentence(pka, riskA, faveA);
+    // const StatementB = constructSentence(pkb, riskB, faveB);
 
     const activeWalletA = activeWallet?.address == solanaAddressA;
     const activeWalletB = activeWallet?.address == solanaAddressB;
+
+    console.log("active a", activeWalletA);
+    console.log("active b", activeWalletB);
 
     let [status, belief, decision] = activeWalletA
         ? [status_a, belief_a, decision_a]
         : activeWalletB
         ? [status_b, belief_b, decision_b]
-        : [false, false, false]
+        : [null, null, null];
 
-    const widget = status == PayoutStatus.NOT_STAKED 
+    const widget = status === PayoutStatus.NOT_STAKED 
         ? <SubmitDeposit stake={contract.stake} submitDeposit={submitDeposit} />
-        : status == PayoutStatus.STAKED
+        : status === PayoutStatus.STAKED
         ? <UpdateBelief belief={belief} updateBelief={updateBelief} lockSubmission={lockSubmission} />
-        : status == PayoutStatus.LOCKED
+        : status === PayoutStatus.LOCKED
         ? <SetApproval decision={decision} setApproval={setApproval} />
-        : status == PayoutStatus.CLAIMED_PARTIAL
-        ? <ClaimPayout /*decision={decision_a} setApproval={setApproval}*/ />
-        : status == PayoutStatus.SETTLED 
-        ? <DisplayOutcome /*decision={decision_a} setApproval={setApproval}*/ />
-        : <div/>
+        : status === PayoutStatus.CLAIMED_PARTIAL
+        ? <ClaimPayout /*decision={decision_a} claimPayout={claimPayout}*/ />
+        : status === PayoutStatus.SETTLED 
+        ? <DisplayOutcome /*decision={decision_a} */ />
+        : <Divider sx={{color:'#ccc'}}/>
 
-    const activeHeadline = status == PayoutStatus.NOT_STAKED 
+    const activeHeadline = status === PayoutStatus.NOT_STAKED 
         ? "Welcome! Deposit your Stake to Continue:"
-        : status == PayoutStatus.STAKED
+        : status === PayoutStatus.STAKED
         ? "Set and Lock your Belief that the Outcome will Land:"
-        : status == PayoutStatus.LOCKED
+        : status === PayoutStatus.LOCKED
         ? "What is the Outcome of the Wager?"
-        : status == PayoutStatus.CLAIMED_PARTIAL
+        : status === PayoutStatus.CLAIMED_PARTIAL
         ? "Update the actual Outcome of the Wager:"
-        : status == PayoutStatus.SETTLED 
+        : status === PayoutStatus.SETTLED 
         ? "The Outcome of the Event has been set:"
-        : "Error"
+        : "";
+
+    const widgetBoxHeight = status == null ? '0rem' : '16rem';
+    //const widgetMy = status == null ? '1'
 
     const date = new Date().toDateString();
 
     return (
         <Box sx={{my:'2rem'}}>
+            <div className='flex-column'>
+                <Box sx={{my:'1rem'}}>
+                    <h3>{contract.terms}</h3>
+                    <h4>{stakeSol} SOL ({stakeLamports} Lamports)</h4>
+                    <h4>{date}</h4>
+                </Box>
 
-            <Box sx={{my:'1rem'}}>
-                <h1>{contract.terms}</h1>
-            </Box>
+                <Box sx={{ 
+                    mb:'3.5rem',
+                    height:widgetBoxHeight,
+                    textAlign:'center',
+                }}> 
 
-            <Box sx={{my:'1rem'}}>
-                <h4>{stakeSol} SOL ({stakeLamports} Lamports)</h4>
-                <h4>{date}</h4>
-            </Box>
+                    <h4>{activeHeadline}</h4>
+                    <ErrorBanner error={error} />
+                    {widget}
+                </Box>
 
-            <Box sx={{ 
-                my:'6rem', 
-                height:'16rem',
-                textAlign:'center',
-            }}> 
+                
+                <Box sx={{pt:'2rem'}}>
+                    <Participant
+                        address={contract.wallet_a}
+                            status={status_a}
+                            belief={displayA}
+                            risk={riskA}
+                            decision={decision_a}
+                        />
+                </Box>
 
-                {/*<h4>{pkv}</h4>*/}
-                <h4>{activeHeadline}</h4>
-
-                {/* Alert for matching activeWallets */}
-                <ErrorBanner error={error} />
-
-
-                {widget}
-            </Box>
-
-            
-            
-            <Box sx={{my:'2rem'}}>
-                <Participant
-                    //activeWallet={activeWallet.address}
-                    address={contract.wallet_a}
-                    status={status_a}
-                    belief={displayA}
-                    risk={riskA}
-                    decision={decision_a}
-                />
-            </Box>
-
-            <Box sx={{my:'2rem'}}>
-                <Participant
-                    //activeWallet={activeWallet.address}
-                    address={contract.wallet_b}
-                    status={status_b}
-                    belief={displayB}
-                    risk={riskB}
-                    decision={decision_b}
-                />
-            </Box>
+                <Box sx={{pt:'2rem'}}>
+                    <Participant
+                        address={contract.wallet_b}
+                        status={status_b}
+                        belief={displayB}
+                        risk={riskB}
+                        decision={decision_b}
+                    />
+                </Box>
+            </div>
         </Box>
     );
 }

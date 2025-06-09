@@ -1,5 +1,9 @@
 import '../styles/type.css'
 
+import {
+    Box,
+} from 'theme-ui'
+
 
 function ErrorBanner({error}) {
 
@@ -8,9 +12,9 @@ function ErrorBanner({error}) {
     }
 
     return (
-        <div className="center">
+        <Box className="center">
             <h4 style={{color:'red'}}>{error}</h4>
-        </div>
+        </Box>
     )
 }
 
