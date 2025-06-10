@@ -79,7 +79,6 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     let playerOutcomeAgreement = decision_a === decision_b;
 
     let greaterBeliefA = beliefA > beliefB;
-    let fakeDecision = ApprovalState.LANDED;
 
     // greaterBeliefA && LANDED -> player A wins
     // greaterBeliefB && LANDED -> player A loses
@@ -90,12 +89,14 @@ function WagerLayout({ account, activeWallet, error, submitDeposit, updateBelief
     let playerAWins = greaterBeliefA && decision === ApprovalState.LANDED || !greaterBeliefA && decision === ApprovalState.MISSED;
     let playerBWins = !greaterBeliefA && decision === ApprovalState.LANDED || greaterBeliefA && decision === ApprovalState.MISSED;
 
-    console.log(riskA, riskB, reserveA, reserveB);
-
     let activePlayerWins = activeWalletA && playerAWins || activeWalletB && playerBWins;
-    let winnerPayout = playerAWins ? riskA + riskB + reserveA : riskA + riskB + reserveB;
+    let winnerPayout = playerAWins ? parseFloat((riskA + riskB + reserveA).toFixed(5)) : parseFloat((riskA + riskB + reserveB).toFixed(5));
     let loserPayout = playerAWins ? reserveB : reserveA;
-    let payout = activePlayerWins ? winnerPayout : loserPayout;
+    let payout = beliefA == beliefB || decision === ApprovalState.PUSH
+        ? stakeSol
+        : activePlayerWins 
+        ? winnerPayout 
+        : loserPayout;
 
     const widget = status === PayoutStatus.NOT_STAKED 
         ? <SubmitDeposit stake={contract.stake} submitDeposit={submitDeposit} />

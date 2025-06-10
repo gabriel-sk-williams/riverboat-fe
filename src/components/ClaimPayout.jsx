@@ -17,8 +17,11 @@ function ClaimPayout({ decision, activePlayerWins, payout, claimPayout }) {
 
     const outcome = ApprovalState.getApprovalState(decision);
     const headline = `The Wager's Event has ${outcome}`;
+    const stake = 0.1;
 
-    const personalMessage = activePlayerWins 
+    const personalMessage = outcome === ApprovalState.PUSH
+        ? `We'll call it a draw. Click to recover ${payout} SOL`
+        : activePlayerWins 
         ? `Congratulations, you win ${payout} SOL`
         : `Sorry for your loss. Click to recover ${payout} SOL`;
 
