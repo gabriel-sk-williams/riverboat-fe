@@ -94,16 +94,12 @@ export const calcRisk = (stake, beliefA, beliefB) => {
     }
 }
 
-export const getFavorite = (beliefA, beliefB) => {
-    if (beliefA > beliefB) {
-        return ["LAND", "MISS"]
-    } else {
-        return ["MISS", "LAND"]
-    }
-}
+export const calcReserve = (stake, riskA, riskB) => {
 
-export const constructSentence = (address, stake, favorite) => {
-    return `${address} risks ${stake} SOL that the wager will ${favorite}`;
+    const reserveA = parseFloat((stake - riskA).toFixed(5));
+    const reserveB = parseFloat((stake - riskB).toFixed(5));
+
+    return [reserveA, reserveB];
 }
 
 export const validSolanaWallet = (wallet) => {

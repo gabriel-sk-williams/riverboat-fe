@@ -71,16 +71,18 @@ function UpdateBelief({ belief, updateBelief, lockSubmission }) {
                 )
                 }
                 
-                { showLocked ? (
+                { hasBelief && showLocked ? (
                     <HiMiniLockClosed
                         onClick={handleLockUpdate}
                         style={{cursor:'pointer', height:'24px', width:'24px', marginTop:'1.25rem'}}
                     />
-                ) : (
+                ) : hasBelief && !showLocked ? (
                    <HiMiniLockOpen
                     onClick={handleLockUpdate}
                     style={{cursor:'pointer', height:'24px', width:'24px', marginTop:'1.25rem'}}
                 /> 
+                ) : (
+                    <div />
                 )
                 }
 

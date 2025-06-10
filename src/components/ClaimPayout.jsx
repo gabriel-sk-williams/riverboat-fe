@@ -9,25 +9,34 @@ import {
 import { ApprovalState, PayoutStatus } from '../util/solana';
 
 
-function ClaimPayout({ decision_a, decision_b, claimPayout }) {
+function ClaimPayout({ decision, activePlayerWins, payout, claimPayout }) {
 
     const handleClaimPayout = () => {
         claimPayout();
     }
 
+    const outcome = ApprovalState.getApprovalState(decision);
+    const headline = `The Wager's Event has ${outcome}`;
+
+    const personalMessage = activePlayerWins 
+        ? `Congratulations, you win ${payout} SOL`
+        : `Sorry for your loss. Click to recover ${payout} SOL`;
+
     return (
         <div className='flex-column center' style={{gap:'1rem'}}>
 
-            <Box sx={{margin:'auto', width:'42rem'}}>
-                <h5 style={{margin:0}}>{headline}</h5>
-                <h5 style={{margin:0}}>{activeCopy}</h5>
+            <Box sx={{margin:'auto', width:'48rem'}}>
+                
+                <h3 style={{margin:'0.5rem'}}>{headline}</h3>
+                <h4 style={{margin:'0.5rem'}}>{personalMessage}</h4>
+                {/*<h3 style={{margin:'0.5rem'}}>{activeCopy}</h3>*/}
             </Box>
 
             <div>
                 <Button
                     onClick={handleClaimPayout}
                     sx={{cursor:'pointer'}}>
-                    Claim
+                    Claim Payout
                 </Button>
             </div>
         </div>
