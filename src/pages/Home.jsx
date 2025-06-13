@@ -39,12 +39,9 @@ function Home() {
 			{/*<h6>pre-alpha is live on</h6>*/}
 			
 			<div className="flex-column center">
-					<div className="flex-center">
-						<Image src={casino} sx={{width:'760px'}} />
-					</div>
-					
-					
-
+				<div className="flex-center" style={{marginTop:'-2rem'}}>
+					<Image src={casino} sx={{width:'780px'}} />
+				</div>
 			</div>
 		</div>
 	);
