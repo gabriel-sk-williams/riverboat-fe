@@ -1,16 +1,15 @@
 /* // MAIN COLORS // */
 :root {
-    --color-white: #ffffff;
-    --color-feather: #77c9d4;
-    --color-pink: #F6EBFC;
-    --color-powder: #e0e6f3;
+    --color-platinum: #ebebeb;
+    --color-darkgrey: #606060;
+
+
     --color-black: #404040;
+    /*
     --color-darkgrey: #6b6b6b;
     --color-halftone: #7f7f7f;
     --color-grey: #bfbfbf;
-    --color-electric: #c7dfc5;
-    --color-electric-hover: #d8e9d7;
-    --blog-width: 420px;
+    */
   }
   
   .black { color:var(--color-black); }
@@ -32,6 +31,7 @@
     border:0;
     padding:0;
     list-style:none;
+    /*background-color: var(--color-platinum);*/
     color: var(--color-black);
     -webkit-font-smoothing: antialiased!important;
   }
