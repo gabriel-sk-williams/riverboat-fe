@@ -60,6 +60,17 @@ h1 {
   margin: auto 0;
 }
 
+h1.splash {
+  font-size: 6rem;
+  line-height: 2rem;
+}
+
+@media (max-width:700px) {
+  h1.splash {
+    font-size: 2rem;
+  }
+}
+
 /* Entry Title */
 h2 {
   font-family:'Plantin', serif;
@@ -120,6 +131,13 @@ h6 {
   color:var(--color-darkgrey);
   margin: auto 0;
 }
+
+@media (max-width:700px) {
+  h6.splash {
+    font-size: 10px;
+  }
+}
+
 
 
 /* Body */

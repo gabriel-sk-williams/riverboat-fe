@@ -33,14 +33,14 @@ function Home() {
 
 	return (
 		<div className="container" style={{backgroundColor:'var(--color-platinum)', minHeight:'100vh'}}>
-			<h1 style={{fontSize:'6rem', marginTop:'2rem', lineHeight:'5rem', color:'var(--color-black)'}}>riverboat</h1>
-			<h6>the decentralized prediction market protocol</h6>
+			<h1 className="splash" style={{marginTop:'4rem'}}>riverboat</h1>
+			<h6 className="splash">the decentralized prediction market protocol</h6>
 			{/*<h6>coming soon</h6>*/}
 			{/*<h6>pre-alpha is live on</h6>*/}
 			
 			<div className="flex-column center">
 				<div className="flex-center" style={{marginTop:'-2rem'}}>
-					<Image src={casino} sx={{width:'780px'}} />
+					<Image className="splash-image" src={casino} sx={{width:'780px'}} />
 				</div>
 			</div>
 		</div>
