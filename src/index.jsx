@@ -4,8 +4,8 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Wager from './pages/Wager';
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './components/shared/Navbar';
+import Footer from './components/shared/Footer';
 
 import './styles/layout.css'
 

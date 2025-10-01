@@ -6,9 +6,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
-  margin-bottom: 4rem;
-  /* padding: 0 1rem;  Add some padding for spacing */
+  padding-top: 12px;
+  margin-bottom: 2rem;
 }
 
 .nav-links {
@@ -23,11 +22,12 @@
   height:100%;
   padding-left:1rem;
   padding-right:1rem;
+  
 }
 
 .splash-image {
-    padding-top:4rem;
-  }
+  padding-top:4rem;
+}
 
 @media (min-width:960px) {
   .container {
@@ -36,7 +36,7 @@
     margin: 0 auto;
   }
   .splash-image {
-    padding-top:-2rem;
+    padding-top:2rem;
   }
 }
 

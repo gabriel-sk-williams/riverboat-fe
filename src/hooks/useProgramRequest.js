@@ -28,7 +28,16 @@ export default function useProgramRequest(programId) {
                 ...obj,
                 account: {
                     ...obj.account,
-                    data: deserializeWager(obj.account.data)
+                    data: {
+                        ...deserializeWager(obj.account.data),
+                        dateCreated: new Date().toLocaleString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        })
+                    }
                 }
             }));
             
@@ -47,3 +56,16 @@ export default function useProgramRequest(programId) {
 
     return { loading, status, accounts, refresh: getAccounts };
 }
+
+/*
+previously: 
+const dsAccounts = response
+    .filter(obj => obj.account.data.length > 0 ) // ignore vaults
+    .map(obj => ({
+    ...obj,
+    account: {
+        ...obj.account,
+        data: deserializeWager(obj.account.data)
+    }
+}));
+*/

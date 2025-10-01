@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom'
-import '../styles/main.css'
-import '../styles/type.css'
-import '../styles/flex.css'
-import '../styles/layout.css'
-import '../styles/entry.css'
+import '../../styles/main.css'
+import '../../styles/type.css'
+import '../../styles/flex.css'
+import '../../styles/layout.css'
+import '../../styles/entry.css'
 
 import {
     Box,
@@ -14,11 +14,7 @@ import {
     Image
 } from 'theme-ui'
 
-import {
-  LAMPORTS_PER_SOL,
-} from '@solana/web3.js';
-
-import Blockie from './Blockie'
+import Blockie from '../shared/Blockie'
 
 /*
     Example Wager object:
@@ -54,21 +50,17 @@ function WagerCard({ props }) {
         <Link to={`/wager/${pubkey}`}>
             <Box sx={{
                 padding: '1rem',
-                bg: 'white',
-                    transition: 'background-color 0.1s ease-in-out',
-                    '&:hover': {
-                    bg: 'muted',
-                },
-                borderRadius: 4,
                 cursor: 'pointer',
-                borderRadius: '8px',
+                borderRadius: '20px',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    outline: `1px solid #c8c8c8`,
+                }
             }}>
                 <div className='flex-container' style={{height:'3rem', gap:'2rem'}}>
                     <Blockie walletAddress={ds.contract.wallet_a}/>
-                    <h5>{beliefA}</h5>
+                    {/*<h5>{beliefA}</h5>*/}
                     <Box sx={{
-                        bg: 'white',
-                        border: `1px solid #ccc`,
                         borderRadius: '8px',
                         p:'1rem',
                     }}>
@@ -81,13 +73,17 @@ function WagerCard({ props }) {
                             display: '-webkit-box',
                             WebkitLineClamp: 3,
                             WebkitBoxOrient: 'vertical',
-                            textAlign: 'center'
+                            textAlign: 'left'
                         }}>
+                            <h4>
                             {ds.contract.terms}
+                            </h4>
                         </Text>
                     </Box>
+                    {/*
                     <h5>{beliefB}</h5>
                     <Blockie walletAddress={ds.contract.wallet_b}/>
+                    */}
                 </div>
             </Box>
         </Link>

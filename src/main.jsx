@@ -4,6 +4,7 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import { ThemeUIProvider } from 'theme-ui'
 import theme from './theme'
 import Index from './index.jsx'
+import './styles/main.css'
 
 import {toSolanaWalletConnectors} from '@privy-io/react-auth/solana';
 

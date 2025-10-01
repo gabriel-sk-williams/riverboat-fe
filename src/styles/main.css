@@ -1,61 +1,62 @@
 /* // MAIN COLORS // */
 :root {
-    --color-platinum: #ebebeb;
-    --color-darkgrey: #606060;
+  --color-bg: #ebebeb;
+  --color-component: #c8c8c8;
+  --color-darkgrey: #606060;
+  --color-black: #404040;
+}
+  
+.black { color:var(--color-black); }
+.darkgrey { color:var(--color-darkgrey) }
+.halftone { color:var(--color-halftone) }
+.grey { color:var(--color-grey) }
+.italic { font-style: italic; }
 
+html{
+  position:static!important;
+  top:0!important;
+  box-sizing:border-box;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
 
-    --color-black: #404040;
-    /*
-    --color-darkgrey: #6b6b6b;
-    --color-halftone: #7f7f7f;
-    --color-grey: #bfbfbf;
-    */
-  }
-  
-  .black { color:var(--color-black); }
-  .darkgrey { color:var(--color-darkgrey) }
-  .halftone { color:var(--color-halftone) }
-  .grey { color:var(--color-grey) }
-  .italic { font-style: italic; }
-  
-  html{
-    position:static!important;
-    top:0!important;
-    box-sizing:border-box;
-    overflow-x:hidden;
-    overflow-y:auto;
-  }
-  
-  body,div,ul,li{
-    margin:0;
-    border:0;
-    padding:0;
-    list-style:none;
-    /*background-color: var(--color-platinum);*/
-    color: var(--color-black);
-    -webkit-font-smoothing: antialiased!important;
-  }
-  
-  *{ box-sizing: inherit; }
+header {
+  background-color: transparent; /* instead of white */
+}
 
-  ::selection {
-    background: var(--color-powder); /* WebKit/Blink Browsers */
-  }
-  ::-moz-selection {
-    background: var(--color-powder); /* Gecko Browsers */
-  }
-  .select {
-    -webkit-touch-callout: auto; /* iOS Safari */
-      -webkit-user-select: auto; /* Safari */
-       -khtml-user-select: auto; /* Konqueror HTML */
-         -moz-user-select: auto; /* Firefox */
-          -ms-user-select: auto; /* Internet Explorer/Edge */
-              user-select: auto; /* Non-prefixed version, currently
-                                    supported by Chrome and Opera */
-  }
-  
-  .click {
-    cursor:pointer;
-  }
+body,div,ul,li{
+  margin:0;
+  border:0;
+  padding:0;
+  list-style:none;
+  background-color: var(--color-bg);
+  /*-webkit-font-smoothing: antialiased!important;*/
+}
+
+*{ box-sizing: inherit; }
+
+/*
+::selection {
+ background: var(--color-bg); WebKit/Blink Browsers
+}
+
+::-moz-selection {
+  background: var(--color-bg); Gecko Browsers
+}
+*/
+
+.select {
+  -webkit-touch-callout: auto; /* iOS Safari */
+    -webkit-user-select: auto; /* Safari */
+      -khtml-user-select: auto; /* Konqueror HTML */
+        -moz-user-select: auto; /* Firefox */
+        -ms-user-select: auto; /* Internet Explorer/Edge */
+            user-select: auto; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.click {
+  cursor:pointer;
+}
   
   

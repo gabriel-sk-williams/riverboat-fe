@@ -17,29 +17,19 @@ import {
     Image
   } from 'theme-ui'
 
-  // marginTop:'2rem', marginBottom:'0 auto', 
-
 function Home() {
 
-	useEffect(() => {
-    // Set body background when component mounts
-    document.body.style.backgroundColor = 'var(--color-platinum)';
-    
-    // Clean up when component unmounts
-    return () => {
-      document.body.style.backgroundColor = '';
-    };
-  }, []);
-
 	return (
-		<div className="container" style={{backgroundColor:'var(--color-platinum)', minHeight:'100vh'}}>
-			<h1 className="splash" style={{marginTop:'4rem'}}>riverboat</h1>
-			<h6 className="splash">the decentralized prediction market protocol</h6>
+		<div className="container">
+			<h1 className="splash" style={{marginTop:'2rem'}}>riverboat</h1>
+			<h6 className="splash">the decentralized prediction protocol</h6>
+			{/*<h6 className="splash">permissionless, decentralized predictions</h6>*/}
+			{/*<h6 className="splash">permissionless liquidity for onchain predictions</h6>*/}
 			{/*<h6>coming soon</h6>*/}
 			{/*<h6>pre-alpha is live on</h6>*/}
 			
 			<div className="flex-column center">
-				<div className="flex-center" style={{marginTop:'-2rem'}}>
+				<div className="flex-center" style={{/*marginTop:'1rem'*/}}>
 					<Image className="splash-image" src={casino} sx={{width:'780px'}} />
 				</div>
 			</div>

@@ -16,7 +16,7 @@ import {
     TransactionInstruction,
 } from '@solana/web3.js';
 
-import Blockie from './Blockie';
+import Blockie from './shared/Blockie';
 
 import SubmitDeposit from './SubmitDeposit';
 import UpdateBelief from './UpdateBelief';

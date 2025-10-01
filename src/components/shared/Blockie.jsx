@@ -1,16 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom'
-import '../styles/main.css'
-import '../styles/type.css'
-import '../styles/flex.css'
-import '../styles/layout.css'
-import '../styles/entry.css'
+import '../../styles/main.css'
+import '../../styles/type.css'
+import '../../styles/flex.css'
+import '../../styles/layout.css'
+import '../../styles/entry.css'
 
 import { Box } from 'theme-ui'
 
 import { PublicKey } from "@solana/web3.js";
 
 import makeBlockie from 'ethereum-blockies-base64';
+
+// consider https://www.npmjs.com/package/ethereum-blockies
+// npm i ethereum-blockies
 
 function Blockie({ walletAddress }) {
 
@@ -35,8 +38,8 @@ function Blockie({ walletAddress }) {
         <Box 
             title={solanaAddress}
             sx={{
-            width: '4rem',
-            height: '4rem',
+            width: '3rem',
+            height: '3rem',
             borderRadius: '50%',
             backgroundImage: `url(${avatarUrl})`,
             backgroundSize: 'cover',

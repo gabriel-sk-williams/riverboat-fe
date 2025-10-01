@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import Tabs from '../components/Tabs';
-import WagerList from '../components/WagerList';
+import WagerList from '../components/dashboard/WagerList';
 import useProgramRequest from '../hooks/useProgramRequest';
 import VersusContractForm from '../components/VersusContractForm';
 
@@ -19,8 +19,9 @@ import {
 
 
 const tabsData = [
-    { label: 'Wagers' }, // 0
-    { label: 'Create' }, // 1
+    { label: 'EXPLORE', page: "/dashboard" }, // 0
+    { label: 'CREATE', page: "/create" }, // 1
+	{ label: 'INFO', page: "/info" }, // 2
 ];
 
 function Dashboard() {
@@ -32,22 +33,16 @@ function Dashboard() {
 
 	return (
 		<Box>
-			<div className='flex-container'>
+			<div className='flex'>
 				<Tabs 
 					tabs={tabsData}
 					activeTab={currentTab}
 					onTabChange={setCurrentTab} 
 				/>
 			</div>
-			<Box sx={{
-				mt: '2rem',
-				pb: '2rem',
-			}}>
-				<div className="flex-center">
-					<div>
-						{currentTab == 0 && <WagerList loading={loading} wagers={accounts} />}
-						{currentTab == 1 && <VersusContractForm refreshProgramRequest={refresh} />}
-					</div>
+			<Box sx={{mt: '2rem', pb: '2rem'}}>
+				<div className="flex">
+					<WagerList loading={loading} wagers={accounts} />
 				</div>
 			</Box>
 		</Box>
@@ -55,3 +50,10 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+/*
+	<div>
+		{currentTab == 0 && <WagerList loading={loading} wagers={accounts} />}
+		{currentTab == 1 && <VersusContractForm refreshProgramRequest={refresh} />}
+	</div>
+*/

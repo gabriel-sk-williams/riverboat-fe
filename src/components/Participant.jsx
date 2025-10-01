@@ -9,7 +9,7 @@ import {
     Badge,
 } from 'theme-ui'
 
-import Blockie from './Blockie';
+import Blockie from './shared/Blockie';
 import { ApprovalState, PayoutStatus } from '../util/solana';
 
 function Participant({address, status, belief, risk, decision}) {

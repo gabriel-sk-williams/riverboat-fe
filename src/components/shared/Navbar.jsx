@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getAccessToken, usePrivy, useLogin, useConnectWallet, useSolanaWallets } from "@privy-io/react-auth";
 
-import { PrivyWalletButton } from './PrivyWalletButton';
+import { PrivyWalletButton } from '../PrivyWalletButton';
 
 function Navbar() {
   const location = useLocation();
