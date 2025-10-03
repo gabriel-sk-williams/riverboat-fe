@@ -22,6 +22,7 @@ import {
 import {
     Box,
 	Flex,
+	Button
 } from 'theme-ui'
 
 
@@ -47,8 +48,22 @@ function Dashboard() {
 	const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 	const { loading, status, accounts, refresh } = useProgramRequest(programId);
 
+
+	const handleFilterFieldChange = (event) => {
+        setFilterTerm(event.target.value);
+    }
+	
+	const test = () =>  {
+		console.log("testing")
+		console.log(sortBy)
+		console.log(statusFilter)
+		console.log(filterTerm)
+		console.log(filterType)
+	}
+
 	return (
 		<Box>
+			{/*<Button onClick={test} />*/}
 			<Box sx={{pb:'4rem'}}>
 				<Tabs 
 					tabs={tabsData}
@@ -58,7 +73,7 @@ function Dashboard() {
 			</Box>
 
 			<Box>
-				<Filter items={filterItems} onFieldChange={setFilterTerm} onFilterChange={setFilterType} />
+				<Filter items={filterItems} onFieldChange={handleFilterFieldChange} onFilterChange={setFilterType} />
 			</Box>
 
 			<Flex sx={{ gap:'4rem' }}>
