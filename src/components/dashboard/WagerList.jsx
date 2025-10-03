@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import WagerCard from './WagerCard';
+import Paginator from './Paginator';
 import Blockie from '../shared/Blockie'
 
 import {
@@ -31,16 +32,16 @@ function WagerList({loading, wagers}) {
     }
 
     const today = new Date();
-    console.log("date", today);
     const month = today.getMonth();
     const year = today.getFullYear();
     const date = today. getDate();
+
+    const blockieSize ='3rem';
 
     return (
         <Box sx={{width: '100%', mt:'1rem'}}>
             <Grid
                 columns='5rem 1fr auto'
-                columnGap='3rem'
                 sx={{
                     px: '1px', // prevents outline cutoff
                     rowGap: '1px'
@@ -70,7 +71,7 @@ function WagerList({loading, wagers}) {
                                     outline: `1px solid #c8c8c8`,
                                 }
                             }}>
-                                <Blockie walletAddress={wager.account.data.contract.wallet_a}/>
+                                <Blockie walletAddress={wager.account.data.contract.wallet_a} size={blockieSize} />
                                 <Box sx={{display: 'flex', height: '100%', alignItems:'center'}}>
                                     <Text sx={{
                                         lineHeight: '1.5em',
@@ -94,6 +95,8 @@ function WagerList({loading, wagers}) {
                     );
                 })}
             </Grid>
+            
+            <Paginator />
         </Box>
     );
 }

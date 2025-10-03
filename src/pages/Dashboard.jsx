@@ -1,9 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 
+
+
+
 import Tabs from '../components/Tabs';
 import WagerList from '../components/dashboard/WagerList';
-import useProgramRequest from '../hooks/useProgramRequest';
 import VersusContractForm from '../components/VersusContractForm';
+import DropdownSelect from '../components/shared/DropdownSelect';
+import Filter from '../components/dashboard/Filter';
+
+import useProgramRequest from '../hooks/useProgramRequest';
 
 import '../styles/main.css'
 import '../styles/type.css'
@@ -15,6 +21,7 @@ import {
 
 import {
     Box,
+	Flex,
 } from 'theme-ui'
 
 
@@ -24,26 +31,46 @@ const tabsData = [
 	{ label: 'INFO', page: "/info" }, // 2
 ];
 
+const sortItems = ['newest', 'oldest', 'popular'];
+const statusItems = ['open', 'closed', 'resolved'];
+const filterItems = ['keyword', 'creator'];
+
 function Dashboard() {
 
 	const [ currentTab, setCurrentTab ] = useState(0);
+	const [ sortBy, setSortBy] = useState('newest');
+	const [ statusFilter, setStatusFilter] = useState('open');
+
+	const [filterTerm, setFilterTerm] = useState("");
+    const [filterType, setFilterType] = useState("keyword");
 
 	const programId = new PublicKey(import.meta.env.VITE_PROGRAM_ADDRESS);
 	const { loading, status, accounts, refresh } = useProgramRequest(programId);
 
 	return (
 		<Box>
-			<div className='flex'>
+			<Box sx={{pb:'4rem'}}>
 				<Tabs 
 					tabs={tabsData}
 					activeTab={currentTab}
 					onTabChange={setCurrentTab} 
 				/>
-			</div>
-			<Box sx={{mt: '2rem', pb: '2rem'}}>
-				<div className="flex">
+			</Box>
+
+			<Box>
+				<Filter items={filterItems} onFieldChange={setFilterTerm} onFilterChange={setFilterType} />
+			</Box>
+
+			<Flex sx={{ gap:'4rem' }}>
+				<DropdownSelect label={"SORT BY"} naked={false} items={sortItems} onChange={setSortBy} />
+				<DropdownSelect label={"SORT BY"} naked={false} items={statusItems} onChange={setStatusFilter} />
+			</Flex>
+
+
+			<Box sx={{pb: '2rem'}}>
+				<Flex>
 					<WagerList loading={loading} wagers={accounts} />
-				</div>
+				</Flex>
 			</Box>
 		</Box>
 	);

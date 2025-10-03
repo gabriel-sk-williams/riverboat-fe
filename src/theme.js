@@ -93,5 +93,10 @@ export default {
       color: 'mutedDark',
       bg: 'muted',
     },
+    label: {
+      fontFamily: 'Space Mono, monospace',
+      fontSize: '14px', // h4
+      color: "#606060"
+    },
   },
 }

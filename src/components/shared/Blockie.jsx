@@ -15,7 +15,7 @@ import makeBlockie from 'ethereum-blockies-base64';
 // consider https://www.npmjs.com/package/ethereum-blockies
 // npm i ethereum-blockies
 
-function Blockie({ walletAddress }) {
+function Blockie({ walletAddress, size }) {
 
     // Generate blockie for the wallet address
     const getWalletAvatar = useCallback((address) => {
@@ -38,8 +38,8 @@ function Blockie({ walletAddress }) {
         <Box 
             title={solanaAddress}
             sx={{
-            width: '3rem',
-            height: '3rem',
+            width: size,
+            height: size,
             borderRadius: '50%',
             backgroundImage: `url(${avatarUrl})`,
             backgroundSize: 'cover',
